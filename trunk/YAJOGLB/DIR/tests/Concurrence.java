@@ -1,7 +1,7 @@
 /*
  * Concurrence
  *
- * $Id: Concurrence.java,v 1.4 2001/07/04 02:17:50 razeh Exp $
+ * $Id: Concurrence.java,v 1.5 2002/04/06 15:12:14 razeh Exp $
  *
  * Copyright 1998
  *
@@ -58,8 +58,8 @@ public class Concurrence {
 	= 2.5 * Math.abs(Math.sin((double) sphereCycle / (50.0 * Math.PI)));
       sphere1.setSphereRadius((float) sphereRadius);
       sphere2.setSphereRadius((float) sphereRadius);
-      viewer1.paint();
-      viewer2.paint();
+      viewer1.nativePaint();
+      viewer2.nativePaint();
     }
   }
 }

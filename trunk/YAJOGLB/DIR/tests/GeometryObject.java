@@ -1,7 +1,7 @@
 /*
  * Geometry object.
  *
- * $Id: GeometryObject.java,v 1.4 2001/06/10 20:37:27 razeh Exp $
+ * $Id: GeometryObject.java,v 1.5 2002/04/06 15:12:24 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)

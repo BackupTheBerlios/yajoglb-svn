@@ -1,7 +1,7 @@
 /*
  * MatrixModifiers
  * 
- * $Id: MatrixModifiers.java,v 1.2 1998/03/30 02:18:02 razeh Exp $
+ * $Id: MatrixModifiers.java,v 1.3 2002/04/06 15:12:30 razeh Exp $
  *
  * Converted into Java from the Mesa source.
  *

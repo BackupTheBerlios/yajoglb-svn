@@ -1,7 +1,7 @@
 /*
  * Tess.java
  *
- * $Id: TessVertex.java,v 1.5 2001/06/10 20:53:31 razeh Exp $
+ * $Id: TessVertex.java,v 1.6 2002/04/06 15:13:00 razeh Exp $
  *
  * Taken from the C source inside the redbook examples in glut-3.6.
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -158,8 +158,8 @@ public class TessVertex extends GLUTesselator implements GeometryObject, GLConst
 	;
       }
       
-      viewer1.paint();
-      viewer2.paint();
+      viewer1.nativePaint();
+      viewer2.nativePaint();
     }
   }
 }

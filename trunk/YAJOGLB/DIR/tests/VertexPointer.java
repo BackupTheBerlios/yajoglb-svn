@@ -1,7 +1,7 @@
 /*
  * VertexPointerTest class
  *
- * $Id: VertexPointer.java,v 1.4 2001/06/10 20:53:26 razeh Exp $
+ * $Id: VertexPointer.java,v 1.5 2002/04/06 15:13:07 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)

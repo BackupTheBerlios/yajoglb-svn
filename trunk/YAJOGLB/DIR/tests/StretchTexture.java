@@ -1,7 +1,7 @@
 /*
  * StetchTexture class
  *
- * $Id: StretchTexture.java,v 1.1 2001/07/06 23:16:27 razeh Exp $
+ * $Id: StretchTexture.java,v 1.2 2002/04/06 15:12:59 razeh Exp $
  *
  * Copyright 2001
  *
@@ -27,7 +27,7 @@ public class StretchTexture extends Stretch
 	// for us.
     }
 
-    public void paint() {
+    synchronized public void paint() {
 	aquireContext();
 
 	// Instead of flipping the image, we flip the texture coordinates.
@@ -49,6 +49,8 @@ public class StretchTexture extends Stretch
 	gl.vertex(getImageSizeX(), 0);
 	gl.end();
 
+	System.out.println("x = " + getImageSizeX());
+	System.out.println("y = " + getImageSizeY());
 	swapBuffers();
 	releaseContext();
     }
@@ -57,8 +59,8 @@ public class StretchTexture extends Stretch
      * Resize our component, and reset our project matrix so that we
      * are still directly mapping pixels to coordinates.
      */
-    public void componentResized(ComponentEvent e) {
-	super.componentResized(e);
+    public void lockedComponentResized(ComponentEvent e) {
+	super.lockedComponentResized(e);
 	if (context != null) {
 	    aquireContext();
 	    gl.matrixMode(PROJECTION);

@@ -1,7 +1,7 @@
 /* 
  * Info panel class
  *
- * $Id: InfoPanel.java,v 1.3 2001/06/10 19:14:42 razeh Exp $
+ * $Id: InfoPanel.java,v 1.4 2002/04/06 15:12:28 razeh Exp $
  *
  * Copyright 2001
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -17,7 +17,6 @@ import java.awt.Frame;
  * current OpenGL implementation.
  */
 class InfoPanel extends Frame implements GLConstants {
-
 
   class WindowListener extends java.awt.event.WindowAdapter {
     public void windowClosing(WindowEvent e) {

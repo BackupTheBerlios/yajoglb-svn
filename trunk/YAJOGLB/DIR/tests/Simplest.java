@@ -1,7 +1,7 @@
 /*
  * Simplest possible OpenGL demo
  *
- * $Id: Simplest.java,v 1.4 2001/07/04 02:20:30 razeh Exp $
+ * $Id: Simplest.java,v 1.5 2002/04/06 15:12:55 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)

@@ -1,7 +1,7 @@
 /*
  * Feedback test
  *
- * $Id: Feedback.java,v 1.4 2001/07/04 02:17:27 razeh Exp $
+ * $Id: Feedback.java,v 1.5 2002/04/06 15:12:19 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -27,7 +27,6 @@ public class Feedback extends OpenGL.Canvas implements GLConstants, GLUConstants
     out the exception and continue on. */
   protected void aquireContext() {
     try {
-      lockCanvas();
       context.lock();
       context.makeCurrent(this);
     } catch (java.lang.Throwable exception) {
@@ -40,7 +39,6 @@ public class Feedback extends OpenGL.Canvas implements GLConstants, GLUConstants
 
   protected void releaseContext() {
     context.unlock();
-    unlockCanvas();
   }
     
   synchronized public void glInit() {

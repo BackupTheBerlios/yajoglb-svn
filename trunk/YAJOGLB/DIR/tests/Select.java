@@ -1,7 +1,7 @@
 /*
  * Selection test
  *
- * $Id: Select.java,v 1.4 2001/07/04 02:20:43 razeh Exp $
+ * $Id: Select.java,v 1.5 2002/04/06 15:12:54 razeh Exp $
  *
  * Copyright 1999
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -27,7 +27,6 @@ public class Select extends OpenGL.Canvas implements GLConstants, GLUConstants, 
       out the exception and continue on. */
   protected void aquireContext() {
     try {
-      lockCanvas();
       context.lock();
       context.makeCurrent(this);
     } catch (java.lang.Throwable exception) {
@@ -40,7 +39,6 @@ public class Select extends OpenGL.Canvas implements GLConstants, GLUConstants, 
 
   protected void releaseContext() {
     context.unlock();
-    unlockCanvas();
   }
     
   public void glInit() {

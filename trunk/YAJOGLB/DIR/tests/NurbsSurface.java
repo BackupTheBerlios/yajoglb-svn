@@ -1,7 +1,7 @@
 /*
  * NurbsSurface class
  *
- * $Id: NurbsSurface.java,v 1.10 2001/07/04 02:18:54 razeh Exp $
+ * $Id: NurbsSurface.java,v 1.11 2002/04/06 15:12:33 razeh Exp $
  *
  * Copyright 1998
  *

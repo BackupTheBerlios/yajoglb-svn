@@ -21,9 +21,6 @@ JAVA_CLASSES    = $(JAVA_SRC:.java=.class)
 
 all : $(JAVA_CLASSES)
 
-checkout:
-	$(CO) $(JAVA_SRC)
-
 clean :
-	$(RM) $(JAVA_CLASSES) $(JAVA_CLASSES) *.class TAGS
+	$(RM) *.class TAGS
 

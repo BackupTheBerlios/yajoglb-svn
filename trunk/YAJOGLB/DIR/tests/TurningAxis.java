@@ -1,7 +1,7 @@
 /*
  * A set of axis
  *
- * $Id: TurningAxis.java,v 1.2 2001/07/04 02:20:00 razeh Exp $
+ * $Id: TurningAxis.java,v 1.3 2002/04/06 15:13:02 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)

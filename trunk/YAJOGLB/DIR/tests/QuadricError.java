@@ -1,7 +1,7 @@
 /*
  * QuadricError.java
  *
- * $Id: QuadricError.java,v 1.2 1999/05/02 23:31:00 razeh Exp $
+ * $Id: QuadricError.java,v 1.3 2002/04/06 15:12:50 razeh Exp $
  * 
  * Makes sure that the quadric error method gets called.
  */

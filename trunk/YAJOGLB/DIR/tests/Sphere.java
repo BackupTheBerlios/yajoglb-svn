@@ -1,7 +1,7 @@
 /*
  * Sphere
  *
- * $Id: Sphere.java,v 1.5 2001/06/10 20:52:52 razeh Exp $
+ * $Id: Sphere.java,v 1.6 2002/04/06 15:12:57 razeh Exp $
  *
  * Copyright 1998
  *

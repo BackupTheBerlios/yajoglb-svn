@@ -1,7 +1,7 @@
 /* 
  * Geometry viewer class
  *
- * $Id: GeometryViewer.java,v 1.5 2001/07/04 02:18:01 razeh Exp $
+ * $Id: GeometryViewer.java,v 1.6 2002/04/06 15:12:25 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -12,6 +12,7 @@ import java.util.Vector;
 import java.util.Enumeration;
 import java.awt.event.*;
 import java.awt.*;
+import java.lang.reflect.*;
 import OpenGL.*;
 
 
@@ -24,6 +25,7 @@ import OpenGL.*;
 class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotionListener, KeyListener, ComponentListener, GLConstants, GLUConstants {
   float[] eyePoint, forwardDirection, sidewaysDirection, 
     upDirection;
+  double scale = 1.0;
     
   /* We use these for changing the view direction with the mouse. */
   float [] startingForwardDirection, startingSidewaysDirection,
@@ -35,6 +37,9 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
   GL  gl  = new GL();
   Context context = null;
   Vector renderedObjects = new Vector();
+  Method resizedMethod;
+  Method lockedInfoPanelMethod;
+  FrameRatePanel frameRate;
 
   public void addElement(GeometryObject object) {
     renderedObjects.addElement(object);
@@ -81,6 +86,17 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
   public GeometryViewer() {
     addListeners();
     setupViewingParameters();
+    try {
+      Class parameterTypes[] = new Class[1];
+      java.lang.Object o = new java.lang.Object();
+      parameterTypes[0] = o.getClass();
+      resizedMethod = getClass().getMethod("lockedComponentResized", 
+					   parameterTypes);
+      lockedInfoPanelMethod = getClass().getMethod("lockedInfoPanel", 
+						   parameterTypes);
+    } catch (java.lang.NoSuchMethodException e) {
+      System.err.println("Unable to find a method.");
+    }
   }
 
   /** Enable depth testing, and position our viewer. */
@@ -222,16 +238,27 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
     case 'E':
       orbitView(-1.0f);
       break;
-
+    case 'f':
+    case 'F':
+      if (frameRate == null) {
+	frameRate = new FrameRatePanel();
+      } else {
+	frameRate.toFront();
+      }
+      break;
     case 'i':
     case 'I':
-      aquireContext();
-      new InfoPanel(gl);
-      releaseContext();
+      lockedMethod(lockedInfoPanelMethod, this, null);
       break;
     case 'w':
     case 'W':
       writeOutImage();
+      break;
+    case '+':
+      scale /= 1.1;
+      break;
+    case '-':
+      scale *= 1.1;
       break;
     }
 
@@ -254,7 +281,7 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
 
     }
 
-    paint();
+    nativePaint();
   }
 
   public void mouseReleased(java.awt.event.MouseEvent e) {
@@ -303,7 +330,7 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
 				     sidewaysDirection[0],
 				     sidewaysDirection[1],
 				     sidewaysDirection[2]);
-      paint();
+      nativePaint();
     }
   }
 
@@ -315,7 +342,6 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
       out the exception and continue on. */
   protected void aquireContext() {
     try {
-      lockCanvas();
       context.lock();
       context.makeCurrent(this);
     } catch (java.lang.Throwable exception) {
@@ -328,12 +354,15 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
 
   protected void releaseContext() {
     context.unlock();
-    unlockCanvas();
   }
 
   /** When the window is resized we change our viewport to match the
       new width and height. */
   public void componentResized(ComponentEvent e) {
+    lockedMethod(resizedMethod, this, null);
+  }
+
+  public void lockedComponentResized(Object arg) {
     /* It's possible that we may be called before the context has been
        setup, and we don't want to use it until it has been
        created. */
@@ -344,9 +373,16 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
     }
   }
 
+  public void lockedInfoPanel(Object arg) {
+    aquireContext();
+    new InfoPanel(gl);
+    releaseContext();
+  }
+
   java.util.Date startDate = null;
   float paintCount = 0;
-  public void paint() {
+  
+  synchronized public void paint() {
     if (context != null) {
       try {
 	if (startDate == null) {
@@ -363,6 +399,7 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
 		      eyePoint[2] + forwardDirection[2],
 		      upDirection[0], upDirection[1], upDirection[2]);
       
+	gl.scale(scale, scale, scale);
 	for (Enumeration e = renderedObjects.elements() ; 
 	     e.hasMoreElements() ;) {
 	  GeometryObject g = (GeometryObject)e.nextElement();
@@ -371,10 +408,10 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
 	gl.popMatrix();
 	swapBuffers();
 	java.util.Date endDate = new java.util.Date();
-	if ((paintCount % 100) == 0) {
-	  System.out.println("frames / second = " +
-			     paintCount /
-			     ((endDate.getTime() - startDate.getTime())/1000.0));
+	if ((frameRate != null) && (paintCount % 100) == 0) {
+	  frameRate.setFrameRate(
+				 paintCount /
+				 ((endDate.getTime() - startDate.getTime())/1000.0));
 	  
 	}
 	/* Check for any OpenGL errors. */      

@@ -1,7 +1,7 @@
 /*
  * Vec 
  *
- * $Id: Vec.java,v 1.1 1998/03/30 02:15:27 razeh Exp $
+ * $Id: Vec.java,v 1.2 2002/04/06 15:13:05 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh

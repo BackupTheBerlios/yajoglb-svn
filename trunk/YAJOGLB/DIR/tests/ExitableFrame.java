@@ -1,7 +1,7 @@
 /*
  * ExitableFrame class
  *
- * $Id: ExitableFrame.java,v 1.2 2001/06/10 19:13:34 razeh Exp $
+ * $Id: ExitableFrame.java,v 1.3 2002/04/06 15:12:17 razeh Exp $
  *
  * Copyright 1998
  *
