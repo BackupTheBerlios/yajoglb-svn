@@ -23,6 +23,7 @@
  */
 
 #include "EnvDictionary.h"
+#include "ErrorHandling.h"
 
 static JavaVM *myVM;
 
@@ -31,7 +32,7 @@ static JavaVM *myVM;
 * pointer so that we can determine which environment to use
 * for threads.
 */
-jint JNI_OnLoad(JavaVM *vm, void *reserved)
+jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
 {
 	myVM = vm;
 	return JNI_VERSION_1_2;
