@@ -1,5 +1,5 @@
 # Some Cygnus tools stuff
-SHELL         =/gnuwin32/b18/H-i386-cygwin32/bin/sh
+
 # Some rules for compiling java
 JAVAH         = javah
 JAVAC         = javac
@@ -20,9 +20,10 @@ JAVA_SRC        = GLConstants.java \
 	          OpenGLTextureHelp.java GLVertexPointer.java \
 		  OpenGLContext.java OpenGLContextException.java GLU.java \
 		  GL.java OpenGLpDataAccess.java OpenGLCanvas.java \
-		  OpenGLPeerAccess.java GLFeedbackBuffer.java\
-	          OpenGLCanvasSetupFailedException.java GLUTesselator.java 
-
+		  GLFeedbackBuffer.java CallbackObject.java \
+	          OpenGLCanvasSetupFailedException.java GLUTesselator.java \
+		  GLNativeArray.java GLNativeFloatArray.java \
+		  GLNativeIntArray.java GLSelectionBuffer.java
 
 JAVA_CLASSES    = GLConstants.class \
                   OpenGLCapabilities.class \
@@ -33,9 +34,10 @@ JAVA_CLASSES    = GLConstants.class \
 	          OpenGLTextureHelp.class GLVertexPointer.class \
 	          OpenGLContext.class OpenGLContextException.class GLU.class \
 		  GL.class OpenGLpDataAccess.class OpenGLCanvas.class \
-		  OpenGLPeerAccess.class GLFeedbackBuffer.class\
-		  OpenGLCanvasSetupFailedException.class GLUTesselator.class
-
+		  GLFeedbackBuffer.class CallbackObject.class \
+		  OpenGLCanvasSetupFailedException.class GLUTesselator.class \
+		  GLNativeArray.class GLNativeFloatArray.class \
+		  GLNativeIntArray.class GLSelectionBuffer.class
 
 NATIVE_CLASSES  = OpenGLWidget
 NATIVE_DIR      = ../CNativeCode
