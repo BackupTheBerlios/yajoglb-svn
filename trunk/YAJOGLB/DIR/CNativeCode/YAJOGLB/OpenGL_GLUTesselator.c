@@ -1,7 +1,7 @@
 /*
  * OpenGL_OpenGLTesselator.c
  *
- * $Id: OpenGL_GLUTesselator.c,v 1.5 1999/02/13 19:27:40 razeh Exp $
+ * $Id: OpenGL_GLUTesselator.c,v 1.6 1999/05/03 00:04:04 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -21,7 +21,7 @@
 #include <GL/glu.h>
 
 #include "cygnusFixes.h"
-#include "memory.h"
+#include "Memory.h"
 #include "CallbackObject.h"
 #include "ErrorHandling.h"
 #include "EnvDictionary.h"
@@ -61,8 +61,9 @@ static void cleanupVertexDataList(JNIEnv *env, tesselatorContainer  *tessContain
 {
 	vertexDataContainer *vertexContainer = NULL;
 
-	// Go through our entire list of vertex data containers and release
-	// all of the global references and then delete the containers themselve.
+	// Go through our entire list of vertex data containers and
+	// release all of the global references and then delete the
+	// containers themselve.
 	vertexContainer = tessContainer->vertexDataList;
 	while(NULL != vertexContainer) {
 		vertexDataContainer *nextContainer = vertexContainer->nextVertexData;
@@ -75,7 +76,8 @@ static void cleanupVertexDataList(JNIEnv *env, tesselatorContainer  *tessContain
 
 
 /* Cleanup the polygon data container attached to the tesselator container. */
-static void cleanupPolygonDataContainer(JNIEnv *env, tesselatorContainer* tessContainer)
+static void cleanupPolygonDataContainer(JNIEnv *env, 
+					tesselatorContainer* tessContainer)
 {
 	if (NULL != tessContainer->polygonDataContainer) {
 		(*env)->DeleteGlobalRef(env, tessContainer->polygonDataContainer->polygonData);
@@ -86,8 +88,8 @@ static void cleanupPolygonDataContainer(JNIEnv *env, tesselatorContainer* tessCo
 
 
 
-/* Allocate and return a new tesselator container.
-   If we run out of memory while doing the allocate call handleOutOfMemoryError and 
+/* Allocate and return a new tesselator container.  If we run out of
+   memory while doing the allocate call handleOutOfMemoryError and
    return NULL. */
 static tesselatorContainer *newTesselatorContainer(JNIEnv *env)
 {
@@ -105,14 +107,16 @@ static tesselatorContainer *newTesselatorContainer(JNIEnv *env)
 
 
 
-/* Allocate and return a new polygon data container holding our polygonData argument.
-   If we run out of memory while doing the allocate call handleOutOfMemoryError and 
-   return NULL.  If there is already a polygon container present something is very
-   wrong with the order that we are being called and we return NULL without calling
-   any error functions, assuming that the tesselator will detect the error.  */
+/* Allocate and return a new polygon data container holding our
+   polygonData argument.  If we run out of memory while doing the
+   allocate call handleOutOfMemoryError and return NULL.  If there is
+   already a polygon container present something is very wrong with
+   the order that we are being called and we return NULL without
+   calling any error functions, assuming that the tesselator will
+   detect the error.  */
 static polygonDataContainer *newPolygonDataContainer(JNIEnv *env, 
-													 tesselatorContainer *tessContainer,
-													 jobject polygonData)
+						     tesselatorContainer *tessContainer,
+						     jobject polygonData)
 {
 	polygonDataContainer *newContainer = NULL;
 
@@ -136,15 +140,15 @@ static polygonDataContainer *newPolygonDataContainer(JNIEnv *env,
 
 
 
-/* Allocate and return a new vertex data container holding our vertexData argument.
-   If we run out of memory while doing the allocate call handleOutOfMemoryError and
-   return NULL.  */
+/* Allocate and return a new vertex data container holding our
+   vertexData argument.  If we run out of memory while doing the
+   allocate call handleOutOfMemoryError and return NULL.  */
 static vertexDataContainer *newVertexDataContainer(JNIEnv *env, 
-												   tesselatorContainer *tessContainer,
-												   jobject vertexData,
-												   GLdouble *vertexLocation)
+						   tesselatorContainer *tessContainer,
+						   jobject vertexData,
+						   GLdouble *vertexLocation)
 {
-	vertexDataContainer *newContainer = NULL;
+        vertexDataContainer *newContainer = NULL;
 
 	newContainer = (vertexDataContainer*)privateMalloc(sizeof(*newContainer));
 	if (NULL != newContainer) {
@@ -193,8 +197,8 @@ static jobject getActiveTesselator(JNIEnv *env)
 
 
 
-/* Gets the active tesselator container by getting the active tesselator and
-   then getting the heap pointer from it. */
+/* Gets the active tesselator container by getting the active
+   tesselator and then getting the heap pointer from it. */
 tesselatorContainer *getActiveTesselatorContainer(JNIEnv *env)
 {
 	tesselatorContainer *activeTesselator = NULL;
@@ -226,7 +230,7 @@ static void CALLBACK errorData(GLenum errorNumber, polygonDataContainer *polygon
 {
 	// Our caller will not halt if we hit an exception, and we do not 
 	// want to do anything if an exception has been thrown.
-    JNIEnv* env = environmentPointerForCurrentThread();
+        JNIEnv* env = environmentPointerForCurrentThread();
 
 	if (NULL != polygonDataContainer &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
@@ -244,11 +248,11 @@ static void CALLBACK errorData(GLenum errorNumber, polygonDataContainer *polygon
 
 
 /* The begin callback. */
- static void CALLBACK beginData(GLenum type, polygonDataContainer *polygonDataContainer)
+static void CALLBACK beginData(GLenum type, polygonDataContainer *polygonDataContainer)
 {
 	// Our caller will not halt if we hit an exception, and we do not 
 	// want to do anything if an exception has been thrown.
-    JNIEnv* env = environmentPointerForCurrentThread();
+        JNIEnv* env = environmentPointerForCurrentThread();
 
 	if (NULL != polygonDataContainer &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
@@ -270,7 +274,7 @@ static void CALLBACK endData(polygonDataContainer *polygonDataContainer)
 {
 	// Our caller will not halt if we hit an exception, and we do not 
 	// want to do anything if an exception has been thrown.
-    JNIEnv* env = environmentPointerForCurrentThread();
+        JNIEnv* env = environmentPointerForCurrentThread();
 
 	if (NULL != polygonDataContainer &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
@@ -289,11 +293,11 @@ static void CALLBACK endData(polygonDataContainer *polygonDataContainer)
 
 /* The vertex callback */
 static void CALLBACK vertexData(vertexDataContainer  *vertexDataContainer,
-								polygonDataContainer *polygonDataContainer) 
+				polygonDataContainer *polygonDataContainer) 
 {
 	// Our caller will not halt if we hit an exception, and we do not 
 	// want to do anything if an exception has been thrown.
-    JNIEnv* env = environmentPointerForCurrentThread();
+       JNIEnv* env = environmentPointerForCurrentThread();
 
 	if ((NULL != vertexDataContainer) && (NULL != polygonDataContainer) &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
@@ -316,65 +320,64 @@ static void CALLBACK combineData(GLdouble coords[3], vertexDataContainer *vertex
                                  GLfloat weight[4],  vertexDataContainer **outData,
                                  polygonDataContainer *polygonDataContainer)
 {
-	// Our caller will not halt if we hit an exception, and we do not 
-	// want to do anything if an exception has been thrown.
-    JNIEnv* env = environmentPointerForCurrentThread();
+  // Our caller will not halt if we hit an exception, and we do not 
+  // want to do anything if an exception has been thrown.
+  JNIEnv* env = environmentPointerForCurrentThread();
 
-	if (NULL != polygonDataContainer &&
-		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
-		jobject              jtesselator   = getActiveTesselator(env);
-		JNIEnv              *env           = environmentPointerForCurrentThread();
-		jobject              polygonData   = polygonDataContainer->polygonData;
-		tesselatorContainer *tessContainer = getActiveTesselatorContainer(env);
-		jmethodID            methodID      = NULL;
-		jobject              vertexData0   = NULL;
-		jobject              vertexData1   = NULL;
-		jobject              vertexData2   = NULL;
-		jobject              vertexData3   = NULL;
-		jobject              combinedData  = NULL;
-
-		methodID = getMethodIDForObject(env, jtesselator, "combine", 
-			"(DDDLjava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;FFFFLjava/lang/Object;)Ljava/lang/Object;",
-			"Unable to locate the vertex method.");
+  if (NULL != polygonDataContainer &&
+      (NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
+    jobject              jtesselator   = getActiveTesselator(env);
+    JNIEnv              *env           = environmentPointerForCurrentThread();
+    tesselatorContainer *tessContainer = getActiveTesselatorContainer(env);
+    jmethodID            methodID      = NULL;
+    jobject              vertexData0   = NULL;
+    jobject              vertexData1   = NULL;
+    jobject              vertexData2   = NULL;
+    jobject              vertexData3   = NULL;
+    jobject              combinedData  = NULL;
+    
+    methodID = getMethodIDForObject(env, jtesselator, "combine", 
+				    "(DDDLjava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;FFFFLjava/lang/Object;)Ljava/lang/Object;",
+				    "Unable to locate the vertex method.");
+    
+    // We are not always given 4 verticies, so we need to figure
+    // out which ones are NULL pointers here.
+    if (NULL != vertexData[0]) {
+      vertexData0 = vertexData[0]->vertexData;
+    }
+    
+    if (NULL != vertexData[1]) {
+      vertexData1 = vertexData[1]->vertexData;
+    }
+    
+    if (NULL != vertexData[2]) {
+      vertexData2 = vertexData[2]->vertexData;
+    }
+    
+    if (NULL != vertexData[3]) {
+      vertexData3 = vertexData[3]->vertexData;
+    }
+    
+    // Invoke the native method.
+    if (NULL != methodID) {
+      combinedData = (*env)->CallObjectMethod(env, jtesselator, methodID,
+					      coords[0], coords[1], coords[2],
+					      vertexData0, vertexData1, vertexData2, vertexData3,
+					      weight[0], weight[1], weight[2], weight[3],
+					      polygonDataContainer->polygonData);
+      
+      // Create a new vertex container for combinedData iff
+      // our Java method did not return null.
+      if (combinedData != NULL) {
+	vertexDataContainer *newContainer = NULL;
 	
-		// We are not always given 4 verticies, so we need to figure
-		// out which ones are NULL pointers here.
-		if (NULL != vertexData[0]) {
-			vertexData0 = vertexData[0]->vertexData;
-		}
-
-		if (NULL != vertexData[1]) {
-			vertexData1 = vertexData[1]->vertexData;
-		}
-
-		if (NULL != vertexData[2]) {
-			vertexData2 = vertexData[2]->vertexData;
-		}
-
-		if (NULL != vertexData[3]) {
-			vertexData3 = vertexData[3]->vertexData;
-		}
-
-		// Invoke the native method.
-		if (NULL != methodID) {
-			combinedData = (*env)->CallObjectMethod(env, jtesselator, methodID,
-				coords[0], coords[1], coords[2],
-				vertexData0, vertexData1, vertexData2, vertexData3,
-				weight[0], weight[1], weight[2], weight[3],
-				polygonDataContainer->polygonData);
-
-			// Create a new vertex container for combinedData iff
-			// our Java method did not return null.
-			if (combinedData != NULL) {
-				vertexDataContainer *newContainer = NULL;
-
-				newContainer = newVertexDataContainer(env, tessContainer, combinedData, NULL);
-				if (NULL != newContainer) {
-					*outData = newContainer;
-				}
-			}
-		}
+	newContainer = newVertexDataContainer(env, tessContainer, combinedData, NULL);
+	if (NULL != newContainer) {
+	  *outData = newContainer;
 	}
+      }
+    }
+  }
 }
 
 
@@ -383,7 +386,7 @@ static void CALLBACK edgeFlagData(GLboolean flag, polygonDataContainer *polygonD
 {
 	// Our caller will not halt if we hit an exception, and we do not 
 	// want to do anything if an exception has been thrown.
-    JNIEnv* env = environmentPointerForCurrentThread();
+        JNIEnv* env = environmentPointerForCurrentThread();
 
 	if (NULL != polygonDataContainer &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
@@ -407,7 +410,7 @@ static void CALLBACK edgeFlagData(GLboolean flag, polygonDataContainer *polygonD
 
 
 /* Returns a new tesselator. */
-JNIEXPORT jint JNICALL Java_OpenGL_GLUTesselator_gluNewTess
+JNIEXPORT jint JNICALL Java_OpenGL_GLUTesselator_newTess
   (JNIEnv *env, jobject obj)
 {
 	GLUtesselator       *newTesselator          = NULL;
@@ -436,7 +439,7 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLUTesselator_gluNewTess
 
 
 /*  Deletes a tesselator.  */
-JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_gluDeleteTess
+JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_deleteTess
   (JNIEnv *env, jobject obj, jint tess)
 {
 	tesselatorContainer *container = (tesselatorContainer*)tess;
@@ -453,9 +456,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_gluDeleteTess
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginContour
   (JNIEnv *env, jobject obj, jint tess)
 {
+#ifdef GLU_TESS_VERSION_1_3
 	tesselatorContainer *container = (tesselatorContainer*)tess;
-	
 	gluTessBeginContour(container->tesselator);
+#else
+	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
+		    "beginContour is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+#endif
 }
 
 
@@ -464,6 +471,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginContour
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginPolygon
   (JNIEnv *env, jobject obj, jint tess, jobject polygonData)
 {
+#ifdef GLU_TESS_VERSION_1_3
 	tesselatorContainer  *container            = (tesselatorContainer*)tess;
 	polygonDataContainer *polygonDataContainer = NULL;
 	
@@ -471,6 +479,10 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginPolygon
 	if (NULL != polygonDataContainer) {
 		gluTessBeginPolygon(container->tesselator, polygonDataContainer);
 	}
+#else
+	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
+		    "beginPolygon is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+#endif
 }
 
 
@@ -479,9 +491,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginPolygon
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_endContour
   (JNIEnv *env, jobject obj, jint tess)
 {
+#ifdef GLU_TESS_VERSION_1_3
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 	gluTessEndContour(container->tesselator);
+#else
+	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
+		    "endContour is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+#endif
 }
 
 
@@ -490,11 +507,16 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_endContour
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_endPolygon
   (JNIEnv *env, jobject obj, jint tess)
 {
+#ifdef GLU_TESS_VERSION_1_3
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 	gluTessEndPolygon(container->tesselator);
 	cleanupVertexDataList(env, container);
 	cleanupPolygonDataContainer(env, container);
+#else
+	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
+		    "endPolygon is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+#endif
 }
 
 
@@ -504,9 +526,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_normal
   (JNIEnv *env, jobject obj, jint tess, 
    jdouble valueX, jdouble valueY, jdouble valueZ)
 {
+#ifdef GLU_TESS_VERSION_1_3
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 	gluTessNormal(container->tesselator, valueX, valueY, valueZ); 
+#else
+	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
+		    "normal is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+#endif
 }
 
 
@@ -530,9 +557,9 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_contourVertex
 	// Create a vertex container for our vertex data.
 	vertexDataContainer = newVertexDataContainer(env, tessContainer, vertexData,
 		location);
-	// Use the vertex location that has been copied into the vertex container
-	// so that it will stick around for the tesselator calls made out of 
-	// gluTessEndPolygon().
+	// Use the vertex location that has been copied into the
+	// vertex container so that it will stick around for the
+	// tesselator calls made out of gluTessEndPolygon().
 	if (NULL != vertexDataContainer) {
 		gluTessVertex(tessContainer->tesselator, vertexDataContainer->vertexLocation, 
 			          vertexDataContainer);
@@ -547,9 +574,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_contourVertex
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_setProperty
   (JNIEnv *env, jobject obj, jint tess, jint which, jdouble data)
 {
+#ifdef GLU_TESS_VERSION_1_3
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 	gluTessProperty(container->tesselator, which, data);
+#else
+	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
+		    "setProperty is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+#endif
 }
 
 
@@ -559,10 +591,16 @@ JNIEXPORT jdouble JNICALL Java_OpenGL_GLUTesselator_property
   (JNIEnv *env, jobject obj, jint tess, jint property)
 {
 	GLdouble             dataOut   = 0.0;
+#ifdef GLU_TESS_VERSION_1_3
+
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 	gluGetTessProperty(container->tesselator, property, &dataOut);
 
+#else
+	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
+		    "getProperty is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+#endif
 	return dataOut;
 }
 
@@ -572,9 +610,9 @@ JNIEXPORT jdouble JNICALL Java_OpenGL_GLUTesselator_property
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_enableEdgeFlag
   (JNIEnv *env, jobject obj, jint tess)
 {
+#ifdef GLU_TESS_VERSION_1_3
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
-#ifdef GLU_TESS_VERSION_1_3
 	gluTessCallback(container->tesselator, GLU_TESS_EDGE_FLAG_DATA, edgeFlagData);
 #endif
 }
@@ -585,9 +623,10 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_enableEdgeFlag
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_disableEdgeFlag
   (JNIEnv *env, jobject obj, jint tess)
 {
+#ifdef GLU_VERSION_1_3
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
-#ifdef GLU_VERSION_1_3
+
 	gluTessCallback(container->tesselator, GLU_TESS_EDGE_FLAG_DATA, NULL);
 #endif
 }
