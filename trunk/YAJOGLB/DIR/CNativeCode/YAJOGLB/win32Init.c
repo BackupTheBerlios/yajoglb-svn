@@ -18,10 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 #include <windows.h> 
 
-#include "DCDictionary.h"
-
-extern void setupWidgetLocks();
-
 extern 
 int WINAPI DllMain (HANDLE h, DWORD reason, void *ptr);
 
@@ -33,8 +29,6 @@ int WINAPI DllMain (HANDLE ignored1,
   switch (reason) 
     {
     case DLL_PROCESS_ATTACH:
-      setupDCLocks();
-      setupWidgetLocks();
       break;
     case DLL_PROCESS_DETACH:
       break;
