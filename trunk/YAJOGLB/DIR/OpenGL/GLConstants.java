@@ -2,22 +2,25 @@
  *
  * OpenGLConstants
  *
+ * $Id: GLConstants.java,v 1.3 1998/09/10 01:01:04 razeh Exp $
+ *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
+ *
  */
 
 package OpenGL;
 
-/** OpenGLConstants 
- * 
+/**
  * This defines all of the constants that the GL library uses.  All of
- * the GL_ prefixes have been removed, in the same manner that all of
- * the gl prefixes were removed from the OpenGL function names.
+ * the GL_ prefixes that can be removed have been removed (some
+ * constants, like GL_3D_COLOR, would not be valid if the GL_ prefix
+ * was removed), in the same manner that all of the gl prefixes were
+ * removed from the OpenGL function names.
  *
  * @author Robert Allan Zeh (razeh@balr.com)
  *
- * @version 0.1 
-*/
+ * @version 0.1 */
 
 public interface OpenGLConstants {
   static final int CURRENT_BIT		= 0x00000001;

@@ -1,7 +1,7 @@
 /*
  * OpenGLCapabilities
  *
- * $Id: Capabilities.java,v 1.1 1997/11/16 02:49:19 razeh Exp $
+ * $Id: Capabilities.java,v 1.2 1998/09/10 01:00:51 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -9,12 +9,14 @@
 
 package OpenGL;
 
-/** OpenGLCapabilities
+/**
  *
- * This defines the screen display capabilities that we are going to
- * request when we open up our window.  Changing it after we have
- * created our window has no effect.
+ * Defines the screen display capabilities that our OpenGLWidget will 
+ * Request at startup.  Changing it after the window has been opened has
+ * no effect.
  *
+ * @author Robert Allan Zeh (razeh@balr.com)
+ * @verison 0.1
  */
 
 public class OpenGLCapabilities {
@@ -35,15 +37,17 @@ public class OpenGLCapabilities {
 
   /** We will specify our colors as RGBA quadruples. */
   static final int RGBA       = 0;
-  /** We will specify color indicies. */
+  /** We will specify color indices. */
   static final int ColorIndex = 1;
 
-  /** Set the number of bits per pixel we use for our color depth. */
+  /** Set the number of bits per pixel we use for our color depth. 
+    * @param newColorDepth the number of bits to use for our color information. */
   public void setColorDepth(int newColorDepth) {
     colorDepth = newColorDepth;
   }
 
-  /** Returns the number of bits per pixel we set for our color depth. */
+  /** Returns the number of bits per pixel we set for our color depth. 
+    @return The number of bits per pixel used for our color depth.*/
   public int colorDepth() {
     return colorDepth;
   }
@@ -54,29 +58,34 @@ public class OpenGLCapabilities {
     alphaDepth = newAlphaDepth;
   }
   
-  /** Returns the number of bits per pixel for the alpha buffer. */
+  /** Returns the number of bits per pixel for the alpha buffer.
+    * @return The number of bits per pixel for the alpha buffer. */
   public int alphaDepth() {
     return alphaDepth;
   }
 
-  /** Sets the number of bits per pixel we want for the accumulation
-      buffer. */
+  /** Sets the desired number of bits per pixel for the accumulation
+      buffer. 
+    * @param newAccumulationDepth the number of bits per pixel that the accumulation buffer will use. */
   public void setAccumulationDepth(int newAccumulationDepth) {
     accumulationDepth = newAccumulationDepth;
   }
 
-  /** Returns the number of pits per pixel we want for the
-      accumulation buffer. */
+  /** Returns the desired number of pits per pixel for the
+      accumulation buffer. 
+    * @return the bits per pixel for the accumulation buffer. */
   public int accumulationDepth() {
     return accumulationDepth;
   }
 
-  /** Sets the number of bits per pixel we want for the depth buffer. */
+  /** Sets the number of bits per pixel we want for the depth buffer. 
+    * @param newDepthBuffer the number of bits per pixel for the depth buffer. */
   public void setDepthBuffer(int newDepthBuffer) {
     depthBuffer = newDepthBuffer;
   }
 
-  /** Returns the number of bits per pixel we wanted for the depth buffer. */
+  /** Returns the number of bits per pixel requested for the depth buffer.
+    * @return the bits per pixel used by the depth buffer. */
   public int depthBuffer() {
     return depthBuffer;
   }
@@ -91,9 +100,11 @@ public class OpenGLCapabilities {
     return stencilBuffer;
   }
 
-  /** Sets the color type we want to use.  If the newColorType is not
+  /** Sets the desired color type.  If the newColorType is not
       a valid one (RGBA or ColorIndex) an IllegalArgumentException is
-      thrown. */
+      thrown. 
+    * @param newColorType RGBA if colors are specified as RGBA quadruples and ColorIndex if colors should be looked up in an index table.
+    * @exception IllegalArgumentException thrown when newColorType is not RGBA or ColorIndex.*/
   public void setColorType(int newColorType) {
     switch (newColorType) {
     case RGBA:
@@ -106,25 +117,36 @@ public class OpenGLCapabilities {
     }
   }
   
-  /** Returns the color type we asked for. */
+  /** Returns the requested color type. 
+    * @return ColorIndex if colors are indexed or RGBA if colors are RGBA quadruples. */
   public int colorType() {
     return colorType;
   }
 
-  /** Sets double buffering.  YES means we want double buffer and no
-      means that we do not care. */
+  /** Sets double buffering.
+    * @param newDoubleBuffer <code>true</code> for double buffering and <code>false</code> for do not care. */
   public void setDoubleBufferEnabled(boolean newDoubleBuffer) {
     isDoubleBufferEnabled = newDoubleBuffer;
   }
 
-  /** Returns TRUE if we requested double buffering and FALSE if we
-      did not care. */
+  /** Our double buffer request.  
+     @return <code>true</code> if double buffering was requested and <code>false</code> otherwise. */
   public boolean isDoubleBufferedEnabled() {
     return isDoubleBufferEnabled;
   }
 
   /** A simple constructor that will set all of our fields to the
-      supplied values. */
+   * supplied values.
+   @param initialColorDepth the number of bits for color information
+   @param initialAlphaDepth the number of bits for our alpha channel
+   @param initialAccumulationDepth the number of bits for our accumulation
+   buffer
+   @param initialDepthBuffer the number of bits for our depth buffer
+   @param initialStencilBuffer the number of bits for our stencil buffer
+   @param initialIsDoubleBufferEnabled <code>true</code> to enable double buffering, <code>false</code> otherwise.
+   @param initialColorType our choice of color modes
+   **/
+
   public OpenGLCapabilities(int initialColorDepth,
 			    int initialAlphaDepth,
 			    int initialAccumulationDepth,
@@ -142,8 +164,10 @@ public class OpenGLCapabilities {
     setDoubleBufferEnabled(initialIsDoubleBufferEnabled);
   }
 
-  /** A handy default capability to use that has 16 bits for color,
-   16 bits for the depth buffer, double buffering, and RGBA color. */
+  /** A handy default capability to use that has 16 bits for color, 16
+   bits for the depth buffer, enabled double buffering, and RGBA
+   color. 
+   @return An OpenGLCapabilities with 16 bits of color, a 16 bit depth buffer, double buffer and RGBA color. */
   static OpenGLCapabilities defaultCapabilities() {
     return new OpenGLCapabilities(16, 0, 0, 16, 0, RGBA, true);
   }
