@@ -11,29 +11,29 @@ COMPILE.java  = $(JAVAC) $(JFLAGS)
 %.class: %.java
 	$(COMPILE.java) $<
 
-JAVA_SRC        = OpenGLConstants.java OpenGLWidgetOpenFailedException.java \
+JAVA_SRC        = GLConstants.java \
                   OpenGLCapabilities.java \
-		  OpenGLWidget.java OpenGLUConstants.java \
+		  GLUConstants.java \
 	          GLUNurbs.java GLUQuadric.java \
 		  CHeapItem.java OpenGLNativeException.java \
 	          OpenGLNativeMemoryExhaustedException.java TGAFile.java \
-	          OpenGLTextureHelp.java OpenGLVertexPointer.java \
+	          OpenGLTextureHelp.java GLVertexPointer.java \
 		  OpenGLContext.java OpenGLContextException.java GLU.java \
 		  GL.java OpenGLpDataAccess.java OpenGLCanvas.java \
-		  OpenGLPeerAccess.java OpenGLFeedbackBuffer.java\
+		  OpenGLPeerAccess.java GLFeedbackBuffer.java\
 	          OpenGLCanvasSetupFailedException.java GLUTesselator.java 
 
 
-JAVA_CLASSES    = OpenGLConstants.class OpenGLWidgetOpenFailedException.class \
+JAVA_CLASSES    = GLConstants.class \
                   OpenGLCapabilities.class \
-		  OpenGLWidget.class OpenGLUConstants.class \
+		  GLUConstants.class \
 	          GLUNurbs.class GLUQuadric.class \
 		  CHeapItem.class OpenGLNativeException.class \
 	          OpenGLNativeMemoryExhaustedException.class TGAFile.class \
-	          OpenGLTextureHelp.class OpenGLVertexPointer.class \
+	          OpenGLTextureHelp.class GLVertexPointer.class \
 	          OpenGLContext.class OpenGLContextException.class GLU.class \
 		  GL.class OpenGLpDataAccess.class OpenGLCanvas.class \
-		  OpenGLPeerAccess.class OpenGLFeedbackBuffer.class\
+		  OpenGLPeerAccess.class GLFeedbackBuffer.class\
 		  OpenGLCanvasSetupFailedException.class GLUTesselator.class
 
 
