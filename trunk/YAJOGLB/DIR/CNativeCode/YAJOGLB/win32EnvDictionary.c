@@ -25,7 +25,7 @@
 /*
  * win32EnvDictionary.c
  *
- * $Id: win32EnvDictionary.c,v 1.3 2001/07/06 23:40:05 razeh Exp $
+ * $Id: win32EnvDictionary.c,v 1.4 2002/11/23 16:03:40 razeh Exp $
  *
  * This module handles getting and setting the current JNIEnv
  * pointer for this thread under Win32.
@@ -101,9 +101,25 @@ int envDictionaryThreadShutdown()
 
 	if (NULL != environmentPointerHolder) {
 		LocalFree((HLOCAL) environmentPointerHolder);
-	} else {
-		fatalUnreportableError("Unable to get a location to hold a JNI environment pointer while detaching a thread.");
 	}
+	/* We used to generate a warning here, but JDK 1.4.1 introduced 
+	   an interesting scenario when a Java application exits:
+envDictionaryThreadSetup(1788)
+envDictionaryThreadSetup(1932)
+envDictionaryThreadSetup(1732)
+envDictionaryThreadSetup(984)
+envDictionaryThreadSetup(1980)
+envDictionaryThreadSetup(1740)
+envDictionaryThreadShutdown(1740)
+envDictionaryThreadShutdown(1932)
+envDictionaryThreadShutdown(1980)
+envDictionaryThreadShutdown(1252)
+Unable to get a location to hold a JNI environment pointer while detaching a thr
+ead.
+     
+	   So now just ignore it, since threads are somehow being
+	   detached before being attached.
+	 */
 	return 0;
 }
 
