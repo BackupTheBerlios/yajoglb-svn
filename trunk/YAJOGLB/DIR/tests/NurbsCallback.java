@@ -1,7 +1,7 @@
 /*
  * NurbsCallback class
  *
- * $Id: NurbsCallback.java,v 1.2 1999/05/02 23:31:00 razeh Exp $
+ * $Id: NurbsCallback.java,v 1.3 1999/05/02 23:50:00 razeh Exp $
  *
  * Copyright 1998
  *
@@ -12,6 +12,7 @@
  */
 
 import java.awt.*;
+import OpenGL.GLUNurbs;
 
 public class NurbsCallback extends NurbsSurface
 {
@@ -45,7 +46,7 @@ public class NurbsCallback extends NurbsSurface
     NurbsCallback  surface  = new NurbsCallback();
     ExitableFrame  frame    = new ExitableFrame();
 
-    surface.nurbsProperty(GLU_NURBS_MODE, GLU_NURBS_TESSELLATOR);
+    surface.surface.nurbsProperty(GLU_NURBS_MODE, GLU_NURBS_TESSELLATOR);
     viewer.addElement(surface);
     frame.setLayout(new GridLayout(1,1));
     frame.add(viewer);
