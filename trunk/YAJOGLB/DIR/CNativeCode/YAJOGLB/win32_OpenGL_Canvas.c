@@ -24,7 +24,7 @@
 /*
  * OpenGL_Canvas.c
  *
- * $Id: win32_OpenGL_Canvas.c,v 1.6 2001/08/11 02:16:20 razeh Exp $
+ * $Id: win32_OpenGL_Canvas.c,v 1.7 2002/11/23 14:33:04 razeh Exp $
  *
  * This implements the OpenGL methods needed to setup our canvas for OpenGL
  * rendering.  It assumes that we have some nice way to get the HDC and HWnd
@@ -181,7 +181,7 @@ setupPalette(JNIEnv *env, HDC hDC)
     }
 
     pPal = (LOGPALETTE*)
-        privateMalloc(sizeof(LOGPALETTE) + paletteSize * sizeof(PALETTEENTRY));
+        alloca(sizeof(LOGPALETTE) + paletteSize * sizeof(PALETTEENTRY));
     pPal->palVersion = 0x300;
     pPal->palNumEntries = paletteSize;
 
@@ -204,12 +204,10 @@ setupPalette(JNIEnv *env, HDC hDC)
     }
 
     hPalette = CreatePalette(pPal);
-    privateFree(pPal);
-
-	if (NULL == hPalette) {
-		throwCanvasException(env);
-		return;
-	}
+    if (NULL == hPalette) {
+         throwCanvasException(env);
+         return;
+    }
 
     if (NULL == SelectPalette(hDC, hPalette, FALSE)) {
 		throwCanvasException(env);
