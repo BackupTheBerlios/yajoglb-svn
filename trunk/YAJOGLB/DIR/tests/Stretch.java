@@ -1,7 +1,7 @@
 /*
  * OpenGLCanvasTest class
  *
- * $Id: Stretch.java,v 1.2 1998/11/01 02:24:18 razeh Exp $
+ * $Id: Stretch.java,v 1.3 1999/02/13 19:15:28 razeh Exp $
  * 
  * Copyright 1998
  *
@@ -14,7 +14,7 @@ import OpenGL.*;
 import java.awt.event.*;
 
 public class Stretch extends OpenGLCanvas 
-  implements GLUConstants, GLConstants, MouseListener, MouseMotionListener {
+  implements GLUConstants, GLConstants, MouseListener, MouseMotionListener, ComponentListener {
 
   private OpenGLContext context;
  
@@ -84,6 +84,7 @@ public class Stretch extends OpenGLCanvas
   public Stretch()  {
     addMouseListener(this);
     addMouseMotionListener(this);
+    addComponentListener(this);
   }
 
   public void glInit() {
@@ -150,14 +151,21 @@ public class Stretch extends OpenGLCanvas
   /** When the window is resized we change our viewport to match the
       new width and height. */
   public void componentResized(ComponentEvent e) {
-    aquireContext();
-    gl.viewport(0, 0, getSize().width, getSize().height);
-    //gl.matrixMode(PROJECTION);
-    //gl.loadIdentity();
-    //glu.gluOrtho2D(0, getSize().width, 0, getSize().height);
+    if (context != null) {
+      aquireContext();
+      gl.viewport(0, 0, getSize().width, getSize().height);
+      releaseContext();
+    }
+  }
 
-    //gl.matrixMode(MODELVIEW);
-    releaseContext();
+  public void componentHidden(java.awt.event.ComponentEvent e) {
+    ;
+  }
+  public void componentMoved(java.awt.event.ComponentEvent e) {
+    ;
+  }
+  public void componentShown(java.awt.event.ComponentEvent e) {
+    ;
   }
   
   public void paint() {
