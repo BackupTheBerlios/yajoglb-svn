@@ -1,7 +1,7 @@
 /*
  * OpenGL_GL.c
  *
- * $Id: OpenGL_GL.c,v 1.5 1999/02/13 19:27:40 razeh Exp $
+ * $Id: OpenGL_GL.c,v 1.6 1999/05/03 00:03:49 razeh Exp $
  *
  * This implements the generic GL methods.
  *
@@ -26,10 +26,6 @@
    expects to receive an array we have to pin it down, but other than
    that we pretty much just pass in the arguments that we are
    given. */
-
-
-
-
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GL_clearIndex
@@ -519,14 +515,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_frustum
   glFrustum(left, right,
 	    bottom, top, 
 	    near_val, far_val);
-}
-
-
-
-JNIEXPORT void JNICALL Java_OpenGL_GL_viewport
-  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
-{
-  glViewport(x, y, width, height);
 }
 
 
