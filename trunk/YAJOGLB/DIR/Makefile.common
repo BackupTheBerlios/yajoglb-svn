@@ -1,0 +1,8 @@
+
+OPTIMIZATIONFLAG = -O
+JAVAH         = javah
+SUFFIXES     += .class .java
+COMPILE.java  = $(JAVAC) $(JFLAGS) 
+%.class: %.java
+	$(COMPILE.java) $<
+
