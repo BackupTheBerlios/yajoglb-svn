@@ -7,10 +7,10 @@ include tests/module.mk
 
 DEPENDFILES= $(OBJS:.o=.d)
 JAVA_CLASS = $(JAVA_SRC:.java=.class)
-CLEANUP_FILES = $(JAVA_CLASS) $(OBJS) $(NATIVEHEADERS) $(DEPENDFILES)
+CLEANUP_FILES = $(JAVA_CLASS) $(OBJS) $(NATIVEHEADERS) $(DEPENDFILES) tests/*.class OpenGL/*.class
 YAJOGLB_LIB := libYAJOGLB.so
 
-all: $(JAVA_CLASS) $(YAJOGLB_LIB)
+all: $(JAVA_CLASS) $(NATIVEHEADERS) $(YAJOGLB_LIB) 
 
 clean:
 	$(RM) $(CLEANUP_FILES)
@@ -21,4 +21,8 @@ MINOR := 1
 $(YAJOGLB_LIB): $(OBJS) 
 	$(MAKELIB) $(YAJOGLB_LIB) $(MAJOR) $(MINOR) $(OBJS)
 
-include $(DEPENDFILES)
+-include $(DEPENDFILES)
+
+testPrint:
+	echo $(NATIVEHEADERS)
+	echo $(JAVA_CLASS)
