@@ -1,14 +1,13 @@
 /*
  * Geometry object.
  *
- * $Id: GeometryObject.java,v 1.5 2002/04/06 15:12:24 razeh Exp $
+ * $Id: GeometryObject.java,v 1.6 2002/11/23 14:29:26 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 import OpenGL.*;
-import GeometryViewer;
 
 /** The interface for objects the Geometry Viewer can render. */
 public interface GeometryObject {
