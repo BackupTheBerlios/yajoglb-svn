@@ -1,7 +1,7 @@
 /*
  * GLUNurbs
  *
- * $Id: GLUNurbs.java,v 1.5 1999/04/29 01:16:58 razeh Exp $
+ * $Id: GLUNurbs.java,v 1.6 1999/05/02 23:24:32 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -20,9 +20,12 @@ import java.util.Hashtable;
  * straightforward.  For example, the C function
  * <code>gluGetNurbsProperty(GLUnurbsObj, property, float*)</code> is
  * replaced with the instance method <code>getNurbsProperty(property,
- * float[])</code>.
+ * float[])</code>. <P>
  *
- *
+ * It is important to create GLUNurbs objects while an OpenGLContext is
+ * active, especially while using native threads under Linux with Mesa. 
+ * 
+ * 
  * @author Robert Allan Zeh (razeh@balr.com)
  *
  * @version 0.3
