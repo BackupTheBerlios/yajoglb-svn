@@ -26,10 +26,10 @@ the dependencies for the C files.  If you don't want to install python on your L
 <H3>What You Get</H3>
 <P>Once you have unpacked the distribution, you should have a directory with the following subdirectories:</P>
 <DL>
-<DD><P>CNativeCode - the source code for the native libraries used by the binding to use OpenGL. The DLL (which needs to be in your PATH environment variable for the binding to work) is located in CNativeCode/YAJOGLB/Debug. </P></DD>
+<DD><P>CNativeCode - the source code for the native libraries used by the binding to use OpenGL. The DLL (which needs to be in your PATH environment variable for the binding to work) is located in CNativeCode/YAJOGLB/Debug.  Under Linux you can build the dynamic library with make.  </P></DD>
 <DD><P>doc - contains documentation on the bindings, which includes this document and a <A HREF="YAJOGLB-Technical-Overview.html">technical overview</A>.</P></DD>
 <DD><P>test - contains sample code used to test the Java bindings, along with some <A HREF="../tests/ReadMe.html">test documentation</A>.</P></DD>
-<DD><P>sun - contains a class that allows the bindings to access the native peer component's drawing surface. This is included in case you can not use the JAWT extension that Sun added to Java in JDK 1.3.</P></DD>
+<DD><P>sun - contains a class that allows the bindings to access the native peer component's drawing surface. These are no longer used, and are included if you can not use the JAWT extension that Sun added to Java in JDK 1.3.  However, I am no longer testing them.  </P></DD>
 <DD>OpenGL - contains the Java source code for the bindings.</DD>
 </DL>
 <H3>Differences from the OpenGL API in C</H3>
