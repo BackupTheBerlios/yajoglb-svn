@@ -1,7 +1,7 @@
 /* 
  * Geometry viewer class
  *
- * $Id: GeometryViewer.java,v 1.2 1998/11/01 02:29:21 razeh Exp $
+ * $Id: GeometryViewer.java,v 1.3 1999/05/02 23:34:13 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -11,14 +11,15 @@ import java.math.*;
 import java.util.Vector;
 import java.util.Enumeration;
 import java.awt.event.*;
+import java.awt.*;
 import OpenGL.*;
 
 
 /** A simple framework for drawing geometry that the user can navigate
  through with the mouse and keyboard.  Only depth testing is enabled
- by default, so lighting has to be handled by the objects (which sucks
- for performance purposes, but this is supposed to be just a simple
+ by default, so lighting has to be handled by the objects (which sr performance purposes, but this is supposed to be just a simple
  demo...). */
+
 class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionListener, KeyListener, ComponentListener, GLConstants, GLUConstants {
   float[] eyePoint, forwardDirection, sidewaysDirection, 
         upDirection;
@@ -79,6 +80,7 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
   public GeometryViewer() {
     addListeners();
     setupViewingParameters();
+    
   }
 
   /** Enable depth testing, and position our viewer. */
@@ -217,16 +219,12 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
     case 'e':
     case 'E':
       orbitView(-1.0f);
-
       break;
 
     case 'i':
     case 'I':
       aquireContext();
-      System.out.println("Vendor = " + gl.getString(VENDOR));
-      System.out.println("Renderer = " + gl.getString(RENDERER));
-      System.out.println("Version = " + gl.getString(VERSION));
-      System.out.println("Extensions = " + gl.getString(EXTENSIONS));
+      new InfoPanel(gl);
       releaseContext();
       break;
     case 'w':
@@ -303,8 +301,8 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
 				     sidewaysDirection[0],
 				     sidewaysDirection[1],
 				     sidewaysDirection[2]);
+      paint();
     }
-    paint();
   }
 
   public void mouseDragged(java.awt.event.MouseEvent e) {
@@ -328,7 +326,7 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
   protected void releaseContext() {
     context.unlock();
   }
-    
+
   /** When the window is resized we change our viewport to match the
       new width and height. */
   public void componentResized(ComponentEvent e) {
@@ -345,8 +343,11 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
   public void paint() {
     /* Sometimes we get mouse events before our glInit() call, which
        means that our context will not have been setup yet. */
+    super.paint();
+
     if (context != null) {
       aquireContext();
+
       gl.pushMatrix();
       gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
       glu.gluLookAt(eyePoint[0], eyePoint[1], eyePoint[2],
@@ -362,7 +363,15 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
       }
       gl.popMatrix();
       swapBuffers();
+
+      /* Check for any OpenGL errors. */      
+      int errorNumber = gl.getError();
+      if (errorNumber  != NO_ERROR) {
+	System.out.println("error = " + errorNumber);
+	System.out.println("error description = " + glu.gluErrorString(errorNumber));
+      }
       releaseContext();
+
     }
   }
 
@@ -392,13 +401,21 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
     ;
   }
 
+  /** Write out the current screen image to a file named "ScreenDump.tga".
+   */
   public void writeOutImage() {
+    // Get a filename.
+    FileDialog fileDialog = 
+      new FileDialog(new Frame(), "Save screen dump to...",  
+		     FileDialog.SAVE);
+    fileDialog.show();
     aquireContext();
     TGAFile file = new TGAFile(gl, this);
     try {
-      file.write("ScreenDump.tga");
+      file.write(fileDialog.getDirectory() + "/" + fileDialog.getFile());
     } catch (java.io.IOException exception) {
-      System.out.println("Exception");
+      System.out.println("Exception " + exception + 
+			 " writing ScreenDump.tga to disk.");
     }
     releaseContext();
   }
