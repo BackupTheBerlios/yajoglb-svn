@@ -25,7 +25,7 @@
 /*
  * OpenGL_GLUQuadric.c
  *
- * $Id: OpenGL_GLUQuadric.c,v 1.6 2001/07/06 23:40:05 razeh Exp $
+ * $Id: OpenGL_GLUQuadric.c,v 1.7 2004/02/07 00:50:40 razeh Exp $
  *
  * This implements the native methods that allocate and free gluQuadrics
  * for the OpenGL.GLUQuadric class, along with the drawing functions for quadrics.
@@ -183,7 +183,13 @@ JNIEXPORT jlong JNICALL Java_OpenGL_GLUQuadric_newQuadric
 	GLUquadric *newQuadric = gluNewQuadric();
 
 	if (NULL != newQuadric) {
-		gluQuadricCallback(newQuadric, GLU_ERROR, error);
+		/* The cast is required because the gluQuadricCallback
+		 * lies about it's type; _GLUfuncptr is declared not to take
+		 * any arguments, although gluQuadricCallback takes an
+		 * integer.
+		 */
+		gluQuadricCallback(newQuadric, GLU_ERROR, 
+				   (_GLUfuncptr)error);
 	}
 	return FROM_POINTER(newQuadric);
 }
