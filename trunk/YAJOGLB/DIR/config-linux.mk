@@ -14,5 +14,5 @@ JNI_GENERIC_HEADERS  = -I/usr/lib/j2sdk1.3/include
 JNI_SPECIFIC_HEADERS = -I/usr/lib/j2sdk1.3/include/linux
 # Where the OpenGL headers live.
 GL_INCLUDES = 
-
-
+# The script we use to generate makefiles
+MAKELIB=bin/mklib.linux
