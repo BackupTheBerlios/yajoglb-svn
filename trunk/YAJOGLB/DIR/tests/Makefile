@@ -13,7 +13,7 @@ JAVA_SRC        = VertexPointer.java Stretch.java NurbsSurface.java \
 		  ExitableFrame.java MatrixModifiers.java Sphere.java \
 		  Feedback.java Axis.java TexturedCube.java Simplest.java \
 		  TessVertex.java QuadricError.java NurbsCallback.java \
-		  Select.java
+		  Select.java TurningAxis.java InfoPanel.java
 
 
 JAVA_CLASSES    = VertexPointer.class Stretch.class NurbsSurface.class \
@@ -22,7 +22,7 @@ JAVA_CLASSES    = VertexPointer.class Stretch.class NurbsSurface.class \
 		  ExitableFrame.class MatrixModifiers.class Sphere.class \
 		  Feedback.class Axis.class TexturedCube.class Simplest.class \
 		  TessVertex.class QuadricError.class NurbsCallback.class \
-		  Select.class 
+		  Select.class TurningAxis.class InfoPanel.class
 
 all : $(JAVA_CLASSES)
 
@@ -41,5 +41,5 @@ checkout:
 	$(CO) $(JAVA_SRC)
 
 clean :
-	$(RM) $(JAVA_CLASSES) $(JAVA_CLASSES) *~
+	$(RM) $(JAVA_CLASSES) $(JAVA_CLASSES) *.class
 
