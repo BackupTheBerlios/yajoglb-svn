@@ -26,7 +26,8 @@ SOURCES = CallbackObject.c	     OpenGL_GLUQuadric.c \
 
 HEADERS = ErrorHandling.h SystemError.h Memory.h SystemIncludes.h  \
 	  EnvDictionary.h cygnusFixes.h linuxDPYDictionary.h \
-	  JNIInterface.h CallbackObject.h OpenGLCapabilitiesAccessors.h
+	  JNIInterface.h CallbackObject.h OpenGLCapabilitiesAccessors.h 
+
 
 OBJECTS = $(SOURCES:.c=.o)
 
@@ -35,6 +36,8 @@ $(YAJOGLB_LIB): $(OBJECTS)
 
 clean:
 	$(RM) $(OBJECTS) $(YAJOGLB_LIB) $(YAJOGLB_LIB).a $(YAJOGLB_LIB).1 $(YAJOGLB_LIB).1.1
+
+# Headers created from by the JNI.
 
 dep: $(SOURCES) $(HEADERS)
 	makedepend -fdepend $(INCLUDE) $(SOURCES)
