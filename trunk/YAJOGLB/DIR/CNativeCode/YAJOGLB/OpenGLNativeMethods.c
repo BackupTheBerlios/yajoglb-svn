@@ -1,20 +1,22 @@
 /*
  * OpenGLNativeMethods.c
  *
+ * $Id: OpenGLNativeMethods.c,v 1.2 1998/11/01 21:42:58 razeh Exp $
+ *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com) 
-*/
+ */
 
 
 /* With the Cygnus tools you need to include the GL stuff first. */
 #include <windows.h>
 #include <GL/gl.h>
-#include <GL/glu.h>
 
 #include "cygnusFixes.h"
 #include "ErrorHandling.h"
 #include "OpenGL_OpenGLWidget.h"
 #include "memory.h"
+#include "JNIInterface.h"
 
 /* This file contains the actual native methods for OpenGL.  It really
    only consists of name linkage between the mangled Java native
@@ -22,6 +24,8 @@
    expects to receive an array we have to pin it down, but other than
    that we pretty much just pass in the arguments that we are
    given. */
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -34,21 +38,29 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_clearIndex
   glClearIndex(c);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_clearColor
   (JNIEnv *env, jobject obj, jfloat red, jfloat green, jfloat blue, 
    jfloat alpha) {
     glClearColor(red, green, blue, alpha);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_clear
   (JNIEnv *env, jobject obj, jint mask) {
     glClear(mask);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_indexMask
   (JNIEnv *env, jobject obj, jint mask) {
     glIndexMask(mask);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_colorMask
   (JNIEnv *env, jobject obj, jboolean red, jboolean green, jboolean blue,
@@ -66,10 +78,14 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_colorMask
     glColorMask(glRed, glGreen, glBlue, glAlpha);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_alphaFunc
   (JNIEnv *env, jobject obj, jint func, jfloat value) {
     glAlphaFunc(func, value);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_blendFunc
   (JNIEnv *env, jobject obj, jint sfactor, jint dfactor) {
@@ -77,25 +93,34 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_blendFunc
 }
 
 
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_logicOp
   (JNIEnv *env, jobject obj, jint opcode) {
     glLogicOp(opcode);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_cullFace
   (JNIEnv *env, jobject obj, jint mode) {
     glCullFace(mode);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_frontFace
   (JNIEnv *env, jobject obj, jint mode) {
     glFrontFace(mode);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_pointSize
   (JNIEnv *env, jobject obj, jfloat size) {
     glPointSize(size);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_lineWidth
   (JNIEnv *env, jobject obj, jfloat width) {
@@ -103,21 +128,27 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_lineWidth
 }
 
 
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_lineStipple
   (JNIEnv *env, jobject obj, jint factor, jshort pattern) {
     glLineStipple(factor, pattern);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_polygonMode
   (JNIEnv *env, jobject obj, jint face, jint mode) {
     glPolygonMode(face, mode);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_polygonOffset
 (JNIEnv *env, jobject obj, jfloat factor, jfloat units) {
   glPolygonOffset(factor, units);
-  
 } 
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_polygonStipple
   (JNIEnv *env, jobject obj, jbyteArray mask)
@@ -128,8 +159,10 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_polygonStipple
   if (maskBytes == NULL)
     return;
   glPolygonStipple(maskBytes);
-  (*env)->ReleaseByteArrayElements(env, mask, maskBytes, 0);
+  (*env)->ReleaseByteArrayElements(env, mask, maskBytes, JNI_ABORT);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -148,6 +181,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_getPolygonStipple
   (*env)->ReleaseByteArrayElements(env, mask, maskBytes, 0);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_edgeFlag
   (JNIEnv *env, jobject obj, jboolean flag)
 {
@@ -155,11 +190,14 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_edgeFlag
 }
 
 
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_scissor
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
 {
   glScissor(x, y, width, height);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -175,8 +213,11 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_clipPlane
   if (equationDoubles == NULL)
     return;
   glClipPlane(plane, equationDoubles);
-  (*env)->ReleaseDoubleArrayElements(env, equation, equationDoubles, 0);
+  (*env)->ReleaseDoubleArrayElements(env, equation, equationDoubles, 
+				     JNI_ABORT);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -195,6 +236,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_getClipPlane
   (*env)->ReleaseDoubleArrayElements(env, equation, equationDoubles, 0);
 }
 
+
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    drawBuffer
@@ -205,6 +248,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_drawBuffer
 {
   glDrawBuffer(mode);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -217,11 +262,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_readBuffer
   glReadBuffer(mode);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_enable
   (JNIEnv *env, jobject obj, jint capability)
 {
   glEnable(capability);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_disable
   (JNIEnv *env, jobject obj, jint capability)
@@ -229,12 +278,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_disable
   glDisable(capability);
 }
 
+
+
 JNIEXPORT jboolean JNICALL Java_OpenGL_OpenGLWidget_isEnabled
   (JNIEnv *env, jobject obj, jint capability)
 {
-  /* This assumes that JNI_TRUE == 1, and JNI_FALSE == 0 */
-  return glIsEnabled(capability);
+  return glIsEnabled(capability) == JNI_TRUE;
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_get__I_3Z
   (JNIEnv *env, jobject obj, jint pname, jbooleanArray jparams)
@@ -247,6 +299,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_get__I_3Z
   (*env)->ReleaseBooleanArrayElements(env, jparams, params,0);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_get__I_3D
   (JNIEnv *env, jobject obj, jint pname, jdoubleArray jparams)
 {
@@ -257,6 +311,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_get__I_3D
   glGetDoublev(pname, params);
   (*env)->ReleaseDoubleArrayElements(env, jparams, params,0);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_get__I_3F
   (JNIEnv *env, jobject obj, jint pname, jfloatArray jparams)
@@ -269,6 +325,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_get__I_3F
   (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_get__I_3I
   (JNIEnv *env, jobject obj, jint pname, jintArray jparams)
 {
@@ -278,8 +336,9 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_get__I_3I
     return;
   glGetIntegerv(pname, params);
   (*env)->ReleaseIntArrayElements(env, jparams, params,0);
-
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_pushAttrib
   (JNIEnv *env, jobject obj, jint mask)
@@ -287,11 +346,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_pushAttrib
   glPushAttrib(mask);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_popAttrib
   (JNIEnv *env, jobject obj)
 {
   glPopAttrib();
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_pushClientAttrib
   (JNIEnv *env, jobject obj, jint mask)
@@ -299,11 +362,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_pushClientAttrib
   glPushClientAttrib(mask);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_popClientAttrib
   (JNIEnv *env, jobject obj)
 {
   glPopClientAttrib();
 }
+
+
 
 JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_renderMode
   (JNIEnv *env, jobject obj, jint mode)
@@ -311,17 +378,28 @@ JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_renderMode
   return glRenderMode(mode);
 }
 
+
+
 JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_getError
   (JNIEnv *env, jobject obj)
 {
   return glGetError();
 }
 
+
+
 JNIEXPORT jstring JNICALL Java_OpenGL_OpenGLWidget_getString
   (JNIEnv *env, jobject obj, jint name)
 {
-  return (*env)->NewStringUTF(env, glGetString(name));
+  const char *string;
+  string = glGetString(name);
+  if (string != NULL)
+    return (*env)->NewStringUTF(env, string);
+  else 
+    return NULL;
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -334,6 +412,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_finish
   glFinish();
 }
 
+
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    flush
@@ -344,6 +424,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_flush
 {
   glFlush();
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -368,17 +450,23 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_clearDepth
   glClearDepth(depth);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_depthFunc
   (JNIEnv *env, jobject obj, jint func) 
 {
   glDepthFunc(func);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_depthMask
   (JNIEnv *env, jobject obj, jboolean flag)
 {
   glDepthMask(flag);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_depthRange
   (JNIEnv *env, jobject obj, jdouble near_val, jdouble far_val)
@@ -399,6 +487,7 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_clearAccum
 }
 
 
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_accum
   (JNIEnv *env, jobject obj, jint op, jfloat value)
 {
@@ -417,6 +506,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_matrixMode
   glMatrixMode(mode);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_ortho
   (JNIEnv *env, jobject obj, 
    jdouble left, jdouble right, 
@@ -427,6 +518,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_ortho
 	  bottom, top, 
 	  near_val, far_val);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_frustum
   (JNIEnv *env, jobject obj, 
@@ -439,11 +532,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_frustum
 	    near_val, far_val);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_viewport
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
 {
   glViewport(x, y, width, height);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_pushMatrix
   (JNIEnv *env, jobject object)
@@ -451,11 +548,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_pushMatrix
   glPushMatrix();
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_popMatrix
   (JNIEnv *env, jobject obj)
 {
   glPopMatrix();
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_loadIdentity
   (JNIEnv *env, jobject obj)
@@ -536,6 +637,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_scaled
   glScaled(x, y, z);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_scalef
   (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
 {
@@ -543,11 +646,14 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_scalef
 }
 
 
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_translated
   (JNIEnv *env, jobject obj, jdouble x, jdouble y, jdouble z)
 {
   glTranslated(x, y, z);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_translatef
   (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
@@ -573,6 +679,7 @@ JNIEXPORT jboolean JNICALL Java_OpenGL_OpenGLWidget_isList
 }
 
 
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    deleteLists
@@ -583,6 +690,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_deleteLists
 {
   glDeleteLists(list, range);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -595,11 +704,15 @@ JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_genLists
   return glGenLists(range);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_newList
   (JNIEnv *env, jobject obj, jint list, jint mode)
 {
   glNewList(list, mode);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_endList
   (JNIEnv *env, jobject obj)
@@ -607,11 +720,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_endList
   glEndList();
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_callList
   (JNIEnv *env, jobject obj, jint list)
 {
   glCallList(list);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -631,6 +748,9 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_callLists__II_3B
 
   (*env)->ReleaseByteArrayElements(env, jarray, array, 0);
 }
+
+
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    callLists
@@ -649,6 +769,9 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_callLists__II_3S
 
   (*env)->ReleaseShortArrayElements(env, jarray, array, 0);
 }
+
+
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    callLists
@@ -668,11 +791,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_callLists__II_3F
   (*env)->ReleaseFloatArrayElements(env, jarray, array, 0);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_listBase
   (JNIEnv *env, jobject obj, jint base)
 {
   glListBase(base);
 }
+
+
 
 /*
  * Drawing Functions
@@ -684,11 +811,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_begin
   glBegin(mode);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_end
   (JNIEnv *env, jobject obj)
 {
   glEnd();
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex2d
   (JNIEnv *env, jobject obj, jdouble x , jdouble y)
@@ -696,11 +827,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex2d
   glVertex2d(x, y);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex2f
   (JNIEnv *env, jobject obj, jfloat x, jfloat y)
 {
   glVertex2f(x, y);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex2i
   (JNIEnv *env, jobject obj, jint x, jint y)
@@ -708,11 +843,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex2i
   glVertex2i(x, y);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex2s
   (JNIEnv *env, jobject obj, jshort x, jshort y)
 {
   glVertex2s(x, y);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex3d
   (JNIEnv *env, jobject obj, jdouble x, jdouble y, jdouble z)
@@ -720,11 +859,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex3d
   glVertex3d(x, y, z);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex3f
   (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
 {
   glVertex3f(x, y, z);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex3i
   (JNIEnv *env, jobject obj, jint x, jint y, jint z)
@@ -732,11 +875,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex3i
   glVertex3i(x, y, z);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex3s
   (JNIEnv *env, jobject obj, jshort x, jshort y, jshort z)
 {
   glVertex3s(x, y, z);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex4d
   (JNIEnv *env, jobject obj, jdouble x, jdouble y, jdouble z, jdouble w)
@@ -744,11 +891,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex4d
   glVertex4d(x, y, z, w);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex4f
   (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z, jfloat w)
 {
   glVertex4f(x, y, z, w);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex4i
   (JNIEnv *env, jobject obj, jint x, jint y, jint z, jint w)
@@ -756,11 +907,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex4i
   glVertex4i(x, y, z, w);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_vertex4s
   (JNIEnv *env, jobject obj, jshort x, jshort y, jshort z, jshort w)
 {
   glVertex4s(x, y, z, w);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_normal3b
   (JNIEnv *env, jobject obj, jbyte x, jbyte y, jbyte z)
@@ -768,11 +923,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_normal3b
   glNormal3b(x, y, z);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_normal3d
   (JNIEnv *env, jobject obj, jdouble x, jdouble y, jdouble z)
 {
   glNormal3d(x, y, z);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_normal3f
   (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
@@ -780,11 +939,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_normal3f
   glNormal3f(x, y, z);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_normal3i
   (JNIEnv *env, jobject obj, jint x, jint y, jint z)
 {
   glNormal3i(x, y, z);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_normal3s
   (JNIEnv *env, jobject obj, jshort x, jshort y, jshort z)
@@ -792,11 +955,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_normal3s
   glNormal3s(x, y, z);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_indexd
   (JNIEnv *env, jobject obj, jdouble c)
 {
   glIndexd(c);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_indexf
   (JNIEnv *env, jobject obj, jfloat c)
@@ -804,11 +971,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_indexf
   glIndexf(c);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_indexi
   (JNIEnv *env, jobject obj, jint c)
 {
   glIndexi(c);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_indexs
   (JNIEnv *env, jobject obj, jshort c)
@@ -816,11 +987,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_indexs
   glIndexs(c);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color3b
   (JNIEnv *env, jobject obj, jbyte red, jbyte green, jbyte blue)
 {
   glColor3b(red, green, blue);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color3d
   (JNIEnv *env, jobject obj, jdouble red, jdouble green, jdouble blue)
@@ -828,11 +1003,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color3d
   glColor3d(red, green, blue);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color3f
   (JNIEnv *env, jobject obj, jfloat red, jfloat green, jfloat blue)
 {
   glColor3f(red, green, blue);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color3i
   (JNIEnv *env, jobject obj, jint red, jint green, jint blue)
@@ -840,17 +1019,23 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color3i
   glColor3i(red, green, blue);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color3s
   (JNIEnv *env, jobject obj, jshort red, jshort green, jshort blue)
 {
   glColor3s(red, green, blue);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color4b
   (JNIEnv *env, jobject obj, jbyte red, jbyte green, jbyte blue, jbyte alpha)
 {
   glColor4b(red, green, blue, alpha);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color4d
   (JNIEnv *env, jobject obj, jdouble red, jdouble green, jdouble blue, 
@@ -859,6 +1044,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color4d
   glColor4d(red, green, blue, alpha);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color4f
   (JNIEnv *env, jobject obj, jfloat red, jfloat green, jfloat blue, 
    jfloat alpha)
@@ -866,11 +1053,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color4f
   glColor4f(red, green, blue, alpha);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color4i
   (JNIEnv *env, jobject obj, jint red, jint green, jint blue, jint alpha)
 {
   glColor4i(red, green, blue, alpha);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color4s
   (JNIEnv *env, jobject obj, jshort red, jshort green, jshort blue, 
@@ -879,11 +1070,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_color4s
   glColor4s(red, green, blue, alpha);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord1d
   (JNIEnv *env, jobject obj, jdouble s)
 {
   glTexCoord1d(s);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord1f
   (JNIEnv *env, jobject obj, jfloat s)
@@ -891,17 +1086,22 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord1f
   glTexCoord1f(s);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord1i
   (JNIEnv *env, jobject obj, jint s)
 {
   glTexCoord1i(s);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord1s
   (JNIEnv *env, jobject obj, jshort s)
 {
   glTexCoord1s(s);
 }
+
 
 
 /*
@@ -915,11 +1115,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord2d
   glTexCoord2d(s, t);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord2f
   (JNIEnv *env, jobject obj, jfloat s, jfloat t)
 {
   glTexCoord2d(s, t);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord2i
   (JNIEnv *env, jobject obj, jint s, jint t)
@@ -928,11 +1132,14 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord2i
 }
 
 
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord2s
   (JNIEnv *env, jobject obj, jshort s, jshort t)
 {
   glTexCoord2d(s, t);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord3d
   (JNIEnv *env, jobject obj, jdouble s, jdouble t, jdouble r)
@@ -940,11 +1147,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord3d
   glTexCoord3d(s, t, r);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord3f
   (JNIEnv *env, jobject obj, jfloat s, jfloat t, jfloat r)
 {
   glTexCoord3f(s, t, r);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord3i
   (JNIEnv *env, jobject obj, jint s, jint t, jint r)
@@ -952,11 +1163,16 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord3i
   glTexCoord3i(s, t, r);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord3s
   (JNIEnv *env, jobject obj, jshort s, jshort t, jshort r)
 {
   glTexCoord3s(s, t, r);
 }
+
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord4d
   (JNIEnv *env, jobject obj, jdouble s, jdouble t, jdouble r, jdouble q)
@@ -964,11 +1180,16 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord4d
   glTexCoord4d(s, t, r, q);
 }
 
+
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord4f
   (JNIEnv *env, jobject obj, jfloat s, jfloat t, jfloat r, jfloat q)
 {
   glTexCoord4f(s, t, r, q);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord4i
   (JNIEnv *env, jobject obj, jint s, jint t, jint r, jint q)
@@ -976,11 +1197,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord4i
   glTexCoord4i(s, t, r, q);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texCoord4s
   (JNIEnv *env, jobject obj, jshort s, jshort t, jshort r, jshort q)
 {
   glTexCoord4s(s, t, r, q);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos2d
   (JNIEnv *env, jobject obj, jdouble x, jdouble y)
@@ -988,11 +1213,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos2d
   glRasterPos2d(x, y);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos2f
   (JNIEnv *env, jobject obj, jfloat x, jfloat y)
 {
   glRasterPos2f(x, y);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos2i
   (JNIEnv *env, jobject obj, jint x, jint y)
@@ -1000,11 +1229,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos2i
   glRasterPos2i(x, y);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos2s
   (JNIEnv *env, jobject obj, jshort x, jshort y)
 {
   glRasterPos2s(x, y);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos3d
   (JNIEnv *env, jobject obj, jdouble x, jdouble y, jdouble z)
@@ -1012,11 +1245,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos3d
   glRasterPos3d(x, y, z);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos3f
   (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
 {
   glRasterPos3d(x, y, z);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos3i
   (JNIEnv *env, jobject obj, jint x, jint y, jint z)
@@ -1024,11 +1261,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos3i
   glRasterPos3i(x, y, z);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos3s
   (JNIEnv *env, jobject obj, jshort x, jshort y, jshort z)
 {
   glRasterPos3s(x, y, z);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos4d
   (JNIEnv *env, jobject obj, jdouble x, jdouble y, jdouble z, jdouble w)
@@ -1036,11 +1277,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos4d
   glRasterPos4d(x, y, z, w);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos4f
   (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z, jfloat w)
 {
   glRasterPos4f(x, y, z, w);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos4i
   (JNIEnv *env, jobject obj, jint x, jint y, jint z, jint w)
@@ -1048,11 +1293,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos4i
   glRasterPos4i(x, y, z, w);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rasterPos4s
   (JNIEnv *env, jobject obj, jshort x, jshort y, jshort z, jshort w)
 {
   glRasterPos4s(x, y, z, w);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rectd
   (JNIEnv *env, jobject obj, jdouble x1, jdouble y1, jdouble x2, jdouble y2)
@@ -1060,17 +1309,23 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rectd
   glRectd(x1, y1, x2, y2);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rectf
   (JNIEnv *env, jobject obj, jfloat x1, jfloat y1, jfloat x2, jfloat y2)
 {
   glRectf(x1, y1, x2, y2);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_recti
   (JNIEnv *env, jobject obj, jint x1, jint y1, jint x2, jint y2)
 {
   glRecti(x1, y1, x2, y2);
 }
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_rects
   (JNIEnv *env, jobject obj, jshort x1, jshort y1, jshort x2, jshort y2)
@@ -1328,11 +1583,14 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_arrayElement
   glArrayElement(i);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_drawArrays
   (JNIEnv *env, jobject obj, jint mode, jint first, jint count)
 {
   glDrawArrays(mode, first, count);
 }
+
 
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_drawElements
@@ -1364,11 +1622,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_shadeModel
   glShadeModel(mode);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_lightf
   (JNIEnv *env, jobject obj, jint light, jint pname, jfloat param)
 {
   glLightf(light, pname, param);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -1380,6 +1642,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_lighti
 {
   glLighti(light, pname, param);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -1397,6 +1661,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_lightfv
   glLightfv(light, pname, params);
   (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -1769,130 +2035,93 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_bitmap
  * Signature: (IIIIII)Ljava/lang/Object;
  */
 
-JNIEXPORT jstring JNICALL Java_OpenGL_OpenGLWidget_readPixels
+JNIEXPORT jobject JNICALL Java_OpenGL_OpenGLWidget_readPixels
   (JNIEnv *env, jobject obj, 
-   jint x, jint y, jint width, jint height, jint format, jint type,
-   jstring hello)
+   jint x, jint y, jint width, jint height, jint format, jint type)
 {
   void   *buffer;
   int     pixelCountMultiplier = 4; /* Default to the maximum possible. */
   int     pixelStorageSizeMultiplier;
   int     bufferElementCount;
   jobject result = NULL;
-
-  return hello;
-  {
-    jclass    openGLEventClass;  /* The OpenGLEvent class reference. */
-    jobject   openGLEvent;       /* The event object we construct. */
-    jmethodID eventConstructor;  /* The event constructor we call. */
-
-    openGLEventClass = (*env)->FindClass(env, "OpenGL/OpenGLEvent");
-    if (openGLEventClass == 0) {
-      handleError(env, "OpenGL/OpenGLNativeException",
-		  "Unable to get OpenGL/OpenGLEvent class");
-      return NULL;
-    }  
-
-    eventConstructor =
-      (*env)->GetMethodID(env, openGLEventClass, "<init>", "(I)V");
-    if (eventConstructor == 0) {
-      handleError(env, "OpenGL/OpenGLNativeException",
-		  "Unable to get init method for OpenGLEvent class");
-      return NULL;
-    }
-    
-    openGLEvent = (*env)->NewObject(env, openGLEventClass, eventConstructor,
-				    1);
-    if (openGLEvent == 0) {
-      handleError(env, "OpenGL/OpenGLNativeException",
-		  "Unable to get new OpenGLEvent object");
-      return NULL;
-    }
-    //return openGLEvent;
-    return hello;
-    //return x;
-  }
-
-
-  log(env, "in readPixels");
+  
   /* Determine how many return values we will get for each pixel. */
-  switch (format) {
-  case GL_COLOR_INDEX:
-  case GL_STENCIL_INDEX:
-  case GL_DEPTH_COMPONENT:
-  case GL_RED:
-  case GL_GREEN:
-  case GL_BLUE:
-  case GL_ALPHA:
-  case GL_LUMINANCE:
-    pixelCountMultiplier = 1;
-    break;
-  case GL_RGB:
-    pixelCountMultiplier = 3;
-    break;
-  case GL_RGBA:
-    pixelCountMultiplier = 4;
-    break;
-  case GL_LUMINANCE_ALPHA:
-    pixelCountMultiplier = 2;
-    break;
-  default:
+  switch (format) 
+    {
+    case GL_COLOR_INDEX:
+    case GL_STENCIL_INDEX:
+    case GL_DEPTH_COMPONENT:
+    case GL_RED:
+    case GL_GREEN:
+    case GL_BLUE:
+    case GL_ALPHA:
+    case GL_LUMINANCE:
+      pixelCountMultiplier = 1;
+      break;
+    case GL_RGB:
+      pixelCountMultiplier = 3;
+      break;
+    case GL_RGBA:
+      pixelCountMultiplier = 4;
+      break;
+    case GL_LUMINANCE_ALPHA:
+      pixelCountMultiplier = 2;
+      break;
+    default:
       handleError(env, "OpenGL/OpenGLNativeException",
 		  "Unexpected format passed to readPixels");
       return NULL;
-  }
+    }
 
-  log(env, "determined pixelCounterMultiplier");
   /* Determine how much storage each return value will require. */
-  switch(type) {
-  case GL_BYTE:
-    pixelStorageSizeMultiplier = 1;
-    break;
-  case GL_SHORT:
-    pixelStorageSizeMultiplier = 2;
-    break;
-  case GL_INT:
-  case GL_FLOAT:
-    pixelStorageSizeMultiplier = 4;
-    break;
-  default:
-    handleError(env, "OpenGL/OpenGLNativeException",
-		"Unexpected type passed to readPixels");
-    return NULL;
-  }
-
-  log(env, "determined pixelStorageSizeMultiplier\n");
-  
+  switch(type) 
+    {
+    case GL_BYTE:
+      pixelStorageSizeMultiplier = 1;
+      break;
+    case GL_SHORT:
+      pixelStorageSizeMultiplier = 2;
+      break;
+    case GL_INT:
+    case GL_FLOAT:
+      pixelStorageSizeMultiplier = 4;
+      break;
+    default:
+      handleError(env, "OpenGL/OpenGLNativeException",
+		  "Unexpected type passed to readPixels");
+      return NULL;
+    }
+    
   bufferElementCount = width * height * pixelCountMultiplier;
   buffer = privateMalloc(bufferElementCount * pixelStorageSizeMultiplier);
   if (buffer == NULL) {
-    handleError(env, "OpenGL/OpenGLNativeMemoryExhausted",
+    handleError(env, "OpenGL/OpenGLNativeMemoryExhaustedException",
 		"Unable to allocate temporary buffer in readPixels");
     return NULL;
   }
-
-  log(env, "allocate buffer\n");
+  
   glReadPixels(x, y, width, height, format, type, buffer);
-  log(env, "read pixels\n");
-  switch(type) {
-  case GL_BYTE:
-    result = (*env)->NewByteArray(env, bufferElementCount);
-    if (result == NULL) {
-      handleError(env, "OpenGL/OpenGLNativeException",
-		  "Unable to allocate byte array in readPixels");
-      return NULL;
-    }
-    (*env)->SetByteArrayRegion(env, result, 0, bufferElementCount, buffer);
-    break;
-  case GL_SHORT:
-    result = (*env)->NewShortArray(env, bufferElementCount);
-    if (result == NULL) {
-      handleError(env, "OpenGL/OpenGLNativeException",
-		  "Unable to allocate short array in readPixels");
-      return NULL;
-    }
-    (*env)->SetShortArrayRegion(env, result, 0, bufferElementCount, buffer);
-    break;
+
+  switch(type) 
+    {
+    case GL_BYTE:
+      result = (*env)->NewByteArray(env, bufferElementCount);
+      if (result == NULL) {
+	handleError(env, "OpenGL/OpenGLNativeException",
+		    "Unable to allocate byte array in readPixels");
+	return NULL;
+      }
+      (*env)->SetByteArrayRegion(env, result, 0, bufferElementCount, buffer);
+      break;
+    case GL_SHORT:
+      result = (*env)->NewShortArray(env, bufferElementCount);
+      if (result == NULL) {
+	handleError(env, "OpenGL/OpenGLNativeException",
+		    "Unable to allocate short array in readPixels");
+	return NULL;
+      }
+      (*env)->SetShortArrayRegion(env, result, 0, bufferElementCount, buffer);
+      break;
   case GL_INT:
     result = (*env)->NewIntArray(env, bufferElementCount);
     if (result == NULL) {
@@ -1902,24 +2131,20 @@ JNIEXPORT jstring JNICALL Java_OpenGL_OpenGLWidget_readPixels
     }
     (*env)->SetIntArrayRegion(env, result, 0, bufferElementCount, buffer);
     break;
-  case GL_FLOAT:
-    log(env, "getting new float array\n");
-    result = (*env)->NewFloatArray(env, bufferElementCount);
-    if (result == NULL) {
-      handleError(env, "OpenGL/OpenGLNativeException",
-		  "Unable to allocate float array in readPixels");
-      return NULL;
+    case GL_FLOAT:
+      result = (*env)->NewFloatArray(env, bufferElementCount);
+      if (result == NULL) {
+	handleError(env, "OpenGL/OpenGLNativeException",
+		    "Unable to allocate float array in readPixels");
+	return NULL;
+      }
+      (*env)->SetFloatArrayRegion(env, result, 0, bufferElementCount, buffer);
+      
+      if ((*env)->GetArrayLength(env, result) != bufferElementCount)
+      break;
     }
-    log(env, "setting float array\n");
-    (*env)->SetFloatArrayRegion(env, result, 0, bufferElementCount, buffer);
-
-    if ((*env)->GetArrayLength(env, result) != bufferElementCount)
-      log(env, "Wrong length");
-    break;
-  }
   privateFree(buffer);
-  log(env, "performed private free\n");
-
+  
   return result;
 }
 
@@ -2221,7 +2446,17 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texEnvi
  * Signature: (II[F)V
  */
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texEnvfv
-  (JNIEnv *env, jobject obj, jint, jint, jfloatArray);
+  (JNIEnv *env, jobject obj, jint target, jint pname, jfloatArray jparams)
+{
+  jfloat *params = NULL;
+  params = (*env)->GetFloatArrayElements(env, jparams, 0);
+  if (params == NULL)
+    return;
+  glTexEnvfv(target, pname, params);
+  (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
+}
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -2229,7 +2464,16 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texEnvfv
  * Signature: (II[I)V
  */
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texEnviv
-  (JNIEnv *env, jobject obj, jint, jint, jintArray);
+  (JNIEnv *env, jobject obj, jint target, jint pname, jintArray jparams)
+{
+	jint *params = NULL;
+
+	params = (*env)->GetIntArrayElements(env, jparams, 0);
+	if (params == NULL)
+		return;
+	glTexEnviv(target, pname, params);
+	(*env)->ReleaseIntArrayElements(env, jparams, params, 0);
+}
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -2239,7 +2483,7 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texEnviv
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_getTexEnvfv
   (JNIEnv *env, jobject obj, jint target, jint pname, jfloatArray jparams)
 {
-  float *params;
+  jfloat *params = NULL;
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
   if (params == NULL)
     return;
@@ -2867,9 +3111,9 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_texSubImage2D__IIIIIIII_3F
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_copyTexImage1D
   (JNIEnv *env, jobject obj, 
    jint target, jint level, 
-   int internalformat,
-   int x, int y,
-   int width, int border)
+   jint internalformat,
+   jint x, jint y,
+   jint width, jint border)
 
 {
   glCopyTexImage1D(target, level, internalformat, x, y, width, border);
@@ -3111,6 +3355,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_evalCoord2f
   glEvalCoord2f(u, v);
 }
 
+
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    mapGrid1d
@@ -3122,6 +3368,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_mapGrid1d
 {
   glMapGrid1d(un, u1, u2);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -3150,6 +3398,7 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_mapGrid2d
 }
 
 
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    mapGrid2f
@@ -3164,6 +3413,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_mapGrid2f
 	      vn, v1, v2);
 }
 
+
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    evalPoint1
@@ -3174,6 +3425,9 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_evalPoint1
 {
   glEvalPoint1(i);
 }
+
+
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    evalPoint2
@@ -3185,13 +3439,20 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_evalPoint2
   glEvalPoint2(i, j);
 }
 
+
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    evalMesh1
  * Signature: (III)V
  */
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_evalMesh1
-  (JNIEnv *env, jobject obj, jint, jint, jint);
+  (JNIEnv *env, jobject obj, jint mode, jint i1, jint i2)
+{
+  glEvalMesh1(mode, i1, i2);
+}
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -3199,7 +3460,12 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_evalMesh1
  * Signature: (IIIII)V
  */
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_evalMesh2
-  (JNIEnv *env, jobject obj, jint, jint, jint, jint, jint);
+  (JNIEnv *env, jobject obj, jint mode, jint i1, jint i2, jint j1, jint j2)
+{
+  glEvalMesh2(mode, i1, i2, j1, j2);
+}
+
+
 
 /*
  * Fog
@@ -3210,11 +3476,14 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_fogf
   glFogf(name, param);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_fogi
   (JNIEnv *env, jobject obj, jint name, jint param)
 {
   glFogi(name, param);
 }
+
 
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_fogfv
@@ -3229,6 +3498,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_fogfv
   (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_fogiv
   (JNIEnv *env, jobject obj, jint param, jintArray jparams)
 {
@@ -3241,9 +3512,13 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_fogiv
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
 }
 
+
+
 /*
  * Selection and Feedback
  */
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -3253,6 +3528,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_fogiv
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_feedbackBuffer
   (JNIEnv *env, jobject obj, jint type, jfloatArray jbuffer)
 {
+  /* TODO: This won't work because the native array may be gone by the
+     time OpenGL wants to use it. */
   GLfloat *buffer;
   int      size;
 
@@ -3265,6 +3542,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_feedbackBuffer
   (*env)->ReleaseFloatArrayElements(env, jbuffer, buffer, 0);
 }
 
+
+
 /*
  * Class:     OpenGL_OpenGLWidget
  * Method:    passThrough
@@ -3275,6 +3554,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_passThrough
 {
   glPassThrough(token);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -3297,12 +3578,18 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_selectBuffer
 }
 
 
+
 /* Class:     OpenGL_OpenGLWidget
  * Method:    initNames
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_initNames
-  (JNIEnv *env, jobject obj);
+  (JNIEnv *env, jobject obj)
+{
+  glInitNames();
+}
+
+
 
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_loadName
   (JNIEnv *env, jobject obj, jint name)
@@ -3310,11 +3597,15 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_loadName
   glLoadName(name);
 }
 
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_pushName
   (JNIEnv *env, jobject obj, jint name)
 {
   glPushName(name);
 }
+
+
 
 /*
  * Class:     OpenGL_OpenGLWidget
@@ -3326,292 +3617,6 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_popName
 {
   glPopName();
 }
-
-
-/*
- * GLU methods
- * 
- */
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    lookAt
- * Signature: (DDDDDDDDD)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_lookAt
-  (JNIEnv *env, jobject obj, 
-   jdouble eye_x,    jdouble eye_y,    jdouble eye_z,
-   jdouble center_x, jdouble center_y, jdouble center_z,
-   jdouble up_x,     jdouble up_y,     jdouble up_z)
-{
-  gluLookAt(eye_x,    eye_y,    eye_z,
-	    center_x, center_y, center_z,
-	    up_x,     up_y,     up_z);
-}
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    ortho2D
- * Signature: (DDDD)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_ortho2D
-  (JNIEnv *env, jobject obj, jdouble left, jdouble right, 
-   jdouble bottom, jdouble top)
-{
-  gluOrtho2D(left, right, bottom, top);
-}
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    perspective
- * Signature: (DDDD)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_perspective
-  (JNIEnv *env, jobject obj, jdouble fovy, jdouble aspect, 
-   jdouble z_near, jdouble z_far)
-{
-  gluPerspective(fovy, aspect, z_near, z_far);
-}
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    pickMatrix
- * Signature: (DDDD[I)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_pickMatrix
-  (JNIEnv *env, jobject obj, jdouble x, jdouble y, 
-   jdouble width, jdouble height, jintArray viewport)
-{
-  jint *viewportInts;
-  viewportInts = (*env)->GetIntArrayElements(env, viewport, 0);
-  if (viewportInts == NULL)
-    return;
-  gluPickMatrix(x, y, width, height, viewportInts);
-  (*env)->ReleaseIntArrayElements(env, viewport, viewportInts, 0);
-}
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    gluErrorString
- * Signature: (I)Ljava/lang/String;
- */
-JNIEXPORT jstring JNICALL Java_OpenGL_OpenGLWidget_gluErrorString
-  (JNIEnv *env, jobject obj, jint errorCode)
-{
-  return (*env)->NewStringUTF(env, gluErrorString(errorCode));
-}
-
-
-/*
- *
- * Mipmapping and image scaling
- *
- */
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    scaleImage
- * Signature: (IIII[Ljava/lang/Object;III[Ljava/lang/Object;)I
- */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_scaleImage
-  (JNIEnv *env, jobject obj, jint, jint, jint, jint, jobjectArray, jint, jint, jint, jobjectArray);
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    build1DMipmaps
- * Signature: (IIIII[B)I
- */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_build1DMipmaps__IIIII_3B
-  (JNIEnv *env, jobject obj, 
-   jint target, jint components, jint width, jint format, jint type, 
-   jbyteArray jdata)
-{
-  GLbyte *data;
-  GLint result;
-  data = (*env)->GetByteArrayElements(env, jdata, 0);
-  if (data == NULL)
-    return -1;
-
-  result 
-    = gluBuild1DMipmaps(target, components, width, format, type, data);
-
-  (*env)->ReleaseByteArrayElements(env, jdata, data, 0);
-  
-  return result;
-}
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    build1DMipmaps
- * Signature: (IIIII[S)I
- */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_build1DMipmaps__IIIII_3S
-  (JNIEnv *env, jobject obj, 
-   jint target, jint components, jint width, jint format, jint type, 
-   jshortArray jdata)
-{
-  GLshort *data;
-  GLint result;
-  data = (*env)->GetShortArrayElements(env, jdata, 0);
-  if (data == NULL)
-    return -1;
-
-  result 
-    = gluBuild1DMipmaps(target, components, width, format, type, data);
-
-  (*env)->ReleaseShortArrayElements(env, jdata, data, 0);
-  
-  return result;
-}
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    build1DMipmaps
- * Signature: (IIIII[I)I
- */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_build1DMipmaps__IIIII_3I
-  (JNIEnv *env, jobject obj, 
-   jint target, jint components, jint width, jint format, jint type, 
-   jintArray jdata)
-{
-  GLint *data;
-  GLint result;
-  data = (*env)->GetIntArrayElements(env, jdata, 0);
-  if (data == NULL)
-    return -1;
-
-  result 
-    = gluBuild1DMipmaps(target, components, width, format, type, data);
-
-  (*env)->ReleaseIntArrayElements(env, jdata, data, 0);
-  
-  return result;
-}
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    build1DMipmaps
- * Signature: (IIIII[F)I
- */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_build1DMipmaps__IIIII_3F
-  (JNIEnv *env, jobject obj, 
-   jint target, jint components, jint width, jint format, jint type, 
-   jfloatArray jdata)
-{
-  GLfloat *data;
-  GLint result;
-  data = (*env)->GetFloatArrayElements(env, jdata, 0);
-  if (data == NULL)
-    return -1;
-
-  result 
-    = gluBuild1DMipmaps(target, components, width, format, type, data);
-
-  (*env)->ReleaseFloatArrayElements(env, jdata, data, 0);
-  
-  return result;
-}
-
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    build2DMipmaps
- * Signature: (IIIIII[B)I
- */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_build2DMipmaps__IIIIII_3B
-  (JNIEnv *env, jobject obj, 
-   jint target, jint components, 
-   jint width, jint height, jint format, jint type, jbyteArray jdata)
-{
-  GLbyte *data;
-  GLint result;
-  data = (*env)->GetByteArrayElements(env, jdata, 0);
-  if (data == NULL)
-    return -1;
-
-  result 
-    = gluBuild2DMipmaps(target, components, width, height, format, type, data);
-
-  (*env)->ReleaseByteArrayElements(env, jdata, data, 0);
-  
-  return result;
-}
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    build2DMipmaps
- * Signature: (IIIIII[S)I
- */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_build2DMipmaps__IIIIII_3S
-  (JNIEnv *env, jobject obj, 
-   jint target, jint components, 
-   jint width, jint height, jint format, jint type, jshortArray jdata)
-{
-  GLshort *data;
-  GLint result;
-  data = (*env)->GetShortArrayElements(env, jdata, 0);
-  if (data == NULL)
-    return -1;
-
-  result 
-    = gluBuild2DMipmaps(target, components, width, height, format, type, data);
-
-  (*env)->ReleaseShortArrayElements(env, jdata, data, 0);
-  
-  return result;
-}
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    build2DMipmaps
- * Signature: (IIIIII[I)I
- */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_build2DMipmaps__IIIIII_3I
-  (JNIEnv *env, jobject obj, 
-   jint target, jint components, 
-   jint width, jint height, jint format, jint type, jintArray jdata)
-{
-  GLint *data;
-  GLint result;
-  data = (*env)->GetIntArrayElements(env, jdata, 0);
-  if (data == NULL)
-    return -1;
-
-  result 
-    = gluBuild2DMipmaps(target, components, width, height, format, type, data);
-
-  (*env)->ReleaseIntArrayElements(env, jdata, data, 0);
-  
-  return result;
-}
-
-
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    build2DMipmaps
- * Signature: (IIIIII[F)I
- */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLWidget_build2DMipmaps__IIIIII_3F
-  (JNIEnv *env, jobject obj, 
-   jint target, jint components, 
-   jint width, jint height, jint format, jint type, jfloatArray jdata)
-{
-  GLfloat *data;
-  GLint result;
-  data = (*env)->GetFloatArrayElements(env, jdata, 0);
-  if (data == NULL)
-    return -1;
-
-  result 
-    = gluBuild2DMipmaps(target, components, width, height, format, type, data);
-
-  (*env)->ReleaseFloatArrayElements(env, jdata, data, 0);
-  
-  return result;
-}
-
-
-
 
 
 

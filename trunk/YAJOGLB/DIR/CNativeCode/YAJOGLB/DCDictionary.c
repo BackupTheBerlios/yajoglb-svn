@@ -21,7 +21,6 @@
 #include <windows.h>
 #include <GL/gl.h>
 
-#include "cygnusFixes.h"
 #include "DCDictionary.h"
 #include "memory.h"
 

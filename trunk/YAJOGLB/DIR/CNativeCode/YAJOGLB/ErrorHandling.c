@@ -41,51 +41,7 @@ void handleError(JNIEnv *env,
 
 void log(JNIEnv *env, const char *string)
 {
-  jclass   system, printStream;
-  jfieldID outID;
-  jobject  out;
-  jmethodID printChar;
-  const char *stringPointer = string;
-
-  system = (*env)->FindClass(env, "java/lang/System");
-  if (system == NULL) {
-    handleError(env, "OpenGL/OpenGLNativeException", "Unable to get java/lang/System");
-    return;
-  }
-
-  outID = (*env)->GetStaticFieldID(env, system, "out", "Ljava/io/PrintStream;");
-  if (outID == NULL) {
-    handleError(env, "OpenGL/OpenGLNativeException", "Unable to get out field ID");
-    return;
-  }
-
-  out = (*env)->GetStaticObjectField(env, system, outID);
-  if (out == NULL) {
-    handleError(env, "OpenGL/OpenGLNativeException", "Unable to get out field");
-    return;
-  }
-
-  printStream = (*env)->GetObjectClass(env, out);
-  if (printStream == NULL) {
-    handleError(env, "OpenGL/OpenGLNativeException", "Unable to out class");
-    return;
-  }
-    
-  printChar = (*env)->GetMethodID(env, printStream, "print", "(C)V");
-  if (printChar == NULL) {
-    handleError(env, "OpenGL/OpenGLNativeException", "Unable to get print methodID");
-    return;
-  }
-
-  if (stringPointer == NULL) {
-    handleError(env, "OpenGL/OpenGLNativeException", "Passed a NULL log string");
-    return;
-  }
-
-  while(*stringPointer != '\0') {
-    (*env)->CallVoidMethod(env, out, printChar, *stringPointer);
-    stringPointer++;
-  }
+  fprintf(stderr, string);
 }
 
 
