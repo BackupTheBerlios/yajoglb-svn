@@ -1,7 +1,7 @@
 /*
  * NurbsSurface class
  *
- * $Id: NurbsSurface.java,v 1.3 1998/03/30 02:18:26 razeh Exp $
+ * $Id: NurbsSurface.java,v 1.4 1998/11/01 02:28:17 razeh Exp $
  *
  * Copyright 1998
  *
@@ -19,7 +19,7 @@ import java.awt.*;
  *  symmetrical hill. Taken from the SGI examples. 
  */
 
-public class NurbsSurface implements GeometryObject, OpenGLConstants, OpenGLUConstants {
+public class NurbsSurface implements GeometryObject, GLConstants, GLUConstants {
 
   public static void main (String args[]) {
     NurbsSurface   surface  = new NurbsSurface();
@@ -48,10 +48,10 @@ public class NurbsSurface implements GeometryObject, OpenGLConstants, OpenGLUCon
 
     for (u = 0; u < 4; u++) {
       for (v = 0; v < 4; v++) {
-	controlPoints[u][v][0] =  2.0f*((float)u - 1.5f);
-         controlPoints[u][v][1] =  2.0f*((float)v - 1.5f);
+	controlPoints[u][v][0] = 2.0f * ((float)u - 1.5f);
+         controlPoints[u][v][1] = 2.0f * ((float)v - 1.5f);
 
-         if ( (u == 1 || u == 2) && (v == 1 || v == 2))
+         if ((u == 1 || u == 2) && (v == 1 || v == 2))
             controlPoints[u][v][2] = 3.0f;
          else
             controlPoints[u][v][2] = -3.0f;
@@ -99,7 +99,7 @@ public class NurbsSurface implements GeometryObject, OpenGLConstants, OpenGLUCon
 
     gl.pushMatrix();
     gl.rotate(330.0f, 1.f,0.f,0.f);
-    gl.scale(0.5f, 0.5f, 0.5f);
+    gl.scale(0.5f, 0.5f, -0.5f);
     
     theNurb.gluBeginSurface();
     theNurb.gluNurbsSurface(knots, knots,
