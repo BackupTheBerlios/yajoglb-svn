@@ -1,7 +1,7 @@
 /*
  * NurbsSurface class
  *
- * $Id: NurbsSurface.java,v 1.6 1999/05/02 23:31:00 razeh Exp $
+ * $Id: NurbsSurface.java,v 1.7 1999/05/08 20:32:48 razeh Exp $
  *
  * Copyright 1998
  *
@@ -21,9 +21,7 @@ import java.awt.*;
 
 public class NurbsSurface extends Object implements GeometryObject, GLConstants, GLUConstants {
 
-  GLUNurbs   surface  = null;
-
-  public static void main (String args[]) {
+  GLUNurbs   surface   public static void main (String args[]) {
     NurbsSurface   surface  = new NurbsSurface();
     GeometryViewer viewer   = new GeometryViewer();
     ExitableFrame  frame    = new ExitableFrame();
@@ -37,7 +35,6 @@ public class NurbsSurface extends Object implements GeometryObject, GLConstants,
     frame.setBackground(java.awt.Color.black);
     frame.setSize(new Dimension(400,400));
   }
-
 
   private boolean showPoints;
   private float controlPoints[][][];
@@ -60,9 +57,13 @@ public class NurbsSurface extends Object implements GeometryObject, GLConstants,
     }			
   }				
 
-  public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
+  protected GLUNurbs getNewSurface() {
+    return new GLUNurbs();
+  }
 
-    surface = new GLUNurbs();    
+  public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
+    surface = getNewSurface();
+
     float mat_diffuse[] = { 0.7f, 0.7f, 0.7f, 1.0f };
     float mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     float mat_shininess[] = { 100.0f };
@@ -120,8 +121,6 @@ public class NurbsSurface extends Object implements GeometryObject, GLConstants,
       gl.enable(LIGHTING);
     }
     gl.popMatrix();
-    //gl.flush();
   }
-
 }
 
