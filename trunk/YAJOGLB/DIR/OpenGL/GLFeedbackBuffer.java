@@ -1,7 +1,7 @@
 /*
  * OpenGLFeedbackBuffer
  *
- * $Id: GLFeedbackBuffer.java,v 1.1 1998/09/10 00:55:07 razeh Exp $
+ * $Id: GLFeedbackBuffer.java,v 1.2 1998/11/01 02:16:43 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -10,7 +10,7 @@
 package OpenGL;
 
 /**
- * An OpenGLFeedbackBuffer is used to hold a buffer of floats for the
+ * An GLFeedbackBuffer is used to hold a buffer of floats for the
  * OpenGL feedback buffer.
  *
  * It's possible that the native array allocated will be a copy, in
@@ -23,7 +23,7 @@ package OpenGL;
  *
  * @version 0.1 */
 
-public class OpenGLFeedbackBuffer 
+public class GLFeedbackBuffer 
 {
   /** This is true if the native version of our buffer is only a copy,
       in which case we have to take special measures when accessing
@@ -51,7 +51,7 @@ public class OpenGLFeedbackBuffer
       @exception IllegalArgumentSize thrown if bufferSize is < 1.
   */
 
-  public OpenGLFeedbackBuffer(int bufferSize) {
+  public GLFeedbackBuffer(int bufferSize) {
     if (bufferSize > 0) 
       buffer = new float[bufferSize];
     else

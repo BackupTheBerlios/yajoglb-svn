@@ -1,7 +1,7 @@
 /* 
- * OpenGLVertexPointer class
+ * GLVertexPointer class
  *
- * $Id: GLVertexPointer.java,v 1.1 1998/09/10 01:04:26 razeh Exp $
+ * $Id: GLVertexPointer.java,v 1.2 1998/11/01 02:17:30 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -27,7 +27,7 @@ package OpenGL;
  *
  * @version 0.1 */
 
-public class OpenGLVertexPointer extends Object {
+public class GLVertexPointer extends Object {
 
   private Object vertexPointer;
   private int    vertexPointerSize   = 4;

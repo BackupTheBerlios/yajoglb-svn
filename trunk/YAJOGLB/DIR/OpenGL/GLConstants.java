@@ -2,7 +2,7 @@
  *
  * OpenGLConstants
  *
- * $Id: GLConstants.java,v 1.3 1998/09/10 01:01:04 razeh Exp $
+ * $Id: GLConstants.java,v 1.4 1998/11/01 02:16:35 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -22,7 +22,7 @@ package OpenGL;
  *
  * @version 0.1 */
 
-public interface OpenGLConstants {
+public interface GLConstants {
   static final int CURRENT_BIT		= 0x00000001;
   static final int POINT_BIT		= 0x00000002;
   static final int LINE_BIT		= 0x00000004;
@@ -51,6 +51,8 @@ public interface OpenGLConstants {
   static final int TRUE			= 1;
 
   /* Data types */
+  /* If we stripped the GL_ off these prefixes, we would have some problems
+     with the last three. */
   static final int      GL_BYTE				= 0x1400;
   static final int      GL_UNSIGNED_BYTE		= 0x1401;
   static final int 	GL_SHORT			= 0x1402;
@@ -597,14 +599,15 @@ public interface OpenGLConstants {
   
   /* Utility */
   static final int 	VENDOR			= 0x1F00;
-  static final int 	RENDERER			= 0x1F01;
+  static final int 	RENDERER		= 0x1F01;
   static final int 	VERSION			= 0x1F02;
-  static final int 	EXTENSIONS			= 0x1F03;
+  static final int 	EXTENSIONS		= 0x1F03;
 
   /* Errors */
+  static final int      NO_ERROR                = 0x0000;
   static final int 	INVALID_VALUE		= 0x0501;
-  static final int 	INVALID_ENUM			= 0x0500;
-  static final int 	INVALID_OPERATION		= 0x0502;
+  static final int 	INVALID_ENUM		= 0x0500;
+  static final int 	INVALID_OPERATION	= 0x0502;
   static final int 	STACK_OVERFLOW		= 0x0503;
   static final int 	STACK_UNDERFLOW		= 0x0504;
   static final int 	OUT_OF_MEMORY		= 0x0505;
