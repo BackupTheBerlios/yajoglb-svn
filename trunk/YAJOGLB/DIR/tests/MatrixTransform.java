@@ -1,7 +1,7 @@
 /*
- * Sphere
+ * MatrixTransform.java
  *
- * $Id: MatrixTransform.java,v 1.1 2002/09/07 17:21:38 razeh Exp $
+ * $Id: MatrixTransform.java,v 1.2 2002/09/29 14:44:22 razeh Exp $
  *
  * Copyright 1998
  *
@@ -13,7 +13,8 @@
 import OpenGL.*;
 
 /** This draws another object after performing a matrix transformation
- * supplied at creation time.
+ * supplied at creation time.  You can use it to move or rotate
+ * objects before drawing them.
  */
 public class MatrixTransform implements GeometryObject {
   GeometryObject o;
