@@ -1,7 +1,7 @@
 /* 
  * GL.java
  *
- * $Id: GL.java,v 1.1 1998/09/10 00:55:50 razeh Exp $
+ * $Id: GL.java,v 1.2 1998/10/04 23:42:42 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -51,12 +51,15 @@ package OpenGL;
 </li>
 </ul>
  *
+ * <P> You will also want to note that an OpenGL context needs to be
+ * in effect for the OpenGL methods to work properly.  It surpised me
+ * that getString() needs an OpenGL context in place to work properly,
+ * but it does! <P>
  *
  * @author Robert Allan Zeh (razeh@balr.com)
  *
  * @version 0.1
- *
- */
+ * */
 
 public class GL implements OpenGLConstants {
 
