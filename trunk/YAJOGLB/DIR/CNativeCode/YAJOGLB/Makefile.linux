@@ -6,23 +6,23 @@ YAJOGLB_LIB = YAJOGLB
 CC = gcc
 
 INCLUDE = $(JNI_GENERIC_HEADERS) $(JNI_SPECIFIC_HEADERS) $(GL_INCLUDES)
-CFLAGS=-g -O3 $(INCLUDE) -Wall
+CFLAGS=-g -O3 $(INCLUDE) -Wall -DUSE_JAWT
 
 SOURCES = CallbackObject.c	     OpenGL_GLUQuadric.c \
 	ErrorHandling.c		     \
 	JNIInterface.c		     OpenGL_GLVertexPointer.c \
-	OpenGL_CallbackObject.c	     \
+	OpenGL_CallbackObject.c	     OpenGL_Canvas.c \
 	OpenGL_GL.c		     \
-	OpenGL_GLFeedbackBuffer.c    OpenGLCapabilitiesAccessors.c \
+	OpenGL_GLFeedbackBuffer.c    CapabilitiesAccessors.c \
 	OpenGL_GLNativeFloatArray.c  \
 	OpenGL_GLNativeIntArray.c    \
 	OpenGL_GLSelectionBuffer.c   OpenGL_GLUTesselator.c \
 	OpenGL_GLU.c		     OpenGL_GLUNurbs.c \
-	linux_OpenGL_OpenGLCanvas.c linux_OpenGL_OpenGLContext.c \
+	linux_OpenGL_Canvas.c linux_OpenGL_Context.c \
 	linuxDPYDictionary.c linuxMemory.c linuxSystemError.c \
 	linuxEnvDictionary.c linux_OpenGL_GL.c \
 
-#	
+	
 
 HEADERS = ErrorHandling.h SystemError.h Memory.h SystemIncludes.h  \
 	  EnvDictionary.h cygnusFixes.h linuxDPYDictionary.h \
