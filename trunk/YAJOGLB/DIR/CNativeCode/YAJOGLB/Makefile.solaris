@@ -1,0 +1,45 @@
+include ../../Makefile.config
+MAKELIB = ../../bin/mklib.solaris
+MAJOR = 1
+MINOR = 1
+YAJOGLB_LIB = YAJOGLB
+CC = gcc
+
+INCLUDE = $(JNI_GENERIC_HEADERS) $(JNI_SPECIFIC_HEADERS) $(GL_INCLUDES)
+CFLAGS=-g -O3 $(INCLUDE) -Wall
+
+SOURCES = CallbackObject.c	     OpenGL_GLUQuadric.c \
+	ErrorHandling.c		     \
+	JNIInterface.c		     OpenGL_GLVertexPointer.c \
+	OpenGL_CallbackObject.c	     \
+	OpenGL_GL.c		     \
+	OpenGL_GLFeedbackBuffer.c    OpenGLCapabilitiesAccessors.c \
+	OpenGL_GLNativeFloatArray.c  \
+	OpenGL_GLNativeIntArray.c    \
+	OpenGL_GLSelectionBuffer.c   \
+	OpenGL_GLU.c		     OpenGL_GLUNurbs.c \
+	linux_OpenGL_OpenGLCanvas.c linux_OpenGL_OpenGLContext.c \
+	linuxDPYDictionary.c linuxMemory.c linuxSystemError.c \
+	linuxEnvDictionary.c
+#OpenGL_GLUNurbs.c \
+
+#OpenGL_GLUTesselator.c \
+#OpenGL_GLUTesselator.c \
+
+HEADERS = ErrorHandling.h SystemError.h Memory.h SystemIncludes.h  \
+	  EnvDictionary.h cygnusFixes.h linuxDPYDictionary.h \
+	  JNIInterface.h CallbackObject.h OpenGLCapabilitiesAccessors.h
+
+OBJECTS = $(SOURCES:.c=.o)
+
+$(YAJOGLB_LIB): $(OBJECTS) 
+	$(MAKELIB) $(YAJOGLB_LIB) $(MAJOR) $(MINOR) $(OBJECTS)
+
+clean:
+	$(RM) $(OBJECTS) $(YAJOGLB_LIB)
+
+dep: $(SOURCES) $(HEADERS)
+	makedepend -fdepend $(INCLUDE) $(SOURCES)
+
+
+
