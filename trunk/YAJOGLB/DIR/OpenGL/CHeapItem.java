@@ -2,7 +2,7 @@
  *
  * CHeapItem
  *
- * $Id: CHeapItem.java,v 1.4 1998/09/10 00:55:37 razeh Exp $
+ * $Id: CHeapItem.java,v 1.5 1998/11/01 02:16:07 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -26,7 +26,7 @@ import java.util.Hashtable;
  * 
  */
 
-public class CHeapItem {
+class CHeapItem {
   /** This is the integer representation of our pointer. */
   private int cHeapPointer;
 
@@ -72,7 +72,7 @@ public class CHeapItem {
       unable to obtain the item. 
       @return the integer representation of our C heap pointer. */
   protected int obtainCHeapItem(Hashtable optionalArguments) {
-    throw new RuntimeException("The root obtainCHeapItem method was called, when it should have been overriden by a subclass");
+    throw new RuntimeException("The root obtainCHeapItem method was called, when it should have been overriden by a subclass.");
   }
 
   /** This is the method subclasses should use to implement freeing
