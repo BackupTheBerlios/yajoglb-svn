@@ -1,7 +1,7 @@
 /*
  * win32DCDictionary.c
  *
- * $Id: win32DCDictionary.c,v 1.1 1998/11/01 21:42:58 razeh Exp $
+ * $Id: win32DCDictionary.c,v 1.2 1998/11/04 00:38:51 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -25,7 +25,7 @@ HDC getDCForCanvas(JNIEnv *env, jobject canvas)
 		(*env)->GetObjectClass(env, canvas);
 	
 	getDCMethodID = getMethodID(env, canvasClass, "getHDC", "()I",
-		"Unable to get getHDC() method");
+		"Unable to get getHDC()I method");
 	if (getDCMethodID) {
 		hDC = (*env)->CallObjectMethod(env, canvas, getDCMethodID);
 	}
