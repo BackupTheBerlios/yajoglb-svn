@@ -1,7 +1,7 @@
 /*
  * OpenGL_OpenGLTesselator.c
  *
- * $Id: OpenGL_GLUTesselator.c,v 1.6 1999/05/03 00:04:04 razeh Exp $
+ * $Id: OpenGL_GLUTesselator.c,v 1.7 1999/05/08 20:37:43 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -418,7 +418,7 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLUTesselator_newTess
 
 	newTesselator = gluNewTess();
 	if (NULL != newTesselator) {
-#ifdef GLU_TESS_VERSION_1_3
+#ifdef GLU_VERSION_1_2
 	    gluTessCallback(newTesselator, GLU_TESS_ERROR_DATA, errorData);
 	    gluTessCallback(newTesselator, GLU_TESS_BEGIN_DATA, beginData);
 	    gluTessCallback(newTesselator, GLU_TESS_END_DATA, endData);
@@ -456,12 +456,12 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_deleteTess
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginContour
   (JNIEnv *env, jobject obj, jint tess)
 {
-#ifdef GLU_TESS_VERSION_1_3
+#ifdef GLU_VERSION_1_2
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 	gluTessBeginContour(container->tesselator);
 #else
 	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
-		    "beginContour is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+		    "beginContour is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.2");
 #endif
 }
 
@@ -471,7 +471,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginContour
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginPolygon
   (JNIEnv *env, jobject obj, jint tess, jobject polygonData)
 {
-#ifdef GLU_TESS_VERSION_1_3
+#ifdef GLU_VERSION_1_2
 	tesselatorContainer  *container            = (tesselatorContainer*)tess;
 	polygonDataContainer *polygonDataContainer = NULL;
 	
@@ -481,7 +481,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginPolygon
 	}
 #else
 	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
-		    "beginPolygon is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+		    "beginPolygon is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.2");
 #endif
 }
 
@@ -491,13 +491,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginPolygon
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_endContour
   (JNIEnv *env, jobject obj, jint tess)
 {
-#ifdef GLU_TESS_VERSION_1_3
+#ifdef GLU_VERSION_1_2
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 	gluTessEndContour(container->tesselator);
 #else
 	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
-		    "endContour is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+		    "endContour is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.2");
 #endif
 }
 
@@ -507,7 +507,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_endContour
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_endPolygon
   (JNIEnv *env, jobject obj, jint tess)
 {
-#ifdef GLU_TESS_VERSION_1_3
+#ifdef GLU_VERSION_1_2
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 	gluTessEndPolygon(container->tesselator);
@@ -515,7 +515,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_endPolygon
 	cleanupPolygonDataContainer(env, container);
 #else
 	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
-		    "endPolygon is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+		    "endPolygon is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.2");
 #endif
 }
 
@@ -526,13 +526,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_normal
   (JNIEnv *env, jobject obj, jint tess, 
    jdouble valueX, jdouble valueY, jdouble valueZ)
 {
-#ifdef GLU_TESS_VERSION_1_3
+#ifdef GLU_VERSION_1_2
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 	gluTessNormal(container->tesselator, valueX, valueY, valueZ); 
 #else
 	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
-		    "normal is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+		    "normal is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.2");
 #endif
 }
 
@@ -574,13 +574,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_contourVertex
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_setProperty
   (JNIEnv *env, jobject obj, jint tess, jint which, jdouble data)
 {
-#ifdef GLU_TESS_VERSION_1_3
+#ifdef GLU_VERSION_1_2
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 	gluTessProperty(container->tesselator, which, data);
 #else
 	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
-		    "setProperty is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+		    "setProperty is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.2");
 #endif
 }
 
@@ -591,7 +591,7 @@ JNIEXPORT jdouble JNICALL Java_OpenGL_GLUTesselator_property
   (JNIEnv *env, jobject obj, jint tess, jint property)
 {
 	GLdouble             dataOut   = 0.0;
-#ifdef GLU_TESS_VERSION_1_3
+#ifdef GLU_VERSION_1_2
 
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
@@ -599,7 +599,7 @@ JNIEXPORT jdouble JNICALL Java_OpenGL_GLUTesselator_property
 
 #else
 	handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
-		    "getProperty is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.3");
+		    "getProperty is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.2");
 #endif
 	return dataOut;
 }
@@ -610,7 +610,7 @@ JNIEXPORT jdouble JNICALL Java_OpenGL_GLUTesselator_property
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_enableEdgeFlag
   (JNIEnv *env, jobject obj, jint tess)
 {
-#ifdef GLU_TESS_VERSION_1_3
+#ifdef GLU_VERSION_1_2
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 	gluTessCallback(container->tesselator, GLU_TESS_EDGE_FLAG_DATA, edgeFlagData);
@@ -623,7 +623,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_enableEdgeFlag
 JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_disableEdgeFlag
   (JNIEnv *env, jobject obj, jint tess)
 {
-#ifdef GLU_VERSION_1_3
+#ifdef GLU_VERSION_1_2
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
 
