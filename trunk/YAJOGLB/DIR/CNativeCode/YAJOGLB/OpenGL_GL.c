@@ -1,7 +1,7 @@
 /*
  * OpenGL_GL.c
  *
- * $Id: OpenGL_GL.c,v 1.1 1998/11/01 21:42:58 razeh Exp $
+ * $Id: OpenGL_GL.c,v 1.2 1998/11/04 00:28:46 razeh Exp $
  *
  * This implements the generic GL methods.
  *
@@ -393,7 +393,7 @@ JNIEXPORT jint JNICALL Java_OpenGL_GL_getError
 JNIEXPORT jstring JNICALL Java_OpenGL_GL_getString
   (JNIEnv *env, jobject obj, jint name)
 {
-  const char *string;
+  const char *string = NULL;
   string = glGetString(name);
   if (string != NULL)
     return (*env)->NewStringUTF(env, string);
@@ -2070,7 +2070,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
       pixelCountMultiplier = 2;
       break;
     default:
-      handleError(env, "OpenGL/OpenGLNativeException",
+      handleError(env, OPENGLNATIVEEXCEPTION,
 		  "Unexpected format passed to readPixels");
       return NULL;
     }
@@ -2078,18 +2078,21 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
   /* Determine how much storage each return value will require. */
   switch(type) 
     {
+    case GL_UNSIGNED_BYTE:
     case GL_BYTE:
       pixelStorageSizeMultiplier = 1;
       break;
-    case GL_SHORT:
+	case GL_UNSIGNED_SHORT:
+	case GL_SHORT:
       pixelStorageSizeMultiplier = 2;
       break;
+	case GL_UNSIGNED_INT:
     case GL_INT:
     case GL_FLOAT:
       pixelStorageSizeMultiplier = 4;
       break;
     default:
-      handleError(env, "OpenGL/OpenGLNativeException",
+      handleError(env, OPENGLNATIVEEXCEPTION,
 		  "Unexpected type passed to readPixels");
       return NULL;
     }
@@ -2106,44 +2109,45 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
 
   switch(type) 
     {
+    case GL_UNSIGNED_BYTE:
     case GL_BYTE:
       result = (*env)->NewByteArray(env, bufferElementCount);
       if (result == NULL) {
-	handleError(env, "OpenGL/OpenGLNativeException",
-		    "Unable to allocate byte array in readPixels");
-	return NULL;
+		handleError(env, OPENGLNATIVEEXCEPTION,
+			    "Unable to allocate byte array in readPixels");
+		return NULL;
       }
       (*env)->SetByteArrayRegion(env, result, 0, bufferElementCount, buffer);
-      break;
+		break;
+	case GL_UNSIGNED_SHORT:
     case GL_SHORT:
       result = (*env)->NewShortArray(env, bufferElementCount);
       if (result == NULL) {
-	handleError(env, "OpenGL/OpenGLNativeException",
-		    "Unable to allocate short array in readPixels");
-	return NULL;
+		handleError(env, OPENGLNATIVEEXCEPTION,
+			    "Unable to allocate short array in readPixels");
+		return NULL;
       }
       (*env)->SetShortArrayRegion(env, result, 0, bufferElementCount, buffer);
       break;
-  case GL_INT:
-    result = (*env)->NewIntArray(env, bufferElementCount);
-    if (result == NULL) {
-      handleError(env, "OpenGL/OpenGLNativeException",
-		  "Unable to allocate int array in readPixels");
-      return NULL;
-    }
-    (*env)->SetIntArrayRegion(env, result, 0, bufferElementCount, buffer);
+	case GL_UNSIGNED_INT:
+	case GL_INT:
+		result = (*env)->NewIntArray(env, bufferElementCount);
+		if (result == NULL) {
+			handleError(env, OPENGLNATIVEEXCEPTION,
+			"Unable to allocate int array in readPixels");
+			return NULL;
+		}
+		(*env)->SetIntArrayRegion(env, result, 0, bufferElementCount, buffer);
     break;
     case GL_FLOAT:
-      result = (*env)->NewFloatArray(env, bufferElementCount);
-      if (result == NULL) {
-	handleError(env, "OpenGL/OpenGLNativeException",
-		    "Unable to allocate float array in readPixels");
-	return NULL;
-      }
-      (*env)->SetFloatArrayRegion(env, result, 0, bufferElementCount, buffer);
-      
-      if ((*env)->GetArrayLength(env, result) != bufferElementCount)
-      break;
+		result = (*env)->NewFloatArray(env, bufferElementCount);
+		if (result == NULL) {
+			handleError(env, OPENGLNATIVEEXCEPTION,
+				"Unable to allocate float array in readPixels");
+			return NULL;
+		}
+		(*env)->SetFloatArrayRegion(env, result, 0, bufferElementCount, buffer);
+     break;
     }
   privateFree(buffer);
   
@@ -3521,28 +3525,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_fogiv
  */
 
 
-
-/*
- * Class:     OpenGL_GL
- * Method:    feedbackBuffer
- * Signature: (I[F)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_feedbackBuffer
-  (JNIEnv *env, jobject obj, jint type, jfloatArray jbuffer)
-{
-  /* TODO: This won't work because the native array may be gone by the
-     time OpenGL wants to use it. */
-  GLfloat *buffer;
-  int      size;
-
-  size = (*env)->GetArrayLength(env, jbuffer);
-
-  buffer = (*env)->GetFloatArrayElements(env, jbuffer, 0);
-  if (buffer == NULL) 
-    return;
-  glFeedbackBuffer(size, type, buffer);
-  (*env)->ReleaseFloatArrayElements(env, jbuffer, buffer, 0);
-}
 
 
 
