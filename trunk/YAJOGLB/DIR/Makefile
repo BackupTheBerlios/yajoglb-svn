@@ -28,7 +28,7 @@ MODULE_FILES = *.mk */*.mk */*/*.mk
 
 
 DISTRIBUTED_FILES += $(JAVA_SRC) $(CSRCS) $(MODULE_FILES) Makefile
-# Files for historical purposes
+# Files for historical (pre-JAWT) purposes
 DISTRIBUTED_FILES += sun/awt/motif/Makefile sun/awt/motif/X11pDataAccess.java
 DISTRIBUTED_FILES += sun/awt/windows/Makefile sun/awt/windows/WindowspDataAccess.java
 
