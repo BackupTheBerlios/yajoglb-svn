@@ -7,7 +7,7 @@ else
  ifeq ($(SYSTEM), solaris)
  include config-solaris.mk
  else
-  ifeq ($(strip $(SYSTEM)), CYGWIN_NT-5.0)
+  ifeq ($(findstring CYGWIN_NT, $(strip $(SYSTEM))), CYGWIN_NT)
   include config-win32.mk
   endif
  endif
