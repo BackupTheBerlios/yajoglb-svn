@@ -1,7 +1,7 @@
 /* 
  * OpenGLWidget class
  *
- * $Id: OpenGLWidget.java,v 1.2 1997/11/16 02:50:24 razeh Exp $
+ * $Id: OpenGLWidget.java,v 1.3 1998/03/05 23:56:42 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -24,48 +24,72 @@ import java.awt.event.WindowListener;
 import java.awt.AWTEvent;
 
 /**
- * OpenGLwidget
  * 
- * This defines a class OpenGLWidget which uses native win32 methods
- * to implement 3D graphics on top of OpenGL.  
+ * 
+ * This defines a class, OpenGLWidget, which uses native methods
+ * to implement Java bindings for OpenGL. <P>
  *
- * In general we have just remove the "gl" prefix from all of the GL
- * function calls and included them here.  In addition, when an OpenGL
- * function asked for an array and the array's length we removed the
- * length parameter because that can be determined from the array.
+ * The Java bindings use slightly different function names than the
+ * OpenGL C API.  OpenGL's "gl" prefix has been removed from the
+ * function names, because it is not needed to prevent name space
+ * pollution.  The trailing argument descriptions (such as "3d" and
+ * "2i") have also been removed, as Java has function overloading.
+ * For example, "glVertex3d" has become "vertex(double, double,
+ * double)".  When the C API called for an array length it has been
+ * omitted from the Java bindings, as the array length can be
+ * determined from the array. <P>
  *
- * The glu library routines have had array length parameters removed
- * also, but have not have the glu prefix removed.
+ * With the exception of gluErrorString, which remains gluErrorString,
+ * the glu functions have undergone the same transformation as the
+ * OpenGL functions. <P>
  *
  * Some OpenGL methods that take void pointer arguments as buffers for
- * return data have been changed to return arrays containing the data.
+ * return data have been changed to return arrays containing the data. <P>
  *
- * We implement the MouseListener methods as empty functions.
+ * Routines that accept void pointers in the C API, such as
+ * drawPixels, have an instance for each pointer type in the Java
+ * binding.  For example, drawPixels expands into 4 different methods:
+
+<ul>
+<li>
+  drawPixels(int width, int height,
+	     int format, int type, byte pixels[]);
+</li>
+<li>
+  drawPixels(int width, int height,
+	     int format, int type, short pixels[]);
+</li>
+<li>
+  drawPixels(int width, int height,
+	     int format, int type, int pixels[]);
+</li>
+<li>
+  drawPixels(int width, int height,
+             int format, int type, float pixels[]);
+</li>
+</ul>
  *
- * Although we are subclassed from Frame you shouldn't count on any of
- * the Frame methods working!  We implement our own window
- * functionality, so methods like setSize() or setTitle() will have no
- * effect.  Additionally, don't expect to get events other than the
- * ones we implement listener interfaces for.
+ * We implement the MouseListener, MouseMotionListener,
+ * WindowListener, ComponentListener, and KeyListener interfaces as
+ * empty functions. <P>
+ *
+ * Although OpenGLWidget is subclassed from Frame don't count on any
+ * of the Frame methods working!  We implement our own window
+ * functionality, so methods like setSize() will have no effect.
+ * Additionally, don't expect to get events other than the ones we
+ * implement listener interfaces for.
  *
  *
- * @author Robert Allan Zeh (razeh@balr.com) */
+ * @author Robert Allan Zeh (razeh@balr.com) 
+ *
+ */
 
 public class OpenGLWidget extends Frame implements OpenGLConstants,
 OpenGLUConstants, Runnable, MouseListener, MouseMotionListener,
 WindowListener, ComponentListener, KeyListener {
 
   static {
-    /* These are the libraries that need to be loaded under Windows
-       NT.  At some point we should move this code into our native
-       code section. */
-      System.load("OpenGL4java");
-      System.loadLibrary("OPENGL32");
-      System.loadLibrary("GLU32");
-      System.loadLibrary("GDI32");
-      System.loadLibrary("KERNEL32");
-      System.loadLibrary("USER32");
-      System.load("CYGWIN");
+    System.load("OpenGL4java");
   }
   
   
@@ -74,25 +98,10 @@ WindowListener, ComponentListener, KeyListener {
   /** Our initial Y position, in pixels. */
   protected int y = 0;
 
-  /** Our status with regards to context setup. */
-  private int contextStatus = NoContextYet;
-  
-  static final int NoContextYet       = 1;
-  static final int ContextEstablished = 2;
-
   static int initialWidth  = 400;
   static int initialHeight = 400;
 
   private OpenGLCapabilities capabilities = null;
-
-  synchronized int getContextStatus() {
-    return contextStatus;
-  }
-
-  synchronized void setContextStatus(int newStatus) {
-    contextStatus = newStatus;
-  }
-
 
   /** This is called to add in the standard listeners at startup.  We
       express interest in window and component events here to make
@@ -119,11 +128,12 @@ WindowListener, ComponentListener, KeyListener {
     OpenGLWidgetSetup();
   }
 
-  /** This sets our title, but does not instaniate the widget; that
+  /** This sets our title, but does not instantiate the widget; that
       actually happens in our run method. It happens in our run
       method because we want to setup all of our platform dependent
-      context in the proper thread.*/
+      context in the proper thread. */
   public OpenGLWidget(String title) {
+    System.out.println("OpenGLWidget about to be created");
     OpenGLWidgetSetup();
     setTitle(title);
   }
@@ -131,13 +141,10 @@ WindowListener, ComponentListener, KeyListener {
   /** This performs our platform dependent startup by calling
     openOpenGLWidget() and then starts out event loop. */
   public void run()  throws OpenGLWidgetOpenFailedException {
-    System.out.println("OpenGLWidget " + this + "run");
     if (openOpenGLWidget(x, y, getSize().width, getSize().height, 
 			 getTitle()) == false) {
       throw new OpenGLWidgetOpenFailedException ();
     }
-    System.out.println("Native open worked " + this);
-    setContextStatus(ContextEstablished);
     System.out.println("Starting event loop " + this);
     eventLoop();
   }  
@@ -150,7 +157,7 @@ WindowListener, ComponentListener, KeyListener {
       handleEvent for each of the events that we are interested in. */
   private native void eventLoop(); 
 
-  /** The native method that actually change's the window title on screen. */
+  /** The native method that actually changes the window title on screen. */
   private native void setNativeTitle(String title);
 
   /** We override the normal setTitle method here to make sure that
@@ -216,9 +223,14 @@ WindowListener, ComponentListener, KeyListener {
     ;
   }
 
-  /** This is called right after our gl context is created. */
+  private OpenGLContext context;
+
+  /** This is called right after our window is activated.  By default
+    we create an OpenGL context here --- so you will not get any
+    output if you override this method but don't invoke it. */
   public void glInit() {
-    ;
+    context = new OpenGLContext(this);
+    context.makeCurrent(this);
   }
 
 
@@ -325,21 +337,21 @@ WindowListener, ComponentListener, KeyListener {
 
   /** This is called when the mouse enters our widget and we have been
       registered for mouse events.  This method does nothing and is
-      here as part of our MouseListener implementation.*/
+      here as part of our MouseListener implementation. */
   public void mouseEntered(MouseEvent e) {
     ;
   }
 
   /** This is called when the mouse leaves our widget and we have been
       registered for mouse events.  This method does nothing and is
-      here as part of our MouseListener implementation.*/
+      here as part of our MouseListener implementation. */
   public void mouseExited(MouseEvent e) {
     ;
   }
 
   /** This is called when one of the mouse buttons goes down and we
       have been registered for mouse events.  This method does nothing
-      and is here as part of our MouseListener implementation.*/
+      and is here as part of our MouseListener implementation. */
   public void mousePressed(MouseEvent e) {
     ;
   }
@@ -374,20 +386,6 @@ WindowListener, ComponentListener, KeyListener {
       don't call this after you draw, nothing will be displayed on the
       screen. */
   public native void swapBuffers();
-  /** You need to call this if you want to invoke any OpenGL calls and
-      you are not calling them from the thread that this widget was
-      initialized in.  This will set the current thread's context to
-      match that of the starting widget. */
-  public void syncWithWidget() {
-    while(getContextStatus() != ContextEstablished) {
-      ;
-    }
-    getOpenGLContextIntoMyThread();
-  }
-
-  /** This actually does the low level work of making sure our thread's
-     OpenGL context matches that of the widget. */
-  private native void getOpenGLContextIntoMyThread();
 
   /*
    * GL Methods
@@ -395,7 +393,7 @@ WindowListener, ComponentListener, KeyListener {
 
 
   /*
-   * Misc
+   * Misc. OpenGL functions
    */
   public native void clearIndex(float c);
   public native void clearColor(float red, float green, float blue, 
@@ -476,24 +474,41 @@ WindowListener, ComponentListener, KeyListener {
   private native void loadMatrixf(float farr[]);
 
   public void loadMatrix(double darr[]) {
-    if (darr.length == 16)
-      loadMatrixd(darr);
+    if (darr.length == 16) {
+      loadMatrixd(darr); 
+    }else {
+      throw new 
+          IllegalArgumentException("Expected a double array of length 16");
+    }
   }
+
   public void loadMatrix(float darr[]) {
-    if (darr.length == 16)
+    if (darr.length == 16) {
       loadMatrixf(darr);
+    } else {
+      throw new 
+          IllegalArgumentException("Expected a double array of length 16");
+    }
   }
   
   private native void multMatrixd(double M[]);
   private native void multMatrixf(float M[]);
 
   public void multMatrix(double M[]) {
-    if (M.length == 16)
+    if (M.length == 16) {
       multMatrixd(M);
+    } else {
+      throw new 
+          IllegalArgumentException("Expected a double array of length 16");
+   }
   }
   public void multMatrix(float M[]) {
-    if (M.length == 16)
+    if (M.length == 16) {
       multMatrixf(M);
+    } else {
+      throw new 
+          IllegalArgumentException("Expected a double array of length 16");
+   }
   }
   private native void rotated(double angle, double x, double y, double z);
   private native void rotatef(float angle,  float x,  float y,  float z);
@@ -846,8 +861,8 @@ WindowListener, ComponentListener, KeyListener {
    * Vertex Arrays
    */ 
 
-  /* This is going to need some work translating the object arrays
-     into the void pointers that GL expects. */
+  /** This is going to need some work translating the object arrays
+    into the void pointers that GL expects. */
 
   public native void vertexPointer(int size, int stride,
 				   float ptr[]);
@@ -923,8 +938,8 @@ WindowListener, ComponentListener, KeyListener {
   
   private native void lightf(int light, int pname, float param);
   private native void lighti(int light, int pname, int param);
-  private native void lightfv(int light, int pname,  float params[]);
-  private native void lightiv(int light, int pname,  int params[]);
+  private native void lightfv(int light, int pname, float params[]);
+  private native void lightiv(int light, int pname, int params[]);
 
   public void light(int light, int pname, float param) {
     lightf(light, pname, param);
@@ -1029,17 +1044,17 @@ WindowListener, ComponentListener, KeyListener {
 
 
   private native void pixelMapfv(int map, int mapsize, float values[]);
-  public void pixelMap(int map, int mapsize, float values[]) {
-    pixelMapfv(map, mapsize, values);
+  public void pixelMap(int map, float values[]) {
+    pixelMapfv(map, values.length, values);
   }
   private native void pixelMapuiv(int map, int mapsize, int values[]);
   private native void pixelMapusv(int map, int mapsize, short values[]);
 
-  public void pixelMap(int map, int mapsize, int values[]) {
-    pixelMapuiv(map, mapsize, values);
+  public void pixelMap(int map, int values[]) {
+    pixelMapuiv(map, values.length, values);
   }
-  public void pixelMap(int map, int mapsize, short values[]) {
-    pixelMapusv(map, mapsize, values);
+  public void pixelMap(int map, short values[]) {
+    pixelMapusv(map, values.length, values);
   }
 
   private native void getPixelMapfv(int map, float values[]);
@@ -1063,8 +1078,8 @@ WindowListener, ComponentListener, KeyListener {
 			    float xmove, float ymove,
 			    byte bitmap[]);
   
-  public native String readPixels(int x, int y, int width, int height,
-			       int format, int type, String hello);
+  public native Object readPixels(int x, int y, int width, int height,
+				    int format, int type);
   
   public native void drawPixels(int width, int height,
 				int format, int type, byte pixels[]);
@@ -1075,9 +1090,6 @@ WindowListener, ComponentListener, KeyListener {
   public native void drawPixels(int width, int height,
 				int format, int type, float pixels[]);
 
-
-
-  
   public native void copyPixels(int x, int y, int width, int height,
 				int type);
   
@@ -1179,7 +1191,7 @@ WindowListener, ComponentListener, KeyListener {
   private native void texParameterfv(int target, int pname,
 				     float params[]);
   private native void texParameteriv(int target, int pname,
-				       int params[]);
+				     int params[]);
   public void texParameter(int target, int pname, float param) {
     texParameterf(target, pname, param);
   }
@@ -1260,7 +1272,7 @@ WindowListener, ComponentListener, KeyListener {
   
 
 
-/* 1.1 functions */
+  /* 1.1 functions */
 
   public native void genTextures(int textures[]);
 
@@ -1314,150 +1326,150 @@ WindowListener, ComponentListener, KeyListener {
 				   float pixels[]);
 
   /* CopyTexImage1D */
-    public native void copyTexImage1D(int target, int level,
-				      int internalformat,
-				      int x, int y,
-				      int width, int border);
+  public native void copyTexImage1D(int target, int level,
+				    int internalformat,
+				    int x, int y,
+				    int width, int border);
+  
+  
+  public native void copyTexImage2D(int target, int level,
+				    int internalformat,
+				    int x, int y,
+				    int width, int height, int border);
+  
+  
+  public native void copyTexSubImage1D(int target, int level,
+				       int xoffset, int x, int y,
+				       int width);
+  
+
+  public native void copyTexSubImage2D(int target, int level,
+				       int xoffset, int yoffset,
+				       int x, int y,
+				       int width, int height);
 
 
-    public native void copyTexImage2D(int target, int level,
-				      int internalformat,
-				      int x, int y,
-				      int width, int height, int border);
 
 
-    public native void copyTexSubImage1D(int target, int level,
-					 int xoffset, int x, int y,
-					 int width);
+  /*
+   * Evaluators
+   */
 
-
-    public native void copyTexSubImage2D(int target, int level,
-					 int xoffset, int yoffset,
-					 int x, int y,
-					 int width, int height);
-
-
-
-
-/*
- * Evaluators
- */
-
-    private native void map1d(int target, double u1, double u2, int stride,
-			      int order, double points[]);
-    private native void map1f(int target, float u1, float u2, int stride,
-			      int order, float points[]);
-
-    public void map1(int target, double u1, double u2, int stride,
-		      int order, double points[]) {
-      map1d(target, u1, u2, stride, order, points);
-    }
-    public void map1(int target, float u1, float u2, int stride,
-		      int order, float points[]) {
-      map1f(target, u1, u2, stride, order, points);
-    }
-
-    private native void map2d(int target,
-			     double u1, double u2, int ustride, int uorder,
-			     double v1, double v2, int vstride, int vorder,
-			     double points[]);
-    private native void map2f(int target,
-			     float u1, float u2, int ustride, int uorder,
-			     float v1, float v2, int vstride, int vorder,
-			     float points[]);
-
-    public void map2(int target,
-			     float u1, float u2, int ustride, int uorder,
-			     float v1, float v2, int vstride, int vorder,
-			     float points[]) {
-      map2f(target, u1, u2, ustride, uorder, 
-	    v1, v2, vstride, vorder, points);
-    }
-    public void map2(int target,
-			     float u1, float u2, int ustride, int uorder,
-			     float v1, float v2, int vstride, int vorder,
-			     double points[]) {
-      map2d(target, u1, u2, ustride, uorder, 
-	    v1, v2, vstride, vorder, points);
-    }
-    
-
-    private native void getMapdv(int target, int query, double v[]);
-    private native void getMapfv(int target, int query, float v[]);
-    private native void getMapiv(int target, int query, int v[]);
-
-    public void getMap(int target, int query, double v[]) {
-      getMapdv(target, query, v);
-    }
-    public void getMap(int target, int query, float v[]) {
-      getMapfv(target, query, v);
-    }
-    public void getMap(int target, int query, int v[]) {
-      getMapiv(target, query, v);
-    }
-
-
-    private native void evalCoord1d(double u);
-    private native void evalCoord1f(float u);
-    private native void evalCoord2d(double u, double v);
-    private native void evalCoord2f(float u, float v);
-
-    public void evalCoord(double u) {
-      evalCoord1d(u);
-    }
-    public void evalCoord(float u) {
-      evalCoord1f(u);
-    }
-    public void evalCoord(double u, double v) {
-      evalCoord2d(u, v);
-    }
-    public void evalCoord(float u, float v) {
-      evalCoord2f(u, v);
-    }
-
-    private native void mapGrid1d(int un, double u1, double u2);
-    private native void mapGrid1f(int un, float u1, float u2);
-    private native void mapGrid2d(int un, double u1, double u2,
-				  int vn, double v1, double v2);
-    private native void mapGrid2f(int un, float u1, float u2,
-				  int vn, float v1, float v2);
-
-    public void mapGrid(int un, double u1, double u2) {
-      mapGrid1d(un, u1, u2);
-    }
-    public void mapGrid(int un, float u1, float u2) {
-      mapGrid1f(un, u1, u2);
-    }
-    public void mapGrid(int un, double u1, double u2,
-			int vn, double v1, double v2) {
-      mapGrid2d(un, u1, u2, vn, v1, v2);
-    }
-    public void mapGrid(int un, float u1, float u2,
-			int vn, float v1, float v2) {
-      mapGrid2f(un, u1, u2, vn, v1, v2);
-    }
-
-    private native void evalPoint1(int i);
-    private native void evalPoint2(int i, int j);
-    
-    public void evalPoint(int i) {
-      evalPoint1(i);
-    }
-    public void evalPoint(int i, int j) {
-      evalPoint2(i, j);
-    }
-
-    private native void evalMesh1(int mode, int i1, int i2);
-    private native void evalMesh2(int mode, int i1, int i2, int j1, int j2);
-
-    public void evalMesh(int mode, int i1, int i2) {
-      evalMesh1(mode, i1, i2);
-    }
-    public void evalMesh(int mode, int i1, int i2, int j1, int j2) {
-      evalMesh2(mode, i1, i2, j1, j2);
-    }
-
-
+  private native void map1d(int target, double u1, double u2, int stride,
+			    int order, double points[]);
+  private native void map1f(int target, float u1, float u2, int stride,
+			    int order, float points[]);
+  
+  public void map1(int target, double u1, double u2, int stride,
+		   int order, double points[]) {
+    map1d(target, u1, u2, stride, order, points);
+  }
+  public void map1(int target, float u1, float u2, int stride,
+		   int order, float points[]) {
+    map1f(target, u1, u2, stride, order, points);
+  }
+  
+  private native void map2d(int target,
+			    double u1, double u2, int ustride, int uorder,
+			    double v1, double v2, int vstride, int vorder,
+			    double points[]);
+  private native void map2f(int target,
+			    float u1, float u2, int ustride, int uorder,
+			    float v1, float v2, int vstride, int vorder,
+			    float points[]);
+  
+  public void map2(int target,
+		   float u1, float u2, int ustride, int uorder,
+		   float v1, float v2, int vstride, int vorder,
+		   float points[]) {
+    map2f(target, u1, u2, ustride, uorder, 
+	  v1, v2, vstride, vorder, points);
+  }
+  public void map2(int target,
+		   float u1, float u2, int ustride, int uorder,
+		   float v1, float v2, int vstride, int vorder,
+		   double points[]) {
+    map2d(target, u1, u2, ustride, uorder, 
+	  v1, v2, vstride, vorder, points);
+  }
+  
+  
+  private native void getMapdv(int target, int query, double v[]);
+  private native void getMapfv(int target, int query, float v[]);
+  private native void getMapiv(int target, int query, int v[]);
+  
+  public void getMap(int target, int query, double v[]) {
+    getMapdv(target, query, v);
+  }
+  public void getMap(int target, int query, float v[]) {
+    getMapfv(target, query, v);
+  }
+  public void getMap(int target, int query, int v[]) {
+    getMapiv(target, query, v);
+  }
+  
+  
+  private native void evalCoord1d(double u);
+  private native void evalCoord1f(float u);
+  private native void evalCoord2d(double u, double v);
+  private native void evalCoord2f(float u, float v);
+  
+  public void evalCoord(double u) {
+    evalCoord1d(u);
+  }
+  public void evalCoord(float u) {
+    evalCoord1f(u);
+  }
+  public void evalCoord(double u, double v) {
+    evalCoord2d(u, v);
+  }
+  public void evalCoord(float u, float v) {
+    evalCoord2f(u, v);
+  }
+  
+  private native void mapGrid1d(int un, double u1, double u2);
+  private native void mapGrid1f(int un, float u1, float u2);
+  private native void mapGrid2d(int un, double u1, double u2,
+				int vn, double v1, double v2);
+  private native void mapGrid2f(int un, float u1, float u2,
+				int vn, float v1, float v2);
+  
+  public void mapGrid(int un, double u1, double u2) {
+    mapGrid1d(un, u1, u2);
+  }
+  public void mapGrid(int un, float u1, float u2) {
+    mapGrid1f(un, u1, u2);
+  }
+  public void mapGrid(int un, double u1, double u2,
+		      int vn, double v1, double v2) {
+    mapGrid2d(un, u1, u2, vn, v1, v2);
+  }
+  public void mapGrid(int un, float u1, float u2,
+		      int vn, float v1, float v2) {
+    mapGrid2f(un, u1, u2, vn, v1, v2);
+  }
+  
+  private native void evalPoint1(int i);
+  private native void evalPoint2(int i, int j);
+  
+  public void evalPoint(int i) {
+    evalPoint1(i);
+  }
+  public void evalPoint(int i, int j) {
+    evalPoint2(i, j);
+  }
+  
+  private native void evalMesh1(int mode, int i1, int i2);
+  private native void evalMesh2(int mode, int i1, int i2, int j1, int j2);
+  
+  public void evalMesh(int mode, int i1, int i2) {
+    evalMesh1(mode, i1, i2);
+  }
+  public void evalMesh(int mode, int i1, int i2, int j1, int j2) {
+    evalMesh2(mode, i1, i2, j1, j2);
+  }
+  
+  
   /*
    * Fog
    */
@@ -1482,9 +1494,9 @@ WindowListener, ComponentListener, KeyListener {
 
 
 
-/*
- * Selection and Feedback
- */
+  /*
+   * Selection and Feedback
+   */
 
   /* The normal GL size parameter is derived from buffer.size */
   public native void feedbackBuffer(int type, float buffer[]);
@@ -1503,17 +1515,15 @@ WindowListener, ComponentListener, KeyListener {
 
 
 
-/*
- * 1.0 Extensions
- * These are here for reference only right now --- they are not implemented.
- */
+  /** 1.0 Extensions. These extension functions are here for reference
+   * only right now --- they are not implemented.  */
 
-/* GL_EXT_blend_minmax */
+  /* GL_EXT_blend_minmax */
   public native void blendEquationEXT(int mode);
 
 
 
-/* GL_EXT_blend_color */
+  /* GL_EXT_blend_color */
   public native void blendColorEXT(float red, float green,
 				   float blue, float alpha);
   
@@ -1556,35 +1566,35 @@ WindowListener, ComponentListener, KeyListener {
    * 
    */
 
-  public native void lookAt(double eye_x,    double eye_y,    double eye_z,
-			    double center_x, double center_y, double center_z,
-			    double up_x,     double up_y,     double up_z);
+  public native void gluLookAt(double eyeX,    double eyeY,    double eyeZ,
+			       double centerX, double centerY, double centerZ,
+			       double upX,     double upY,    double upZ);
 
-  public native void ortho2D(double left, double right,
-			     double bottom, double top);
+  public native void gluOrtho2D(double left, double right,
+				double bottom, double top);
 
-  public native void perspective(double fovy, double aspect,
+  public native void gluPerspective(double fovy, double aspect,
 				 double zNear, double zFar);
 
-  public native void pickMatrix(double x, double y,
-				double width, double height,
-				int viewport[]);
+  public native void gluPickMatrix(double x, double y,
+				   double width, double height,
+				   int viewport[]);
 
   /** Unlike the native GLUT project function, we return the window
       coordinates in an array of three doubles. */
-  public native void project(double objx, double objy, double objz,
-			     double modelMatrix[],
-			     double projMatrix[],
-			     int viewport[],
-			     double win[]);
+  public native void gluProject(double objx, double objy, double objz,
+				double modelMatrix[],
+				double projMatrix[],
+				int viewport[],
+				double win[]);
 
   /** Unlike the native GLUT project function, we return the object
       coordinates in an array of three doubles. */
-  public native void unProject(double winx, double winy, double winz,
-			       double modelMatrix[],
-			       double projMatrix[],
-			       int viewport[],
-			       double obj[]);
+  public native void gluUnProject(double winx, double winy, double winz,
+				  double modelMatrix[],
+				  double projMatrix[],
+				  int viewport[],
+				  double obj[]);
 
 
   public native String gluErrorString(int errorCode);
@@ -1596,253 +1606,45 @@ WindowListener, ComponentListener, KeyListener {
  * Mipmapping and image scaling
  *
  */
-
-  public native int scaleImage(int format,
+  /** The parameters datain and dataout should be arrays pointing to the 
+    input image and the output image. */
+  public native int gluScaleImage(int format,
 				  int widthin, int heightin,
-				  int typein, Object datain[],
+				  int typein, Object datain,
 				  int widthout, int heightout,
-				  int typeout, Object dataout[]);
+				  int typeout, Object dataout);
 
-  public native int build1DMipmaps(int target, int components,
-				   int width, int format,
-				   int type, byte data[]);
+  public native int gluBuild1DMipmaps(int target, int components,
+				      int width, int format,
+				      int type, byte data[]);
 
-  public native int build1DMipmaps(int target, int components,
-				   int width, int format,
-				   int type, short data[]);
+  public native int gluBuild1DMipmaps(int target, int components,
+				      int width, int format,
+				      int type, short data[]);
 
-  public native int build1DMipmaps(int target, int components,
-				   int width, int format,
-				   int type, int data[]);
+  public native int gluBuild1DMipmaps(int target, int components,
+				      int width, int format,
+				      int type, int data[]);
 
-  public native int build1DMipmaps(int target, int components,
-				   int width, int format,
-				   int type, float data[]);
+  public native int gluBuild1DMipmaps(int target, int components,
+				      int width, int format,
+				      int type, float data[]);
 
-  public native int build2DMipmaps(int target, int components,
-				   int width, int height, int format,
-				   int type, byte data[]);
+  public native int gluBuild2DMipmaps(int target, int components,
+				      int width, int height, int format,
+				      int type, byte data[]);
 
-  public native int build2DMipmaps(int target, int components,
-				   int width, int height, int format,
-				   int type, short data[]);
+  public native int gluBuild2DMipmaps(int target, int components,
+				      int width, int height, int format,
+				      int type, short data[]);
 
-  public native int build2DMipmaps(int target, int components,
-				   int width, int height, int format,
-				   int type, int data[]);
+  public native int gluBuild2DMipmaps(int target, int components,
+				      int width, int height, int format,
+				      int type, int data[]);
 
-  public native int build2DMipmaps(int target, int components,
-				   int width, int height, int format,
-				   int type, float data[]);
-
-  /*
-   * Quadrics
-   */
-
-  private native void gluQuadricDrawStyle(int GLUQuadric,
-					  int drawStyle);
-
-  public void gluQuadricDrawStyle(GLUQuadric quadObject,
-					 int drawStyle) {
-    gluQuadricDrawStyle(quadObject.heapPointer(), drawStyle);
-  }
-
-  private native void gluQuadricOrientation(int GLUQuadric,
-					   int orientation);
-  public void gluQuadricOrientation(GLUQuadric quadObject,
-					   int orientation) {
-    gluQuadricOrientation(quadObject.heapPointer(), orientation);
-  }
-
-  private native void gluQuadricNormals(int GLUQuadric, int normals);
-  public void gluQuadricNormals(GLUQuadric quadObject, int normals) {
-    gluQuadricNormals(quadObject.heapPointer(), normals);
-  }
-
-  public native void gluQuadricTexture(GLUQuadric quadObject,
-				       boolean textureCoords);
-
-  /*public native void gluQuadricCallback(GLUQuadric qobj,
-					int which, void (*fn)());*/
-
-  public native void gluCylinder(int GLUQuadric,
-				 double baseRadius,
-				 double topRadius,
-				 double height,
-				 int slices, int stacks);
-  public void gluCylinder(GLUQuadric qobj,
-			  double baseRadius,
-			  double topRadius,
-			  double height,
-			  int slices, int stacks) {
-    gluCylinder(qobj.heapPointer(),
-		baseRadius, topRadius, height, slices, stacks);
-  }
-
-  public native void gluSphere(int GLUQuadric,
-			       double radius, int slices, int stacks);
-  public void gluSphere(GLUQuadric qobj,
-			double radius, int slices, int stacks) {
-    gluSphere(qobj.heapPointer(), radius, slices, stacks);
-  }
-  
-
-  private native void gluDisk(int GLUQuadric,
-			      double innerRadius, double outerRadius,
-			      int slices, int loops);
-
-
-  public void gluDisk(GLUQuadric qobj,
-		      double innerRadius, double outerRadius,
-		      int slices, int loops) {
-    gluDisk(qobj.heapPointer(), innerRadius, outerRadius, 
-	    slices, loops);
-  }
-
-
-  private native void gluPartialDisk(int GLUQuadric, double innerRadius,
-				    double outerRadius, int slices, int loops,
-				    double startAngle, double sweepAngle);
-
-  public void gluPartialDisk(GLUQuadric qobj, double innerRadius,
-			     double outerRadius, int slices, int loops,
-			     double startAngle, double sweepAngle) {
-    gluPartialDisk(qobj.heapPointer(), innerRadius, outerRadius,
-		   slices, loops, startAngle, sweepAngle);
-  }
-    
-
-
-
-  /*
-   *
-   * Nurbs
-   *
-   */
-
-  private native void gluLoadSamplingMatrices(int GLUNurbs,
-					      float modelMatrix[],
-					      float projMatrix[],
-					      int viewport[]);
-  public void gluLoadSamplingMatrices(GLUNurbs nobj,
-				      float modelMatrix[],
-				      float projMatrix[],
-				      int viewport[]) {
-    gluLoadSamplingMatrices(nobj.heapPointer(), modelMatrix, projMatrix,
-			    viewport);
-  }
-			    
-       
-  private native void gluNurbsProperty(int nobj, int property,
-				       float value);
-  public void gluNurbsProperty(GLUNurbs nobj, int property,
-				      float value) {
-    gluNurbsProperty(nobj.heapPointer(), property, value);
-  }
-
-  /*public native void gluGetNurbsProperty(GLUNurbs nobj, int property,
-					  float *value);*/
-
-  private native void gluBeginCurve(int nobj);
-  public void gluBeginCurve(GLUNurbs nobj) {
-    gluBeginCurve(nobj.heapPointer());
-  }
-
-  private native void gluEndCurve(int nobj);
-  public void gluEndCurve(GLUNurbs nobj) {
-    gluEndCurve(nobj.heapPointer());
-  }
-
-  private native void gluNurbsCurve(int nobj,
-				    float knot[], int stride, 
-				    float ctlarray[], int order,
-				    int type);
-
-  public void gluNurbsCurve(GLUNurbs nobj, float knot[], int stride, 
-			    float ctlarray[], int order,
-			    int type) {
-    gluNurbsCurve(nobj.heapPointer(), knot, stride, ctlarray, order, type);
-  }
-
-  private native void gluBeginSurface(int nobj);
-  public void gluBeginSurface(GLUNurbs nobj) {
-    gluBeginSurface(nobj.heapPointer());
-  }
-
-  private native void gluEndSurface(int nobj);
-  public void gluEndSurface(GLUNurbs nobj) {
-    gluEndSurface(nobj.heapPointer());
-  }
-
-  private native void gluNurbsSurface(int nobj,
-				      float sknot[],
-				      float tknot[],
-				      int s_stride, int t_stride,
-				      float ctlarray[],
-				      int sorder, int torder, int type);
-  public void gluNurbsSurface(GLUNurbs nobj,
-			      float sknot[],
-			      float tknot[],
-			      int s_stride, int t_stride,
-			      float ctlarray[],
-			      int sorder, int torder, int type) {
-    gluNurbsSurface(nobj.heapPointer(),
-		    sknot, tknot, s_stride, t_stride, ctlarray, 
-		    sorder, torder, type);
-  }
-
-  private native void gluBeginTrim(int nobj);
-  public void gluBeginTrim(GLUNurbs nobj) {
-    gluBeginTrim(nobj.heapPointer());
-  }
-
-  private native void gluEndTrim(int nobj);
-  public void gluEndTrim(GLUNurbs nobj) {
-    gluEndTrim(nobj.heapPointer());
-  }
-
-  private native void gluPwlCurve(int nobj, float array[],
-				 int stride, int type );
-  public void gluPwlCurve(GLUNurbs nobj, float array[],
-				 int stride, int type ) {
-    gluPwlCurve(nobj.heapPointer(), array, stride, type);
-  }
-
-  /*public native void gluNurbsCallback( GLUNurbs nobj, int which, void (*fn)() );*/
-
-
-
-/*
- *
- * Polygon tesselation
- *
- */
-
-
-  
-  /*public native void gluTessCallback(GLUTriangulator tobj, int which,
-				   void (*fn)() );*/
-
-  
-  private native void gluBeginPolygon(int tobj);
-  
-  public void gluBeginPolygon(GLUTriangulator tobj) {
-    gluBeginPolygon(tobj.heapPointer());
-  }
-  
-  private native void gluEndPolygon(int tobj);
-  public void gluEndPolygon(GLUTriangulator tobj) {
-    gluEndPolygon(tobj.heapPointer());
-  }
-  
-  private native void gluNextContour(int tobj, int type);
-  public void gluNextContour(GLUTriangulator tobj, int type) {
-    gluNextContour(tobj.heapPointer(), type);
-  }
-
-  /*public native void gluTessVertex(GLUTriangulator tobj, double v[],
-				   void *data);*/
-
+  public native int gluBuild2DMipmaps(int target, int components,
+				      int width, int height, int format,
+				      int type, float data[]);
 
 
 /*
@@ -1852,8 +1654,6 @@ WindowListener, ComponentListener, KeyListener {
  */
 
   public native String gluGetString( int name );
-
-
 
 }
 
