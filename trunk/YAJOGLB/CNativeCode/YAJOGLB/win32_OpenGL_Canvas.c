@@ -267,12 +267,3 @@ JNIEXPORT void JNICALL Java_OpenGL_Canvas_nativeSwapBuffers
   SwapBuffers(info.hDC);
   freeCanvasInfo(env, info);
 }
-
-
-
-/* Returns the string for our data access class. */
-JNIEXPORT jstring JNICALL Java_OpenGL_Canvas_dataAccessClass
-  (JNIEnv *env, jclass clasz)
-{
-  return (*env)->NewStringUTF(env, "sun.awt.windows.WindowspDataAccess");
-}

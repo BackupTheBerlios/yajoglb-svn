@@ -1,4 +1,5 @@
-Empty right now.
+Remove the private data access information from the Canvas class.
+
 
 
 

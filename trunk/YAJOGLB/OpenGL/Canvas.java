@@ -165,21 +165,4 @@ abstract public class Canvas extends java.awt.Canvas {
 				    Object object, Object arguments[]);
   public native Object lockedMethod(String methodName,
 				    Object object, Object arguments[]);
-
-  
-  /** Returns the class to use for data access. */
-  static private native String dataAccessClass();
-
-  private OpenGLpDataAccess dataAccess;
-
-  /** Returns the data access object used to return our drawable and
-      hDC. */
-  OpenGLpDataAccess getDataAccess() {
-    return dataAccess;
-  }
-
-  /** Returns the Win32 hDC. */
-  int getHDC() {
-    return dataAccess.getHDC(this);
-  }
 }
