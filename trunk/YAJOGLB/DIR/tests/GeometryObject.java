@@ -1,7 +1,7 @@
 /*
  * Geometry object.
  *
- * $Id: GeometryObject.java,v 1.3 2001/06/10 19:14:11 razeh Exp $
+ * $Id: GeometryObject.java,v 1.4 2001/06/10 20:37:27 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -15,5 +15,5 @@ public interface GeometryObject {
   /** Called when the Geometry Object should render itself. */
   public void paint(GeometryViewer viewer, GL gl, GLU glu);
   /** This is called when our geometry viewer receives glInit(). */
-  public void glIn(GeometryViewer viewer, GL gl, GLU glu);
+  public void glInit(GeometryViewer viewer, GL gl, GLU glu);
 }
