@@ -124,7 +124,8 @@ JNIEXPORT void JNICALL Java_OpenGL_Canvas_nativeGlInit
  * Signature: (Ljava/lang/reflect/Method;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
  */
 JNIEXPORT jobject JNICALL Java_OpenGL_Canvas_lockedMethod
-(JNIEnv *env, jobject canvas, jobject method, jobject object, jobjectArray args)
+(JNIEnv *env, jobject canvas, jobject method, jobject object, 
+ jobjectArray args)
 {
   JAWT awt;
   JAWT_DrawingSurface* ds;
@@ -163,20 +164,35 @@ JNIEXPORT jobject JNICALL Java_OpenGL_Canvas_lockedMethod
     jmethodID methodID = (*env)->FromReflectedMethod(env, method);
 
     if (methodID) {
-      printf("calling method!\n");
-      returnObject = (*env)->CallObjectMethod(env, object, methodID, args);
-      printf("called method\n");
+      if (args != NULL) {
+	// If we have any arguments we need to convert them into a
+	// jvalues.
+	const jsize argsLength = (*env)->GetArrayLength(env, args);      
+	jvalue *argsAsValues = (jvalue*)privateMalloc(sizeof(jvalue) * argsLength);
+	int i = 0;
+
+	if (argsAsValues == NULL) {
+	  handleOutOfMemoryError(env, "Ran out of memory while trying to invoke a locked method.");
+	  return returnObject;
+	}
+	for(i = 0; i < argsLength; i++) {
+	  argsAsValues[i].l = (*env)->GetObjectArrayElement(env, args, i);
+	}
+	returnObject = (*env)->CallObjectMethodA(env, object, methodID, 
+						 argsAsValues);
+	if (argsAsValues) privateFree(argsAsValues);
+      } else {
+	// I am not sure why this works, since we aren't supplying all
+	// of the arguments that our Java function requires, but I haven't
+	// found any problems with the JDK 1.3.
+	returnObject = (*env)->CallObjectMethod(env, object, methodID);
+      }
+
+    } else {
+      handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get methodID.");
+      return returnObject;
     }
     
-    /*
-    jclass methodClass = (*env)->GetObjectClass(env, method);
-    jmethodID methodID = getMethodID(env, methodClass, "invoke", 
-				     "(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;",
-				     "Unable to get invoke method.");
-    if (methodID) {
-      returnObject = (*env)->CallObjectMethod(env, method, methodID, object, args);
-    }
-    */
   }
 
   // Free the drawing surface info

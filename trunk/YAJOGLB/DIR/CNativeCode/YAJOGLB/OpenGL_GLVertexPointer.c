@@ -25,7 +25,7 @@
 /*
  * OpenGL_OpenGLVertexPointer.c
  * 
- * $Id: OpenGL_GLVertexPointer.c,v 1.3 2001/07/06 23:40:05 razeh Exp $
+ * $Id: OpenGL_GLVertexPointer.c,v 1.4 2002/04/14 18:26:46 razeh Exp $
  *
  * This files implements the native interface for the
  * OpenGLVertexPointer class.  All of the normal OpenGL vertex pointer
@@ -36,6 +36,7 @@
 
 /* With the Cygnus tools you need to include the GL stuff first. */
 #include "SystemIncludes.h"
+#include <string.h>
 #include <GL/gl.h>
 
 #include "cygnusFixes.h"

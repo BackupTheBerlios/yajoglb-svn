@@ -25,7 +25,7 @@
 /*
  * OpenGL_OpenGLTesselator.c
  *
- * $Id: OpenGL_GLUTesselator.c,v 1.8 2001/07/06 23:40:05 razeh Exp $
+ * $Id: OpenGL_GLUTesselator.c,v 1.9 2002/04/14 18:26:46 razeh Exp $
  *
  * This implements some of the native methods that are needed to
  * support tesselators.  The primary problem with tesselators is the
@@ -510,8 +510,8 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginContour
 #ifdef GLU_VERSION_1_2
   tesselatorContainer *container = (tesselatorContainer*)(TO_POINTER(tess));
 #ifdef DEBUG
-  printf("beginContour %I64d %p %p\n", 
-	 tess, container, container->tesselator);
+  printf("beginContour %d %p %p\n", 
+	 (int)tess, container, container->tesselator);
 #endif
   gluTessBeginContour(container->tesselator);
   printf("end of beginContour\n");
@@ -532,7 +532,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginPolygon
   polygonDataContainer *polygonDataContainer = NULL;
 	
 #ifdef DEBUG
-  printf("beginPolygon %I64d %p %p\n", tess, container, container->tesselator);
+  printf("beginPolygon %d %p %p\n", (int)tess, container, container->tesselator);
 #endif
   //polygonDataContainer = newPolygonDataContainer(env, container, polygonData);
   if (NULL != polygonDataContainer) {
@@ -574,7 +574,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_endPolygon
   tesselatorContainer *container = (tesselatorContainer*)(TO_POINTER(tess));
 
 #ifdef DEBUG
-  printf("gluTessEndPolygon %p\n", tess);
+  printf("gluTessEndPolygon %d\n", (int)tess);
   fflush(stdout);
 #endif
   //gluTessEndPolygon(container->tesselator);
@@ -708,7 +708,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_disableEdgeFlag
 #ifdef GLU_VERSION_1_2
   tesselatorContainer *container = (tesselatorContainer*)(TO_POINTER(tess));
 #ifdef DEBUG
-  printf("disableEdgeFlag %I64d\n", tess);
+  printf("disableEdgeFlag %d\n", (int)tess);
 #endif
   gluTessCallback(container->tesselator, GLU_TESS_EDGE_FLAG_DATA, NULL);
 #ifdef DEBUG
