@@ -1,3 +1,10 @@
+/*
+ * $Id: WindowspDataAccess.java,v 1.3 1999/02/13 18:55:59 razeh Exp $
+ *
+ * Taken (and then modified) from jogl-0.7
+ *
+ */
+
 package sun.awt.windows;
 
 import sun.awt.windows.*;
@@ -10,14 +17,9 @@ import java.awt.peer.*;
 /**
  * This class is used to access the raw window pointer and device
  * context from a canvas object.  It will, of course, only function
- * under windows. */
-public class WindowspDataAccess implements OpenGLpDataAccess
-{
-  public int getInfo( Graphics g )
-    {
-      return ((WGraphics)g).pData;
-    }
-
+ * under windows. 
+*/
+public class WindowspDataAccess implements OpenGLpDataAccess {
   public int getHWnd(Canvas canvas) {
     int Hwnd;
     WCanvasPeer peer = (WCanvasPeer) canvas.getPeer();
@@ -42,4 +44,19 @@ public class WindowspDataAccess implements OpenGLpDataAccess
     surface.unlock();
     return HDC;
   }
+
+
+  /* X11 accessors */
+  public int getColormapID(Canvas g) {
+    return 0;
+  }
+
+  public int getDrawable(Canvas g) {
+    return 0;
+  }
+
+  public int getDisplay(Canvas g) {
+    return 0;
+  }
+
 }
