@@ -1,7 +1,7 @@
 /*
  * VertexPointerTest class
  *
- * $Id: VertexPointer.java,v 1.2 1998/11/01 02:23:55 razeh Exp $
+ * $Id: VertexPointer.java,v 1.3 1999/05/02 23:32:02 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -116,13 +116,18 @@ public class VertexPointer implements GeometryObject, GLConstants {
     VertexPointer  vertexPointer    = new VertexPointer();
     GeometryViewer viewer           = new GeometryViewer();
     ExitableFrame  frame            = new ExitableFrame();
-    
+    Panel          centerPanel      = new Panel();
 
     viewer.addElement(vertexPointer);
     viewer.addElement(new Axis());
+    viewer.setBackground(java.awt.Color.black);
 
-    frame.setLayout(new GridLayout(1,1));
-    frame.add(viewer);
+    centerPanel.add(viewer);
+    centerPanel.setLayout(new GridLayout(1,1));
+    frame.setLayout(new BorderLayout());
+    frame.add(centerPanel);
+
+    frame.setBackground(java.awt.Color.black);
     frame.setTitle("Vertex Pointer Test");
     frame.pack();
     frame.setVisible(true);
