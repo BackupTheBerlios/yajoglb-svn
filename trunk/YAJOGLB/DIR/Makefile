@@ -24,7 +24,7 @@ NATIVECODEDIR   = CNativeCode
 SHELL=/gnuwin32/b18/H-i386-cygwin32/bin/sh
 
 # The header files for our native code
-NATIVEHEADERS = OpenGL_OpenGLWidget.h OpenGL_OpenGLEvent.h \
+NATIVEHEADERS = OpenGL_OpenGLWidget.h \
 		OpenGL_GLUQuadric.h OpenGL_GLUNurbs.h \
 	        OpenGL_GLUTriangulator.h
 
@@ -53,9 +53,6 @@ documentation ::
 
 OpenGL_OpenGLWidget.h: $(PACKAGEDIR)/OpenGLWidget.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLWidget
-
-OpenGL_OpenGLEvent.h: $(PACKAGEDIR)/OpenGLEvent.java
-	$(JAVAH) -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLEvent
 
 OpenGL_GLUQuadric.h: $(PACKAGEDIR)/GLUQuadric.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLUQuadric
