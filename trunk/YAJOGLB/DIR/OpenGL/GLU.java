@@ -1,7 +1,7 @@
 /* 
  * GLU class
  *
- * $Id: GLU.java,v 1.1 1998/09/10 00:55:58 razeh Exp $
+ * $Id: GLU.java,v 1.2 1998/11/01 02:16:52 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -9,14 +9,14 @@
 
 package OpenGL;
 
-/** This contains all of the GLU methods. 
+/** This contains all of the GLU methods. Unlike the core GL methods,
+ * the GLU methods have not had their "glu" prefix removed.
  *
  * @author Robert Allan Zeh (razeh@balr.com)
  *
- * @version 0.1
- */
+ * @version 0.1 */
 
-public class GLU implements OpenGLUConstants {
+public class GLU implements GLUConstants {
   public native void gluLookAt(double eyeX,    double eyeY,    double eyeZ,
 			       double centerX, double centerY, double centerZ,
 			       double upX,     double upY,    double upZ);
