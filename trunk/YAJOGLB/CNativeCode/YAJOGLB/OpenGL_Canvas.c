@@ -39,7 +39,6 @@ static void nativeLockingMethod
 {
   JAWT awt;
   JAWT_DrawingSurface* ds;
-  JAWT_DrawingSurfaceInfo* dsi;
   jboolean result;
   jint lock;
   
@@ -66,9 +65,6 @@ static void nativeLockingMethod
     return;
   }
 
-  // Get the drawing surface info
-  dsi = ds->GetDrawingSurfaceInfo(ds);
-  
   {
     jclass canvasClass = (*env)->GetObjectClass(env, canvas);
     jmethodID methodID = getMethodID(env, canvasClass, methodName, "()V",
@@ -77,9 +73,6 @@ static void nativeLockingMethod
       (*env)->CallVoidMethod(env, canvas, methodID);
     }
   }
-
-  // Free the drawing surface info
-  ds->FreeDrawingSurfaceInfo(dsi);
 
   // Unlock the drawing surface
   ds->Unlock(ds);
@@ -130,7 +123,6 @@ JNIEXPORT jobject JNICALL Java_OpenGL_Canvas_lockedMethod
 {
   JAWT awt;
   JAWT_DrawingSurface* ds;
-  JAWT_DrawingSurfaceInfo* dsi;
   jboolean result;
   jint lock;
   jobject returnObject = 0;
@@ -154,15 +146,6 @@ JNIEXPORT jobject JNICALL Java_OpenGL_Canvas_lockedMethod
   lock = ds->Lock(ds);
   if (lock & JAWT_LOCK_ERROR) {
     handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to lock canvas.");
-    awt.FreeDrawingSurface(ds);
-    return returnObject;
-  }
-
-  // Get the drawing surface info
-  dsi = ds->GetDrawingSurfaceInfo(ds);
-  if (dsi == NULL) {
-    handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get drawing surface information.");
-    ds->Unlock(ds);
     awt.FreeDrawingSurface(ds);
     return returnObject;
   }
@@ -195,9 +178,6 @@ JNIEXPORT jobject JNICALL Java_OpenGL_Canvas_lockedMethod
       returnObject = (*env)->CallObjectMethod(env, object, methodID, NULL);
     }
   }
-
-  // Free the drawing surface info
-  ds->FreeDrawingSurfaceInfo(dsi);
 
   // Unlock the drawing surface
   ds->Unlock(ds);
