@@ -48,7 +48,7 @@ void freeCanvasInfo(JNIEnv *env, CanvasInfo info)
   JAWT awt;
   jboolean result;
 
-  awt.version = JAWT_VERSION_1_3;
+  awt.version = JAWT_VERSION_1_4_1_3;
   result = JAWT_GetAWT(env, &awt);
   if (result == JNI_FALSE) {
     handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT_GetAWT.\n");
@@ -82,7 +82,7 @@ CanvasInfo getCanvasInfo(JNIEnv *env, jobject canvas)
     jboolean result;
     jint lock;
 
-    awt.version = JAWT_VERSION_1_3;
+    awt.version = JAWT_VERSION_1_4;
     result = JAWT_GetAWT(env, &awt);
     if (result == JNI_FALSE) {
       handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT_GetAWT.\n");

@@ -44,7 +44,7 @@ static void nativeLockingMethod
   jint lock;
   
   // Get the AWT
-  awt.version = JAWT_VERSION_1_3;
+  awt.version = JAWT_VERSION_1_4;
   result = JAWT_GetAWT(env, &awt);
   if (result == JNI_FALSE) {
     handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT.");
@@ -136,7 +136,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_Canvas_lockedMethod
   jobject returnObject = 0;
 
   // Get the AWT
-  awt.version = JAWT_VERSION_1_3;
+  awt.version = JAWT_VERSION_1_4;
   result = JAWT_GetAWT(env, &awt);
   if (result == JNI_FALSE) {
     handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT.");
