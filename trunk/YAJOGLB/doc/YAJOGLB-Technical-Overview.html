@@ -29,9 +29,7 @@ still traces of Cygnus's code in the distribution though.</P>
 support file renaming, so I switched to CVS.  I had hoped to use a
 single common repository for Linux and Windows, but that did not work
 out.  I tried placing the repository on a FAT32 partition that was
-shared by Linux and Windows; there were lots of case problems.  If
-anyone has a single machine solution that works please send me some
-email.
+shared by Linux and Windows; there were lots of case problems.
 
 <P> Now that the project is being hosted by <a
 HREF="http://berlios.de">berlios.de</A> I'm able to use Subversion for
@@ -177,15 +175,15 @@ cygwin is installed for the make command that Visual C++ is installed
 for the C compiler.  The Java software development kit also needs to
 be installed, so that you can generate native header files and compile
 the java code.  Then, in the top level directory type <code>make -k
-NATIVEHEADERS</code>.  You will see a large number of errors for the
-native code, which you can safely ignore, because you are only using
-the make to generate the native header files.  Once the native header
-files have been generated you can build the native library with Visual
-C++ (the project files are included, but you will probably need to
-change some of the include directories).  The library will be placed
-in the Release or Debug directory, depending on what you ask Visual
-C++ to compile.  Their is a target in the Makefile named allJava that
-will build all of the Java source.
+alljava NATIVEHEADERS</code>.  You will see a large number of errors
+for the native code, which you can safely ignore, because you are only
+using the make to generate the native header files.  Once the native
+header files have been generated you can build the native library with
+Visual C++ (the project files are included in the win32 directory, but
+you will probably need to change some of the include directories).
+The library will be placed in the Release or Debug directory,
+depending on what you ask Visual C++ to compile.  Their is a target in
+the Makefile named allJava that will build all of the Java source.
 
 <H2>Getting Started</H2>
 <P>This section describes how to write the simplest possible OpenGL
@@ -392,10 +390,9 @@ class GeometryViewer {
 <ul>
 <li>Fix the Java builds in the Makefile --- it is not taking advantage of the fact that javac will automatically rebuild dependencies.
 <li>Add a subclass for GeometryViewer that gracefully handles animations.
-<li>Replace the current platform dependent thread and environment methods with the JNI methods that were added to support getting to a JVM from a thread.
 </ul>
 
 <HR>
 <ADDRESS>Back to Robert Zeh's <A HREF="http://home.earthlink.net/~rzeh">home page</A>.<BR>
-Last Changed August 14, 2004. </ADDRESS></BODY>
+Last Changed September 6, 2004. </ADDRESS></BODY>
 </HTML>

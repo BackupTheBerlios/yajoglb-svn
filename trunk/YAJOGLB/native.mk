@@ -3,7 +3,7 @@ CSRCS:=
 include CNativeCode/YAJOGLB/module.mk
 
 # The header files for our native code
-NATIVEHEADERS := OpenGL_GLUQuadric.h OpenGL_GLUNurbs.h OpenGL_Context.h OpenGL_GLUTesselator.h OpenGL_GLU.h OpenGL_GL.h OpenGL_GLVertexPointer.h OpenGL_Canvas.h OpenGL_GLFeedbackBuffer.h OpenGL_CallbackObject.h OpenGL_GLNativeFloatArray.h OpenGL_GLNativeIntArray.h OpenGL_GLSelectionBuffer.h
+NATIVEHEADERS := OpenGL_GLUQuadric.h OpenGL_GLUNurbs.h OpenGL_Context.h OpenGL_GLUTesselator.h OpenGL_GLU.h OpenGL_GL.h OpenGL_GLVertexPointer.h OpenGL_Canvas.h OpenGL_GLFeedbackBuffer.h OpenGL_CallbackObject.h OpenGL_GLNativeFloatArray.h OpenGL_GLNativeIntArray.h OpenGL_GLSelectionBuffer.h OpenGL_GLUT.h
 NATIVEHEADERS := $(NATIVEHEADERS:%.h=$(NATIVECODEDIR)/%.h)
 
 # How to actually build the automatic Java headers.  On my system

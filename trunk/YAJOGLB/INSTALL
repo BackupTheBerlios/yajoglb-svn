@@ -4,6 +4,9 @@ INSTALLATION INSTRUCTIONS
 Linux and Solaris
 -----------------
 
+You will need python, GNU make, a C compiler, and a Java SDK to build
+YAJOGLB.
+
 You will have to make a few edits so that the Makefiles can find your
 Java installation.  If you are using Linux edit config-linux.mk, and
 make sure that JNI_GENERIC_HEADERS and JNI_SPECIFIC_HEADERS point to
@@ -16,12 +19,34 @@ If you are using Linux you will also need to edit the mklib.linux and
 mklib.solaris scripts.  In each case, modify the EXTRALIBS variable to
 include the directory where the jawt library can be found.
 
+Once you have edited the config files you can just type in "make".
+
 
 Windows
 -------
-To Do.
+
+You will need Visual C++, GLUT, a Java SDK and GNU make to build YAJOGLB.  I
+personally use Cygwin to build YAJOGLB under windows.
+
+The Visual C++ project directory is the win32 directory.  The native
+side needs to find the java headers, so you will have to edit the
+include path to point to the java installation on your machine.  
+
+You will also have to edit the include path to include the glut.h
+header for GLUT.
+
+You will have to edit the config-win32 file so that the JLIB points to
+your java library.
+
+You need to build the Java side first, so that it can generate the
+header files needed by the native interface.  To build the Java
+classes and the native headers type "make -k alljava NATIVEHEADERS".
+
+The build the C side with Visual C++.
 
 
 MacOS X
 -------
-To Do.
+
+
+To do.

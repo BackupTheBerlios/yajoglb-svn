@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "c:\razeh\opengl\oglsdk\include" /I "c:\j2sdk1.4.1_01\include" /I "c:\j2sdk1.4.1_01\include\win32" /I "f:\devstudio\vc\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "USE_JAWT" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "c:\razeh\opengl\oglsdk\include" /I "f:\devstudio\vc\include" /I "d:\razeh\opengl\glut-3.7.6-bin" /I "c:\j2sdk1.4.1_01\include" /I "c:\j2sdk1.4.1_01\include\win32" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib libcmt.lib jawt.lib /nologo /subsystem:windows /dll /machine:I386 /libpath:"c:\j2sdk1.4.1_01\lib" /libpath:"\devstudio\vc\lib"
+# ADD LINK32 opengl32.lib glu32.lib glut32.lib kernel32.lib user32.lib gdi32.lib libcmt.lib jawt.lib /nologo /subsystem:windows /dll /machine:I386 /libpath:"\devstudio\vc\lib" /libpath:"d:\razeh\opengl\glut-3.7.6-bin" /libpath:"c:\j2sdk1.4.1_01\lib"
 
 !ELSEIF  "$(CFG)" == "YAJOGLB - Win32 Debug"
 
@@ -69,7 +69,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "c:\j2sdk1.4.1_01\include" /I "c:\j2sdk1.4.1_01\include\win32" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "USE_JAWT" /FR /FD /c
+# ADD CPP /nologo /MTd /W3 /WX /Gm /GX /ZI /Od /I "d:\razeh\opengl\glut-3.7.6-bin" /I "c:\j2sdk1.4.1_01\include" /I "c:\j2sdk1.4.1_01\include\win32" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /FR /FD /c
 # SUBTRACT CPP /X /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # SUBTRACT BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib libcmt.lib jawt.lib /nologo /subsystem:windows /dll /debug /machine:I386 /nodefaultlib /pdbtype:sept /libpath:"c:\j2sdk1.4.1_01\lib" /libpath:"f:\devstudio\vc\lib"
+# ADD LINK32 opengl32.lib glu32.lib glut32.lib kernel32.lib user32.lib gdi32.lib libcmt.lib jawt.lib /nologo /subsystem:windows /dll /debug /machine:I386 /nodefaultlib /pdbtype:sept /libpath:"f:\devstudio\vc\lib" /libpath:"d:\razeh\opengl\glut-3.7.6-bin" /libpath:"c:\j2sdk1.4.1_01\lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -91,123 +91,127 @@ LINK32=link.exe
 # Name "YAJOGLB - Win32 Debug"
 # Begin Source File
 
-SOURCE=.\CallbackObject.c
+SOURCE=..\CNativeCode\YAJOGLB\CallbackObject.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\CallbackObject.h
+SOURCE=..\CNativeCode\YAJOGLB\CallbackObject.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\CanvasInfo.c
+SOURCE=..\CNativeCode\YAJOGLB\CanvasInfo.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\CapabilitiesAccessors.c
+SOURCE=..\CNativeCode\YAJOGLB\CapabilitiesAccessors.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\cygnusFixes.h
+SOURCE=..\CNativeCode\YAJOGLB\cygnusFixes.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\EnvDictionary.c
+SOURCE=..\CNativeCode\YAJOGLB\EnvDictionary.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\EnvDictionary.h
+SOURCE=..\CNativeCode\YAJOGLB\EnvDictionary.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ErrorHandling.c
+SOURCE=..\CNativeCode\YAJOGLB\ErrorHandling.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\ErrorHandling.h
+SOURCE=..\CNativeCode\YAJOGLB\ErrorHandling.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\JNIInterface.c
+SOURCE=..\CNativeCode\YAJOGLB\JNIInterface.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\JNIInterface.h
+SOURCE=..\CNativeCode\YAJOGLB\JNIInterface.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\memory.h
+SOURCE=..\CNativeCode\YAJOGLB\memory.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_Canvas.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_Canvas.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_GL.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GL.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_GLFeedbackBuffer.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GLFeedbackBuffer.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_GLNativeFloatArray.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GLNativeFloatArray.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_GLNativeIntArray.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GLNativeIntArray.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_GLSelectionBuffer.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GLSelectionBuffer.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_GLU.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GLU.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_GLUNurbs.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GLUNurbs.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_GLUQuadric.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GLUQuadric.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_GLUTesselator.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GLUT.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\OpenGL_GLVertexPointer.c
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GLUTesselator.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\SystemError.h
+SOURCE=..\CNativeCode\YAJOGLB\OpenGL_GLVertexPointer.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\SystemIncludes.h
+SOURCE=..\CNativeCode\YAJOGLB\SystemError.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\win32_OpenGL_Canvas.c
+SOURCE=..\CNativeCode\YAJOGLB\SystemIncludes.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\win32_OpenGL_Context.c
+SOURCE=..\CNativeCode\YAJOGLB\win32_OpenGL_Canvas.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\win32_OpenGL_GL.c
+SOURCE=..\CNativeCode\YAJOGLB\win32_OpenGL_Context.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\win32Memory.c
+SOURCE=..\CNativeCode\YAJOGLB\win32_OpenGL_GL.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\win32SystemError.c
+SOURCE=..\CNativeCode\YAJOGLB\win32Memory.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\CNativeCode\YAJOGLB\win32SystemError.c
 # End Source File
 # End Target
 # End Project

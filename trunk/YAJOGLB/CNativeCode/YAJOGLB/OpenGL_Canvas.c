@@ -23,9 +23,7 @@
 
 
 
-#ifdef USE_JAWT
 #include <jawt_md.h>
-#endif
 #include "Memory.h"
 #include "SystemIncludes.h"
 #include "cygnusFixes.h"

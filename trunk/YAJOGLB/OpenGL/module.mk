@@ -15,4 +15,5 @@ JAVA_SRC += OpenGL/GLConstants.java OpenGL/CHeapItem.java OpenGL/CallbackObject.
 	    OpenGL/GLUTesselator.java OpenGL/GLNativeArray.java		\
 	    OpenGL/GLNativeFloatArray.java				\
 	    OpenGL/GLNativeIntArray.java OpenGL/GLSelectionBuffer.java	\
-	    OpenGL/UnsupportedMethodException.java
+	    OpenGL/UnsupportedMethodException.java \
+	    OpenGL/GLUT.java
