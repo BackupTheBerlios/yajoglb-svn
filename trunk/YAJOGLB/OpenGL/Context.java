@@ -203,6 +203,22 @@ public class Context extends CHeapItem
 	    contextLocker = null;
 	}
     }
+
+	/*
+	 switches sync to vertical blank on/off
+	 */
+	private native void nativeSyncToVBL(long context, boolean aFlag);
+	public void syncToVBL(boolean aFlag) {
+		nativeSyncToVBL(getHeapPointer(), aFlag);
+	}
+	
+	/*
+	 swap or flush the backbuffer to front
+	 */
+	private native void nativeFlushBuffer(long context);
+    public void flushBuffer() {
+		nativeFlushBuffer(getHeapPointer());
+    }
 }
 
 

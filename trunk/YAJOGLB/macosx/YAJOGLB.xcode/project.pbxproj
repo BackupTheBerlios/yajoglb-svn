@@ -25,11 +25,12 @@
 		};
 		00E6828FFEC88D1A11DB9C8B = {
 			children = (
+				0456060606CE3380008E7332,
 				0432618706CA1E410085DF23,
 				0432618406CA1E0E0085DF23,
 				0432618106CA1DF80085DF23,
-				04A6A8C406C9F0B200373E67,
 				04A6A8C306C9F0A600373E67,
+				04A6A8C406C9F0B200373E67,
 				04A6A8A406C9F01C00373E67,
 				0120612AFEC8923411DB9C8B,
 			);
@@ -166,15 +167,6 @@
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
-		042872BB06C9F38C0064D34C = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.c;
-			name = CallbackObject.c;
-			path = ../CNativeCode/YAJOGLB/CallbackObject.c;
-			refType = 2;
-			sourceTree = SOURCE_ROOT;
-		};
 		042872BC06C9F38C0064D34C = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -208,15 +200,6 @@
 			lastKnownFileType = sourcecode.c.c;
 			name = win32Memory.c;
 			path = ../CNativeCode/YAJOGLB/win32Memory.c;
-			refType = 2;
-			sourceTree = SOURCE_ROOT;
-		};
-		042872C006C9F38C0064D34C = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.c;
-			name = win32Init.c;
-			path = ../CNativeCode/YAJOGLB/win32Init.c;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -481,15 +464,6 @@
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
-		042872E106C9F38C0064D34C = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = OpenGL_CallbackObject.h;
-			path = ../CNativeCode/YAJOGLB/OpenGL_CallbackObject.h;
-			refType = 2;
-			sourceTree = SOURCE_ROOT;
-		};
 		042872E206C9F38C0064D34C = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -568,15 +542,6 @@
 			lastKnownFileType = sourcecode.java;
 			name = CHeapItem.java;
 			path = ../OpenGL/CHeapItem.java;
-			refType = 2;
-			sourceTree = SOURCE_ROOT;
-		};
-		042872EB06C9F3C40064D34C = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.java;
-			name = CallbackObject.java;
-			path = ../OpenGL/CallbackObject.java;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -805,12 +770,6 @@
 			settings = {
 			};
 		};
-		0428730606C9F3C40064D34C = {
-			fileRef = 042872EB06C9F3C40064D34C;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		0428730706C9F3C40064D34C = {
 			fileRef = 042872EC06C9F3C40064D34C;
 			isa = PBXBuildFile;
@@ -957,12 +916,6 @@
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		0432608706CA18020085DF23 = {
-			fileRef = 042872BB06C9F38C0064D34C;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		0432608806CA18020085DF23 = {
 			fileRef = 042872B906C9F38C0064D34C;
 			isa = PBXBuildFile;
@@ -989,12 +942,6 @@
 		};
 		0432609106CA18020085DF23 = {
 			fileRef = 042872CB06C9F38C0064D34C;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		0432609206CA18020085DF23 = {
-			fileRef = 042872C906C9F38C0064D34C;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -1107,12 +1054,6 @@
 			settings = {
 			};
 		};
-		043260AE06CA18100085DF23 = {
-			fileRef = 042872E106C9F38C0064D34C;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		043260AF06CA18100085DF23 = {
 			fileRef = 042872E506C9F38C0064D34C;
 			isa = PBXBuildFile;
@@ -1219,7 +1160,6 @@
 				042872B306C9F38C0064D34C,
 				042872B206C9F38C0064D34C,
 				042872B106C9F38C0064D34C,
-				042872C006C9F38C0064D34C,
 				042872BF06C9F38C0064D34C,
 				042872BE06C9F38C0064D34C,
 			);
@@ -1343,7 +1283,7 @@
 			files = (
 			);
 			inputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/YAJOGLB.jar",
+				"./${BUILT_PRODUCTS_DIR}/YAJOGLB.jar",
 			);
 			isa = PBXShellScriptBuildPhase;
 			outputPaths = (
@@ -1356,14 +1296,34 @@
 				../CNativeCode/YAJOGLB/OpenGL_GL.h,
 				../CNativeCode/YAJOGLB/OpenGL_GLVertexPointer.h,
 				../CNativeCode/YAJOGLB/OpenGL_GLFeedbackBuffer.h,
-				../CNativeCode/YAJOGLB/OpenGL_CallbackObject.h,
 				../CNativeCode/YAJOGLB/OpenGL_GLNativeFloatArray.h,
 				../CNativeCode/YAJOGLB/OpenGL_GLNativeintArray.h,
 				../CNativeCode/YAJOGLB/OpenGL_GLSelectionBuffer.h,
+				../CNativeCode/YAJOGLB/OpenGL_CallbackObject.h,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "javah -classpath \"${BUILT_PRODUCTS_DIR}/YAJOGLB.jar\" -force -d \"../CNativeCode/YAJOGLB\" OpenGL.GLUQuadric OpenGL.GLUNurbs OpenGL.Context OpenGL.GLUTesselator OpenGL.GLU OpenGL.GL OpenGL.GLVertexPointer OpenGL.Canvas OpenGL.GLFeedbackBuffer OpenGL.CallbackObject OpenGL.GLNativeFloatArray OpenGL.GLNativeIntArray OpenGL.GLSelectionBuffer\n";
+			shellScript = "javah -classpath \"${BUILT_PRODUCTS_DIR}/YAJOGLB.jar\" -force -d \"../CNativeCode/YAJOGLB\" OpenGL.GLUQuadric OpenGL.GLUNurbs OpenGL.Context OpenGL.GLUTesselator OpenGL.GLU OpenGL.GL OpenGL.GLVertexPointer OpenGL.Canvas OpenGL.GLFeedbackBuffer OpenGL.GLNativeFloatArray OpenGL.GLNativeIntArray OpenGL.GLSelectionBuffer OpenGL.CallbackObject\n\n";
+		};
+		0456060606CE3380008E7332 = {
+			children = (
+				042872E506C9F38C0064D34C,
+				042872E606C9F38C0064D34C,
+				042872D906C9F38C0064D34C,
+				042872BA06C9F38C0064D34C,
+				042872DF06C9F38C0064D34C,
+				042872BC06C9F38C0064D34C,
+				042872E306C9F38C0064D34C,
+				042872E206C9F38C0064D34C,
+				042872E006C9F38C0064D34C,
+				042872E706C9F38C0064D34C,
+				042872E406C9F38C0064D34C,
+				042872BD06C9F38C0064D34C,
+			);
+			isa = PBXGroup;
+			name = GeneratedHeaders;
+			refType = 4;
+			sourceTree = "<group>";
 		};
 		04A6A8A406C9F01C00373E67 = {
 			children = (
@@ -1394,43 +1354,30 @@
 		};
 		04A6A8C306C9F0A600373E67 = {
 			children = (
-				042872BB06C9F38C0064D34C,
-				042872B006C9F38C0064D34C,
+				04F793FA06CE8CF100040C93,
 				042872B906C9F38C0064D34C,
+				04F588A706CB6A9C00A0038F,
+				042872D606C9F38C0064D34C,
+				042872D406C9F38C0064D34C,
+				042872C906C9F38C0064D34C,
+				042872C806C9F38C0064D34C,
+				042872C706C9F38C0064D34C,
+				042872C606C9F38C0064D34C,
+				042872C506C9F38C0064D34C,
+				042872C406C9F38C0064D34C,
+				042872C306C9F38C0064D34C,
+				042872DE06C9F38C0064D34C,
+				042872DD06C9F38C0064D34C,
+				042872DC06C9F38C0064D34C,
+				042872DB06C9F38C0064D34C,
+				042872DA06C9F38C0064D34C,
+				042872B006C9F38C0064D34C,
 				042872B806C9F38C0064D34C,
 				042872D806C9F38C0064D34C,
-				04F588A706CB6A9C00A0038F,
 				042872D706C9F38C0064D34C,
-				042872D606C9F38C0064D34C,
 				042872D506C9F38C0064D34C,
-				042872D406C9F38C0064D34C,
 				042872D306C9F38C0064D34C,
 				042872CA06C9F38C0064D34C,
-				042872C906C9F38C0064D34C,
-				042872E106C9F38C0064D34C,
-				042872C806C9F38C0064D34C,
-				042872E506C9F38C0064D34C,
-				042872E606C9F38C0064D34C,
-				042872C706C9F38C0064D34C,
-				042872D906C9F38C0064D34C,
-				042872C606C9F38C0064D34C,
-				042872BA06C9F38C0064D34C,
-				042872C506C9F38C0064D34C,
-				042872DF06C9F38C0064D34C,
-				042872C406C9F38C0064D34C,
-				042872BC06C9F38C0064D34C,
-				042872C306C9F38C0064D34C,
-				042872E306C9F38C0064D34C,
-				042872DE06C9F38C0064D34C,
-				042872E206C9F38C0064D34C,
-				042872DD06C9F38C0064D34C,
-				042872E006C9F38C0064D34C,
-				042872DC06C9F38C0064D34C,
-				042872E706C9F38C0064D34C,
-				042872DB06C9F38C0064D34C,
-				042872E406C9F38C0064D34C,
-				042872DA06C9F38C0064D34C,
-				042872BD06C9F38C0064D34C,
 				042872B706C9F38C0064D34C,
 				042872B606C9F38C0064D34C,
 			);
@@ -1441,7 +1388,7 @@
 		};
 		04A6A8C406C9F0B200373E67 = {
 			children = (
-				042872EB06C9F3C40064D34C,
+				04F793F606CE8C7400040C93,
 				042872E806C9F3C40064D34C,
 				042872ED06C9F3C40064D34C,
 				042872EC06C9F3C40064D34C,
@@ -1499,6 +1446,36 @@
 		};
 		04F589CF06CBA32A00A0038F = {
 			fileRef = 04F589CE06CBA32A00A0038F;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		04F793F606CE8C7400040C93 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = CallbackObject.java;
+			path = /Volumes/Data/Users/atze/Source/E3D/YAJOGLB/OpenGL/CallbackObject.java;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		04F793F706CE8C7400040C93 = {
+			fileRef = 04F793F606CE8C7400040C93;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		04F793FA06CE8CF100040C93 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = CallbackObject.c;
+			path = /Volumes/Data/Users/atze/Source/E3D/YAJOGLB/CNativeCode/YAJOGLB/CallbackObject.c;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		04F793FB06CE8CF100040C93 = {
+			fileRef = 04F793FA06CE8CF100040C93;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -1593,7 +1570,6 @@
 				0428730306C9F3C40064D34C,
 				0428730406C9F3C40064D34C,
 				0428730506C9F3C40064D34C,
-				0428730606C9F3C40064D34C,
 				0428730706C9F3C40064D34C,
 				0428730806C9F3C40064D34C,
 				0428730906C9F3C40064D34C,
@@ -1617,6 +1593,7 @@
 				0428731B06C9F3C40064D34C,
 				0428731C06C9F3C40064D34C,
 				0428731D06C9F3C40064D34C,
+				04F793F706CE8C7400040C93,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1684,7 +1661,6 @@
 				043260AA06CA18100085DF23,
 				043260AB06CA18100085DF23,
 				043260AD06CA18100085DF23,
-				043260AE06CA18100085DF23,
 				043260AF06CA18100085DF23,
 				043260B006CA18100085DF23,
 				043260B106CA18100085DF23,
@@ -1707,13 +1683,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0432644306CA470D0085DF23,
-				0432608706CA18020085DF23,
 				0432608806CA18020085DF23,
 				0432608906CA18020085DF23,
 				0432608A06CA18020085DF23,
 				0432609006CA18020085DF23,
 				0432609106CA18020085DF23,
-				0432609206CA18020085DF23,
 				0432609306CA18020085DF23,
 				0432609406CA18020085DF23,
 				0432609506CA18020085DF23,
@@ -1729,6 +1703,7 @@
 				043261F006CA282D0085DF23,
 				043261F106CA282D0085DF23,
 				04F588A806CB6A9C00A0038F,
+				04F793FB06CE8CF100040C93,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;

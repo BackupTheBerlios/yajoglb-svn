@@ -128,3 +128,14 @@ JNIEXPORT void JNICALL Java_OpenGL_Context_deleteContext
 		throwContextException(env);
 	}
 }
+
+
+JNIEXPORT void JNICALL Java_OpenGL_Context_nativeFlushBuffer(JNIEnv *env, jobject jContextObject, jlong contextPointer)
+{
+	// swap or flush the contexts buffer
+}
+JNIEXPORT void JNICALL Java_OpenGL_Context_nativeSyncToVBL(JNIEnv *env, jobject jContextObject, jlong contextPointer, jboolean aFlag)
+{
+	// enable or disable vbl-sync here
+}
+

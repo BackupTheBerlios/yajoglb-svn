@@ -262,7 +262,7 @@ JNIEXPORT jlong JNICALL Java_OpenGL_Context_createCanvasContext(JNIEnv *env, job
 			[context makeCurrentContext];
 			if(wantsFullscreen)
 			{
-				fprintf(stdout, "switching to fullscreen");
+				fprintf(stdout, "switching to fullscreen\n");
 				[context setFullScreen];
 			}
 			else
@@ -283,12 +283,23 @@ JNIEXPORT jlong JNICALL Java_OpenGL_Context_createCanvasContext(JNIEnv *env, job
 
 
 /* Free the OpenGL context. */
-JNIEXPORT void JNICALL Java_OpenGL_Context_deleteContext
-(JNIEnv *env, jobject contextObject, jlong context)
+JNIEXPORT void JNICALL Java_OpenGL_Context_deleteContext(JNIEnv *env, jobject jContextObject, jlong contextPointer)
 {
-	NSOpenGLContext *aContext = (NSOpenGLContext *)(TO_POINTER(context));
+	NSOpenGLContext *aContext = (NSOpenGLContext *)(TO_POINTER(contextPointer));
 	[aContext clearDrawable];
 	[aContext release];
+}
+
+
+/*
+ * Class:     OpenGL_Context
+ * Method:    nativeFlushBuffer
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_OpenGL_Context_nativeFlushBuffer(JNIEnv *env, jobject jContextObject, jlong contextPointer)
+{
+	NSOpenGLContext *aContext = (NSOpenGLContext *)(TO_POINTER(contextPointer));
+	[aContext flushBuffer];
 }
 
 
@@ -297,5 +308,4 @@ JNIEXPORT void JNICALL Java_OpenGL_Context_nativeSyncToVBL(JNIEnv *env, jobject 
 	NSOpenGLContext *aContext = (NSOpenGLContext *)(TO_POINTER(context));
 	long anInterval = (aFlag == JNI_TRUE? 1 : 0); // vbl-sync
 	[aContext setValues:&anInterval forParameter:NSOpenGLCPSwapInterval];
-	fprintf(stderr, "Java_OpenGL_Context_nativeSyncToVBL:%d\n", (int)anInterval);
 }
