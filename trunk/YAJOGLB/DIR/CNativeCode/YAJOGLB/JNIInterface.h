@@ -1,7 +1,7 @@
 /*
  * JNIInterface.h 
  *
- * $Id: JNIInterface.h,v 1.3 1998/11/01 21:40:23 razeh Exp $
+ * $Id: JNIInterface.h,v 1.4 1998/11/04 00:27:40 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -11,10 +11,10 @@
 #include <jni.h>
 
 int lookupStaticIntField(JNIEnv *env, jclass class, 
-			 const char *fieldName, int *fieldValue);
+			 const char *fieldName, jint *fieldValue);
 
 int lookupIntField(JNIEnv *env,  jobject object,
-		   const char *fieldName, int *fieldValue);
+		   const char *fieldName, jint *fieldValue);
 
 int staticIntField(JNIEnv *env, jclass class, const char *fieldName);
 
