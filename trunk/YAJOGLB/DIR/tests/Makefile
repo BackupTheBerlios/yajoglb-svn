@@ -27,19 +27,20 @@ JAVA_CLASSES    = VertexPointer.class Stretch.class NurbsSurface.class \
 all : $(JAVA_CLASSES)
 
 
-GeometryObject.class: GeometryViewer.java Vec.class MatrixModifiers.class
-GeometryViewer.class: GeometryObject.java Vec.class MatrixModifiers.class
-baseClasses: GeometryObject.class GeometryViewer.class ExitableFrame.class Axis.class
-VertexPointer.class: baseClasses
+GeometryObject.class: GeometryViewer.java Vec.java MatrixModifiers.java
+GeometryViewer.class: GeometryObject.java Vec.java MatrixModifiers.java InfoPanel.java
+baseClasses: GeometryObject.java GeometryViewer.java ExitableFrame.java Axis.java
+VertexPointer.class: baseClasses Vec.java MatrixModifiers.java
 NurbsSurface.class: baseClasses
 PlainCube.class: baseClasses
-Concurrence.class: baseClasses Sphere.class
+Concurrence.class: baseClasses Sphere.java TurningAxis.java
 Sphere.class: baseClasses
 TexturedCube.class: baseClasses
+GeometryViewer.java: InfoPanel.java
 
 checkout:
 	$(CO) $(JAVA_SRC)
 
 clean :
-	$(RM) $(JAVA_CLASSES) $(JAVA_CLASSES) *.class
+	$(RM) $(JAVA_CLASSES) $(JAVA_CLASSES) *.class TAGS
 
