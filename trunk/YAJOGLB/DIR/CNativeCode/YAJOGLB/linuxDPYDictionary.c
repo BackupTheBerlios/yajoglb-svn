@@ -25,7 +25,7 @@
 /*
  * linuxDPYDictionary.c
  *
- * $Id: linuxDPYDictionary.c,v 1.4 2001/07/06 23:40:05 razeh Exp $
+ * $Id: linuxDPYDictionary.c,v 1.5 2002/11/23 14:31:54 razeh Exp $
  *
  * This implements the linux functions that aquire the display related
  * information from an OpenGLCanvas.  
@@ -45,9 +45,20 @@
  */
 void freeCanvasInfo(JNIEnv *env, CanvasInfo info)
 {
+  JAWT awt;
+  jboolean result;
+
+  awt.version = JAWT_VERSION_1_3;
+  result = JAWT_GetAWT(env, &awt);
+  if (result == JNI_FALSE) {
+    handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT_GetAWT.\n");
+    return;
+  }
+  
   if (info.display) {
     info.ds->FreeDrawingSurfaceInfo(info.dsi);
     info.ds->Unlock(info.ds);
+    awt.FreeDrawingSurface(info.ds);
   }
 }
 
