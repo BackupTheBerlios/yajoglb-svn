@@ -1,7 +1,7 @@
 /*
  * OpenGL_GLUQuadric.c
  *
- * $Id: OpenGL_GLUQuadric.c,v 1.2 1998/11/01 21:42:58 razeh Exp $
+ * $Id: OpenGL_GLUQuadric.c,v 1.3 1998/11/04 00:31:44 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -17,7 +17,7 @@
 #include "cygnusFixes.h"
 #include "OpenGL_GLUQuadric.h"
 
-
+/* Creates a new quadric. */
 JNIEXPORT jint JNICALL Java_OpenGL_GLUQuadric_gluNewQuadric
   (JNIEnv *env, jobject obj)
 {
@@ -25,7 +25,7 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLUQuadric_gluNewQuadric
 }
 
 
-
+/* Deletes a quadric. */
 JNIEXPORT void JNICALL Java_OpenGL_GLUQuadric_gluDeleteQuadric
   (JNIEnv *env, jobject obj, jint quadric)
 {
