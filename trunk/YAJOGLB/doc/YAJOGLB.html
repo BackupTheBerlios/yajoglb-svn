@@ -5,7 +5,6 @@
 <TITLE>YAJOGLB (Yet Another Java OpenGL Binding)</TITLE>
 </HEAD>
 
-
 <IMG SRC="OpenGL.gif" ALIGN="LEFT" WIDTH=220 HEIGHT=97 ALT="OpenGL logo">
 <H2>YAJOGLB (Yet Another Java OpenGL Binding)</H2>
 <P>This is the home page for YAJOGLB (Yet Another Java OpenGL Binding), my contribution to the world of Java OpenGL bindings. YAJOGLB allows you to use Silicon Graphics's OpenGL 3D graphics library from within Java programs under Microsoft Windows or Linux.</P>
@@ -87,18 +86,26 @@ documentation</A> that includes sample images.</P>
 <P>Notice that you don't have to deallocate the quadric object, and that instead of being passed as a parameter to the GLU functions, the GLU functions hang off the object.</P>
 <P>Instead of giving the various GLU objects callbacks you override methods on the appropriate class. Instead of supplying an error function for your NURBS object, extend GLUNurbs and override the error method. It will be called whenever the error callback would be.</P>
 <H3>Testing</H3>
-<P>The binding has been tested with JDK 1.3 with an NVIDIA TNT2 under Windows 2000 and GNU/Linux. Please let me know if you get it to work under any other configurations.  Previous versions worked just fine under Windows 98 and Windows NT; I'd be surprised if I had managed to break support for those operating systems.</P>
+<P>The binding has been tested with JDK 1.4.1 with an NVIDIA GeForce 3 under Windows Xp and Debian GNU/Linux. Please let me know if you get it to work under any other configurations.  Previous versions worked just fine under Windows 98 and Windows NT, and Windows 2000; I'd be surprised if I had managed to break support for those operating systems.</P>
 <H3>Other OpenGL Bindings</H3>
 <P>There are a host of other OpenGL bindings available. Some of the ones that I know about are (I've kept projects with broken links):</P>
 <DL>
+<DD><P><A HREF="http://www.cmlab.csie.ntu.edu.tw/%7Erobin/JavaGL/index.html">JavaGL</A> A somewhat older OpenGL binding. From the documentation it looks like not all of the OpenGL calls are supported, and that it hasn't changed in about a year.</P></DD>
+<DD><P><A HREF="http://www.pajato.com/jogl/">Jogl</A> A nice set of bindings for that are being used for Adam King's Java3D implementation.</P></DD>
+<DD><P><A HREF="http://jogl.dev.java.net">Sun's reference implementation</A> The reference implementation for the OpenGL bindings from Sun.</P></DD>
+</DL>
+<p> There are several projects for which I no longer have
+active links. </p>
+
+<DL>
 <DD><P><A HREF="http://www.arcana.co.uk/products/magician/">Magician</A> A nice but now defunct commercial binding.</P></DD>
 <DD><P><A HREF="http://www.oasis.leo.org/java/classes/graphics/OpenGL4java.dsc.html">An Unoffical Port of Java to OpenGL</A> Leo Chan's OpenGL binding --- the grand daddy of most Java OpenGL bindings. YAJOGLB is one of the few that is not based on Leo Chan's work.</P></DD>
-<DD><P><A HREF="http://www.cmlab.csie.ntu.edu.tw/%7Erobin/JavaGL/index.html">JavaGL</A> A somewhat older OpenGL binding. From the documentation it looks like not all of the OpenGL calls are supported, and that it hasn't changed in about a year.</P></DD>
 <DD><P><A HREF="http://www.palevich.com/3dfx/JavaOpenGL.html">JavaOpenGL</A> Jack Palevich's OpenGL binding, based on the "Unoffical Port of Java to OpenGL", this is a binding that works with Windows. </P></DD>
-<DD><P><A HREF="http://www.pajato.com/jogl/">Jogl</A> A nice set of bindings for that are being used for Adam King's Java3D implementation.</P></DD>
 <DD><P><A HREF="http://parallel.fh-bielefeld.de/pv/news/gl4java.html">GL4Java</A> A Thesis describing an OpenGL Java binding for X-Windows. </P></DD>
 <DD><P><A HREF="http://www.arrakis.es/~aletc/">Tree</A> A Java interface for Mesa, which means that it should work for OpenGL as well.</P></DD>
+
 </DL>
+
 <H3>Known problems</H3>
 
 There is only one know problem that I know of: the Concurrence demo is
@@ -109,10 +116,16 @@ doesn't need to do a paint call when an animation loop is running, but
 it doesn't know that.
 
 <H3>Acknowledgements</H3>
-<P>I'd like to thank my friends Jay Bauer and Dwight Divine for their help with the package; Jay for letting me test it on his machine and Dwight for correcting some mistakes in my documentation. My previous employer, BALR, was also of considerable assistance. Lastly, I wouldn't have been able to write the binding without being able to take a look at some open source software. <A HREF="http://www.pajato.com/jogl/">Jogl</A> showed me how to access an AWT's peer instance to obtain native windows information (since replaced by JAWT), and <A HREF="http://www.ssec.wisc.edu/~brianp/Mesa.html">Mesa</A> (a 3D graphics library with an API similar to OpenGL's) matrix modification routines made their way into the GeometryViewer used in the test package. </P>
+<P>I'd like to thank my friends Jay Bauer and Dwight Divine for their help with the package; Jay for letting me test it on his machine and Dwight for correcting some mistakes in my documentation. My previous employer, BALR, was also of considerable assistance. Lastly, I wouldn't have been able to write the binding without being able to take a look at some open source software. <A HREF="http://www.pajato.com/jogl/">Jogl</A> showed me how to access an AWT's peer instance to obtain native windows information (since replaced by JAWT), and <A HREF="http://www.mesa3d.org">Mesa</A> (a 3D graphics library with an API similar to OpenGL's) matrix modification routines made their way into the GeometryViewer used in the test package. </P>
 <P>If you use this package, or have any questions about it, please drop me a line at <A HREF="mailto:razeh@yahoo.com">razeh@yahoo.com</A>.</P>
+
 <HR>
+<p>This project is kindly hosted by
+<a href="http://developer.berlios.de" title="BerliOS Developer"> <img src="http://developer.berlios.de/bslogo.php?group_id=2095" width="124px" height="32px" border="0" alt="BerliOS Developer Logo"></a>
+</p>
+
+
 <ADDRESS>Back to Robert Zeh's <A HREF="http://home.earthlink.net/~rzeh">home page</A>.<BR>
-Last Changed November 17, 2002. </ADDRESS></BODY>
+Last Changed August 14, 2004. </ADDRESS></BODY>
 </HTML>
 

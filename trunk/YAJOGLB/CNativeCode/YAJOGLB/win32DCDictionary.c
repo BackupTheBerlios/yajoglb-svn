@@ -43,7 +43,6 @@
 
 void freeCanvasInfo(JNIEnv *env, CanvasInfo info)
 {
-#ifdef USE_JAWT
 	JAWT awt;
 	jboolean result;
 	awt.version = JAWT_VERSION_1_3;
@@ -57,7 +56,6 @@ void freeCanvasInfo(JNIEnv *env, CanvasInfo info)
 		info.ds->Unlock(info.ds);
 		awt.FreeDrawingSurface(info.ds);
 	}
-#endif
 }
 
 
@@ -65,65 +63,49 @@ void freeCanvasInfo(JNIEnv *env, CanvasInfo info)
 CanvasInfo getCanvasInfo(JNIEnv *env, jobject canvas)
 {
 	CanvasInfo info;
+	JAWT awt;
+	JAWT_Win32DrawingSurfaceInfo* dsi_win;
+	jboolean result;
+	jint lock;
+
 	info.hDC = 0;
-
-#ifdef USE_JAWT 
-	{
-		JAWT awt;
-		JAWT_Win32DrawingSurfaceInfo* dsi_win;
-		jboolean result;
-		jint lock;
-		
-		awt.version = JAWT_VERSION_1_3;
-		result = JAWT_GetAWT(env, &awt);
-		if (result == JNI_FALSE) {
-			handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT_GetAWT.");
-			return info;
-		}
-		
-		info.ds = awt.GetDrawingSurface(env, canvas);
-		if (info.ds == NULL) {
-			handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT drawing surface.");
-			info.ds->Unlock(info.ds);
-			return info;
-		}
-		lock = info.ds->Lock(info.ds);
-		if (lock & JAWT_LOCK_ERROR) {
-			handleError(env, OPENGL_CANVAS_EXCEPTION, 
-				    "Unable to lock JAWT surface.");
-			info.ds->Unlock(info.ds);
-			return info;
-		}
-		
-		info.dsi = info.ds->GetDrawingSurfaceInfo(info.ds);
-		if (info.dsi == NULL) {
-			handleError(env, OPENGL_CANVAS_EXCEPTION, 
-				    "Unable to get drawing surface info.");
-			info.ds->Unlock(info.ds);
-			return info;
-		}
-		
-		dsi_win = (JAWT_Win32DrawingSurfaceInfo*)info.dsi->platformInfo;
-		if (dsi_win == NULL) {
-			handleError(env, OPENGL_CANVAS_EXCEPTION, 
-				    "Unable to get win32 drawing surface info.");
-			info.ds->Unlock(info.ds);
-			return info;
-		}
-		info.hDC = dsi_win->hdc;
+	awt.version = JAWT_VERSION_1_3;
+	result = JAWT_GetAWT(env, &awt);
+	if (result == JNI_FALSE) {
+	  handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT_GetAWT.");
+	  return info;
 	}
-
-#else	
-	{
-		jmethodID getDCMethodID = NULL;
-		jclass canvasClass = (*env)->GetObjectClass(env, canvas);
-	
-		getDCMethodID = getMethodID(env, canvasClass, "getHDC", "()I",
-			"Unable to get getHDC() method.");
-		if (getDCMethodID) {
-			info.hDC = (HDC)(*env)->CallIntMethod(env, canvas, getDCMethodID);
-		}
+		
+	info.ds = awt.GetDrawingSurface(env, canvas);
+	if (info.ds == NULL) {
+	  handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT drawing surface.");
+	  info.ds->Unlock(info.ds);
+	  return info;
 	}
-#endif
+	lock = info.ds->Lock(info.ds);
+	if (lock & JAWT_LOCK_ERROR) {
+	  handleError(env, OPENGL_CANVAS_EXCEPTION, 
+		      "Unable to lock JAWT surface.");
+	  info.ds->Unlock(info.ds);
+	  return info;
+	}
+		
+	info.dsi = info.ds->GetDrawingSurfaceInfo(info.ds);
+	if (info.dsi == NULL) {
+	  handleError(env, OPENGL_CANVAS_EXCEPTION, 
+		      "Unable to get drawing surface info.");
+	  info.ds->Unlock(info.ds);
+	  return info;
+	}
+		
+	dsi_win = (JAWT_Win32DrawingSurfaceInfo*)info.dsi->platformInfo;
+	if (dsi_win == NULL) {
+	  handleError(env, OPENGL_CANVAS_EXCEPTION, 
+		      "Unable to get win32 drawing surface info.");
+	  info.ds->Unlock(info.ds);
+	  return info;
+	}
+	info.hDC = dsi_win->hdc;
+
 	return info;
 }

@@ -4,9 +4,6 @@ DISTRIBUTED_FILES += CNativeCode/YAJOGLB/cygnusFixes.h \
 		     CNativeCode/YAJOGLB/SystemIncludes.h \
 		     CNativeCode/YAJOGLB/win32DCDictionary.c \
                      CNativeCode/YAJOGLB/win32DCDictionary.h \
-                     CNativeCode/YAJOGLB/win32EnvDictionary.c \
-                     CNativeCode/YAJOGLB/win32EnvDictionary.h \
-                     CNativeCode/YAJOGLB/win32Init.c \
                      CNativeCode/YAJOGLB/win32Memory.c \
                      CNativeCode/YAJOGLB/win32SystemError.c \
                      CNativeCode/YAJOGLB/win32_OpenGL_Canvas.c \
@@ -45,6 +42,5 @@ CSRCS += CNativeCode/YAJOGLB/CallbackObject.c			\
 	 CNativeCode/YAJOGLB/linuxDPYDictionary.c		\
          CNativeCode/YAJOGLB/linuxMemory.c			\
          CNativeCode/YAJOGLB/linuxSystemError.c			\
-	 CNativeCode/YAJOGLB/linuxEnvDictionary.c		\
          CNativeCode/YAJOGLB/linux_OpenGL_GL.c
 

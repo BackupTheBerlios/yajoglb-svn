@@ -21,6 +21,7 @@
 /* I'd prefer variable length arrays to alloca, but
    visual C++ doesn't support variable length arrays. */
 #define alloca _alloca
+#define _GLUfuncptr GLvoid (CALLBACK *)()
 #endif
 
 /* We might need to redefine the quadrics, tesselators and nurbs. */

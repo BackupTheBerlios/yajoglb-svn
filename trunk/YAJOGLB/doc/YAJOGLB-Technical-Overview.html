@@ -33,6 +33,12 @@ shared by Linux and Windows; there were lots of case problems.  If
 anyone has a single machine solution that works please send me some
 email.
 
+<P> Now that the project is being hosted by <a
+HREF="http://berlios.de">berlios.de</A> I'm able to use Subversion for
+the source control.  It has fixed all of the version control problems
+I had before while introducing one new one: I can not do commits when
+my DSL provider goes down. </p>
+
 <P>Using the Cygnus tools under Windows does have one advantage:
 shifting my development work to Linux is trivial.  </P>
 
@@ -187,10 +193,16 @@ code using the binding (which is stored in the test directory as
 Simplest.java) We'll call the class Simplest. It will extend Canvas
 and implement GLConstants (for ease of access to OpenGL's
 constants). There are a few instance variables, and I've omitted
-accessor methods in the interest of simplicity:</P> <PRE>private
-Context context; private GL gl = new GL(); private GLU glu = new
-GLU();</PRE>
-<P>&nbsp;</P>
+accessor methods in the interest of simplicity:</P> 
+<PRE>
+import java.awt.*;
+import OpenGL.*;
+
+class Simplest extends OpenGL.Canvas implements GLConstants {
+  private Context context; 
+  private GL gl = new GL(); 
+  private GLU glu = new GLU();
+</PRE>
 <P>Context is used to hold the OpenGL context that we'll create for
 our rendering; gl and glu are the objects that all of our OpenGL and
 GLU calls will be made through. Notice that while we create the gl and
@@ -209,8 +221,10 @@ further below. We also make the na&iuml;ve assumption that only one
 thread is performing rendering on Simplest, and will not bother with
 locking the context. The rest of the method sets up the viewing
 matrices and other OpenGL state that we will need for rendering.</P>
-<PRE>public void glInit() { context = new Context(this);
-context.makeCurrent(this);
+<PRE>
+public void glInit() { 
+    context = new Context(this);
+    context.makeCurrent(this);
     
     /* Make sure that we use our depth buffer. */
     gl.enable(DEPTH_TEST);
@@ -267,6 +281,78 @@ hitting control-c! Lastly, here is a screenshot of the window when it
 pops up on the screen:</P>
 
 <P><IMG SRC="Simplest.jpg" WIDTH=400 HEIGHT=400 ALT="Picture of a triangle"></P>
+<p>
+Here is the complete class:
+<pre>
+import java.awt.*;
+import OpenGL.*;
+
+class Simplest extends OpenGL.Canvas implements GLConstants {
+
+  private Context context;
+  private GL            gl = new GL();
+  private GLU           glu = new GLU();
+
+  /** glInit is called to create our Context and setup our model
+      view and projection matricies. */
+  public void glInit() {
+    context = new Context(this);
+    context.makeCurrent(this);
+    
+    /* Make sure that we use our depth buffer. */
+    gl.enable(DEPTH_TEST);
+
+    /* Position our viewer. */
+    gl.matrixMode(MODELVIEW);
+    gl.translate(0.0f, 0.0f, 0.5f);
+    
+    /* Set up the viewing projection. */
+    gl.matrixMode(PROJECTION);
+    gl.frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.5f, 12.0f);
+
+    gl.matrixMode(MODELVIEW);
+
+    glu.gluLookAt(0.0f, 0.0f, -4.0f,
+		  0.0f, 0.0f, -3.0f,
+		  0.0f, 1.0f,  0.0f);
+    gl.color(0.0, 1.0, 0.0);
+  }
+
+  /** Render our little triangle. */
+  public void paint() {
+    /* Clear our display. */
+    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+
+    /* Draw a single triangle. */
+    gl.begin(TRIANGLES);
+    gl.vertex(0.0, 0.0, 0.0);
+    gl.vertex(1.0, 0.0, 0.0);
+    gl.vertex(0.0, 1.0, 0.0);
+    gl.end();
+
+    /* By default, we will be using double buffering, which means we
+       need to call swapBuffers() if we want the user to see our
+       rendering. */
+    swapBuffers();
+  }
+
+  /** Brings up a frame that displays an empty window. */
+  public static void main(String args[]) {
+    Simplest      simplest = new Simplest();
+    Frame         frame    = new Frame();
+
+    frame.setLayout(new GridLayout(1,1));
+    frame.add(simplest);
+    frame.setTitle("The simplest possible OpenGL binding demo.");
+    frame.pack();
+    frame.setSize(new Dimension(400,400));
+    frame.setBackground(java.awt.Color.black);
+    frame.setVisible(true);
+  }
+
+}
+</pre>
+</p>
 
 <P>
 You can only perform OpenGL operations while the Canvas is locked.
@@ -311,5 +397,5 @@ class GeometryViewer {
 
 <HR>
 <ADDRESS>Back to Robert Zeh's <A HREF="http://home.earthlink.net/~rzeh">home page</A>.<BR>
-Last Changed November 23, 2002. </ADDRESS></BODY>
+Last Changed August 14, 2004. </ADDRESS></BODY>
 </HTML>
