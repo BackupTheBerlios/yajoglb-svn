@@ -1,10 +1,10 @@
 /* 
  * GLU class
  *
- * $Id: GLU.java,v 1.3 1999/04/29 01:16:58 razeh Exp $
+ * $Id: GLU.java,v 1.4 2002/07/21 16:55:42 razeh Exp $
  *
  * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 package OpenGL;
@@ -14,7 +14,7 @@ package OpenGL;
  * of the GLU methods have been implemented as instance methods on
  * various classes.  For examples see our "see also" section.
  * 
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  * 
  * @version 0.3
  * @serial

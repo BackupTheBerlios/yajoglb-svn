@@ -1,11 +1,11 @@
 /*
  * GLNativeFloatArray
  *
- * $Id: GLNativeFloatArray.java,v 1.2 1999/04/29 01:16:58 razeh Exp $
+ * $Id: GLNativeFloatArray.java,v 1.3 2002/07/21 16:55:30 razeh Exp $
  *
  * Copyright 1999
  *
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 package OpenGL;
@@ -14,7 +14,7 @@ package OpenGL;
  * A GLNativeFloatArray is used to map floating point Java arrays to
  * native float arrays.
  *
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
  * @version 0.3 
  */

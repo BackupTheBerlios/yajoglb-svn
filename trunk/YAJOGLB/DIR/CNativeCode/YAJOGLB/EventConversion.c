@@ -5,7 +5,7 @@
  * that java understands.
  *
  * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com) 
+ * Robert Allan Zeh (razeh@yahoo.com) 
  */
 
 #include <windows.h>

@@ -1,10 +1,10 @@
 /* 
  * GLVertexPointer class
  *
- * $Id: GLVertexPointer.java,v 1.4 1999/04/29 01:16:58 razeh Exp $
+ * $Id: GLVertexPointer.java,v 1.5 2002/07/21 16:55:47 razeh Exp $
  *
  * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 package OpenGL;
@@ -23,7 +23,7 @@ package OpenGL;
  * pointers into this class, and add some native methods that draw the
  * vertices. <P>
  *
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
  * @version 0.3
  */

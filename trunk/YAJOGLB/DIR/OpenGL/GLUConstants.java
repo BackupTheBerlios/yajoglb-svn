@@ -2,10 +2,10 @@
  *
  * GLUConstants
  *
- * $Id: GLUConstants.java,v 1.7 1999/04/29 01:16:58 razeh Exp $
+ * $Id: GLUConstants.java,v 1.8 2002/07/21 16:55:45 razeh Exp $
  *
  * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 package OpenGL;
@@ -16,7 +16,7 @@ package OpenGL;
  * We have not removed the GLU prepended to all of the constant
  * definitions because of conflicts with some of the GL constants.
  *
- * @author Robert Allan Zeh (razeh@balr.com) 
+ * @author Robert Allan Zeh (razeh@yahoo.com) 
  *
  * @version 0.3
  */

@@ -1,11 +1,11 @@
 /*
  * GLFeedbackBuffer
  *
- * $Id: GLFeedbackBuffer.java,v 1.4 1999/04/29 01:16:58 razeh Exp $
+ * $Id: GLFeedbackBuffer.java,v 1.5 2002/07/21 16:55:25 razeh Exp $
  *
  * Copyright 1998
  *
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 package OpenGL;
@@ -20,7 +20,7 @@ package OpenGL;
  * boolean nativeArrayIsCopy handles that.  However, this has not been
  * tested.
  *
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
  * @version 0.3
  */

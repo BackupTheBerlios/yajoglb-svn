@@ -1,10 +1,10 @@
 /* 
  * GL.java
  *
- * $Id: GL.java,v 1.6 2002/04/14 18:17:38 razeh Exp $
+ * $Id: GL.java,v 1.7 2002/07/21 16:55:22 razeh Exp $
  *
  * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 package OpenGL;
@@ -56,7 +56,7 @@ package OpenGL;
  * that getString() needs an OpenGL context in place to work properly,
  * but it does! <P>
  *
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
  * @version 0.3
  * */

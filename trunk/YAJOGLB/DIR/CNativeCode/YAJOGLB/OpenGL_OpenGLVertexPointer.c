@@ -1,10 +1,10 @@
 /*
  * OpenGL_OpenGLVertexPointer.c
  * 
- * $Id: OpenGL_OpenGLVertexPointer.c,v 1.1 1998/11/01 21:42:58 razeh Exp $
+ * $Id: OpenGL_OpenGLVertexPointer.c,v 1.2 2002/07/21 16:54:29 razeh Exp $
  *
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 /* This files implements the native interface for the OpenGLVertexPointer

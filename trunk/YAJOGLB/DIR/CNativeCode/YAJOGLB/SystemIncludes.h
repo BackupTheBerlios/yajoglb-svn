@@ -1,13 +1,13 @@
 /*
  * SystemIncludes.h
  * 
- * $Id: SystemIncludes.h,v 1.1 1999/02/13 19:29:04 razeh Exp $
+ * $Id: SystemIncludes.h,v 1.2 2002/07/21 16:54:36 razeh Exp $
  *
  * Some systems need to always include headers, like <windows.h>.  These
  * are handled here.
  *
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 /* Make sure that we are only included once. */

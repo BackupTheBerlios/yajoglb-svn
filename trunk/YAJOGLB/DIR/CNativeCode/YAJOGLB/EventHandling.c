@@ -1,13 +1,13 @@
 /*
  * EventHandling.c
  *
- * $Id: EventHandling.c,v 1.2 1997/11/16 02:54:09 razeh Exp $
+ * $Id: EventHandling.c,v 1.3 2002/07/21 16:54:21 razeh Exp $
  *
  * This code handles invoking the handleEvent method for our widget
  * with a the appropriate event object.
  *
  * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com) 
+ * Robert Allan Zeh (razeh@yahoo.com) 
  */
 
 

@@ -1,10 +1,10 @@
 /*
  * Textured cube
  *
- * $Id: TexturedCube.java,v 1.4 2002/04/06 15:13:01 razeh Exp $
+ * $Id: TexturedCube.java,v 1.5 2002/07/21 16:56:50 razeh Exp $
  * 
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 import OpenGL.*;

@@ -1,11 +1,11 @@
 /*
  * GLSelectionBuffer
  *
- * $Id: GLSelectionBuffer.java,v 1.2 1999/04/29 01:16:58 razeh Exp $
+ * $Id: GLSelectionBuffer.java,v 1.3 2002/07/21 16:55:38 razeh Exp $
  *
  * Copyright 1999
  *
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 package OpenGL;

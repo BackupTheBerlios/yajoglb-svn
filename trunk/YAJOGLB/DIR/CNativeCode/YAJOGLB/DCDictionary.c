@@ -13,7 +13,7 @@
  * library, we guard access to the dictionary with a critical section.
  *
  * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com) 
+ * Robert Allan Zeh (razeh@yahoo.com) 
  */
 
 

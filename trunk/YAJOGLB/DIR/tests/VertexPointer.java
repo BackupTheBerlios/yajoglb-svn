@@ -1,10 +1,10 @@
 /*
  * VertexPointerTest class
  *
- * $Id: VertexPointer.java,v 1.5 2002/04/06 15:13:07 razeh Exp $
+ * $Id: VertexPointer.java,v 1.6 2002/07/21 16:56:56 razeh Exp $
  * 
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 import java.awt.*;

@@ -1,10 +1,10 @@
 /*
  * CallbackObject
  *
- * $Id: CallbackObject.java,v 1.2 1999/04/29 01:16:58 razeh Exp $
+ * $Id: CallbackObject.java,v 1.3 2002/07/21 16:55:16 razeh Exp $
  *
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 package OpenGL;
@@ -21,7 +21,7 @@ import java.lang.reflect.*;
  * The CHeapObject is extended to provide this functionality because
  * all the classes that need to use it are also objects on the C heap.
  *
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
  * @version 0.3
  */

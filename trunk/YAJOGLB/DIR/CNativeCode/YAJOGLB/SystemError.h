@@ -1,11 +1,11 @@
 /*
  * SystemError.h
  *
- * $Id: SystemError.h,v 1.1 1998/11/01 21:44:18 razeh Exp $
+ * $Id: SystemError.h,v 1.2 2002/07/21 16:54:33 razeh Exp $
  *
  * Copyright 1998
  *
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 

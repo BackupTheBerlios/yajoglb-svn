@@ -1,10 +1,10 @@
 /*
  * A set of axis
  *
- * $Id: TurningAxis.java,v 1.3 2002/04/06 15:13:02 razeh Exp $
+ * $Id: TurningAxis.java,v 1.4 2002/07/21 16:56:54 razeh Exp $
  * 
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 
