@@ -1,5 +1,5 @@
 /*
- * $Id: X11pDataAccess.java,v 1.2 1999/04/29 01:25:34 razeh Exp $
+ * $Id: X11pDataAccess.java,v 1.3 1999/05/16 23:29:33 razeh Exp $
  *
  * Taken (and then modified) from jogl-0.7
  *
@@ -64,13 +64,6 @@ public class X11pDataAccess implements OpenGLpDataAccess {
       return getDrawingSurface(canvas).getColormapID();
   }
   
-  /** This accessors is really for win32, and simply returns 0.
-     @param canvas ignored
-     @return always 0. */
-  public int getHWnd(java.awt.Canvas canvas) {
-    return 0;
-  }
-
   /* This accessor is really here for win32, and simply returns 0. 
      @param canvas ignored
      @return always 0. */
