@@ -27,7 +27,8 @@ SHELL=/gnuwin32/b18/H-i386-cygwin32/bin/sh
 NATIVEHEADERS = OpenGL_OpenGLWidget.h \
 		OpenGL_GLUQuadric.h OpenGL_GLUNurbs.h \
 	        OpenGL_GLUTriangulator.h OpenGL_OpenGLContext.h \
-                OpenGL_OpenGLVertexPointer.h
+                OpenGL_OpenGLVertexPointer.h OpenGL_GLU.h OpenGL_GL.h \
+		OpenGL_OpenGLCanvas
 
 all :   packagedir $(JAVA_CLASSES) nativedir
 
@@ -44,7 +45,7 @@ dist : clean
 	(cd ..; gzip -v OpenGL-Java.tar)
 
 clean :
-	$(RM) -f $(JAVA_CLASSES) $(JAVA_CLASSES) *~ *.class
+	$(RM) -f $(JAVA_CLASSES) $(JAVA_CLASSES) *~ *.class *.jar
 	(cd $(PACKAGEDIR); $(MAKE) clean)
 	(cd $(NATIVECODEDIR); $(MAKE) clean)
 	(cd OpenGLLibFixes; $(MAKE) clean)
@@ -71,6 +72,14 @@ OpenGL_OpenGLContext.h: $(PACKAGEDIR)/OpenGLContext.java
 OpenGL_OpenGLVertexPointer.h: $(PACKAGEDIR)/OpenGLVertexPointer.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLVertexPointer
 
+OpenGL_GLU.h: $(PACKAGEDIR)/GLU.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLU
+
+OpenGL_GL.h: $(PACKAGEDIR)/GL.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GL
+
+OpenGL_OpenGLCanvas.h: $(PACKAGEDIR)/OpenGLCanvas.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLCanvas
 
 
 
