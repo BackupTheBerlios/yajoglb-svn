@@ -1,11 +1,23 @@
+/*
+ *
+ * OpenGLConstants
+ *
+ * Copyright 1997
+ * Robert Allan Zeh (razeh@balr.com)
+ */
+
 package OpenGL;
 
 /** OpenGLConstants 
  * 
- * This defines all of the constants that the GL library uses.  We
- * have removed all of the GL_ prefixes, in the same manner that we
- * removed all of the gl prefixes for the OpenGL function calls.  
- */
+ * This defines all of the constants that the GL library uses.  All of
+ * the GL_ prefixes have been removed, in the same manner that all of
+ * the gl prefixes were removed from the OpenGL function names.
+ *
+ * @author Robert Allan Zeh (razeh@balr.com)
+ *
+ * @version 0.1 
+*/
 
 public interface OpenGLConstants {
   static final int CURRENT_BIT		= 0x00000001;
