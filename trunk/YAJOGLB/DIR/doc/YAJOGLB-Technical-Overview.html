@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>YAJOGLB Technical overview</TITLE>
+</HEAD>
+<P>
+<H2>YAJOGLB Technical overview</H2>
+<P>This page gives a brief technical overview of YAJOGLB (Yet Another
+Java OpenGL Binding) that describes the development environment used
+and the package that is supplied.</P> <H3>The Development
+Environment</H3>
+<P>YAJOGLB was developed in an environment that can most charitably
+described as <I>strange</I>. It's mostly a combination of tools that
+have been ported from Unix to Windows NT, with some Microsoft software
+thrown in. Originally I tried to write the binding using version b19
+of <A HREF="http://www.cygnus.com/">Cygnus</A>'s <A
+HREF="http://sourceware.cygnus.com/cygwin/">Cygwin</A>
+project. Everything worked fine until I tried to write native methods
+that returned Java objects instead of Java primitives. When I tried to
+return Java objects, the JVM crashed. Symantec's native compiler
+wasn't very happy with the code that gcc generated either. After
+trying to get things to work, I broke down and started using
+Microsoft's Visual C++ V6.0, which made things much better. There are
+still traces of Cygnus's code in the distribution though.</P>
+<P>However, I continue to use Cygwin's make and bash for the Java code.</P>
+<P>For version control I used the old trusty Unix standby, RCS
+(someday soon I'll learn CVS). For more information about RCS in
+general, and about RCS on Windows see <A
+HREF="http://www.cyclic.com/cyclic-pages/rcs.html">http://www.cyclic.com/cyclic-pages/rcs.html</A>
+. I've been using a combination of the packages known as <A
+HREF="http://download.cyclic.com/pub/rcs/diff27nt.zip">diff27nt.zip</A>
+and<A HREF="http://download.cyclic.com/pub/rcs/rcs57nt.zip">
+rcs57nt.zip</A> for years now without any problems.</P>
+<P>Using the Cygnus tools under Windows does have one advantage: shifting my development work to Linux is trivial.</P>
+<H3>The package</H3>
+<P>There are only a couple of classes in the package, each with a well-defined purpose. First I will describe the public classes, and later on I will get into the gory details.</P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=9>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>GL</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>The GL class contains the core OpenGL methods</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>GLConstants</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Holds the OpenGL constants.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>GLFeedbackBuffer</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Used to hold the OpenGL feedback buffer.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>GLSelectionBuffer</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Used to hold the OpenGL selection buffer.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>GLVertexPointer</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Used to hold vertex arrays for the OpenGL vertex array operations.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>GLU</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>The GLU class contains the OpenGL GLU methods that have not been absorbed by the GLUNurbs, GLUQuadric, and GLUTesselator classes.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>GLUConstants</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>The GLU method constants.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>GLUNurbs</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>The Java stand-in for the GLU nurbs structure.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>GLUQuadric</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>The Java stand-in for the GLU quadrics structure.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>GLUTesselator</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>The Java stand-in for the GLU tesselator structure. This class is not done yet.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>Canvas</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>The object that OpenGL can render in.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>Capabilities</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Represents the rendering capabilities of an Canvas.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>Context</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>An explicit representation of the OpenGL context.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>TextureHelp</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>A convenience class for reading in textures from TGA files.</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P>TGAFile</TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>A convenience class for reading in and writing out TGA files</TD>
+</TR>
+</TABLE>
+
+<P>There are also some private classes that go along with the
+package. The most obvious are the ones that look like they come from
+Sun. Prior to the JAWT library in JDK 1.3 there was no way to get to
+the device context and window pointer for a particular AWT Canvas
+object under Microsoft Windows or X11. </P> 
+
+<P>The sun.awt.windows.WindowspDataAccess and
+sun.awt.windows.X11pDataAccess duplicate JAWT's functionality, and are
+included in case you want to compile the binding with a JDK prior to
+JDK 1.3. By default they will not be used, and the binding will be
+built using JAWT. Placing the two classes under the Sun hierarchy
+allows the binding to get at the private AWT windowing
+information. It's also extremely non-portable.  But prior to the JAWT,
+there was no portable way to get the windowing information.  The only
+"clean" way was to implement your own windowing support, which is a
+lot of work.  In fact, that's what I foolishly tried to do for my
+first implementation. </P>
+
+<P>There are
+some private classes and public interfaces inside of the package
+proper.</P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=9 >
+<TR><TD WIDTH="21%" VALIGN="TOP">
+<P>CHeapItem</TD>
+<TD WIDTH="79%" VALIGN="TOP">
+<P>This is used to represent C objects that are stored on the heap. Several of the public OpenGL class, like GLUQuadric and GLUNurb are subclassed from it.</TD>
+</TR>
+<TR><TD WIDTH="21%" VALIGN="TOP">
+<P>OpenGLpDataAccess</TD>
+<TD WIDTH="79%" VALIGN="TOP">
+<P>Implemented by WindowspDataAccess and X11pDataAccess so that Canvas's native code can get to native window details.</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<H2>Getting Started</H2>
+<P>This section describes how to write the simplest possible OpenGL code using the binding (which is stored in the test directory as Simplest.java) We'll call the class Simplest. It will extend Canvas and implement GLConstants (for ease of access to OpenGL's constants). There are a few instance variables, and I've omitted accessor methods in the interest of simplicity:</P>
+<PRE>private Context context;
+private GL gl = new GL();
+private GLU glu = new GLU();</PRE>
+<P>&nbsp;</P>
+<P>Context is used to hold the OpenGL context that we'll create for our rendering; gl and glu are the objects that all of our OpenGL and GLU calls will be made through. Notice that while we create the gl and glu objects inline, we delay the context creation.</P>
+<P>The Canvas class provides a method that is called once an Canvas has been setup for OpenGL rendering. It is called glInit(), and it's a good place to actually create the OpenGL context that the canvas object will use, and to perform any persistent matrix settings. </P>
+<P>The first two lines create the OpenGL context, tying it to this specific Canvas, and make it the current context for the currently active thread. The created context will have all of its values taken from defaults set by the OpenGL package. The only one that really concerns us here is that the default OpenGL context has double buffering enabled. That will affect the paint() method described further below. We also make the na&iuml;ve assumption that only one thread is performing rendering on Simplest, and will not bother with locking the context. The rest of the method sets up the viewing matrices and other OpenGL state that we will need for rendering.</P>
+<PRE>public void glInit() {
+    context = new Context(this);
+    context.makeCurrent(this);
+    
+    /* Make sure that we use our depth buffer. */
+    gl.enable(DEPTH_TEST);
+
+    /* Position our viewer. */
+    gl.matrixMode(MODELVIEW);
+    gl.translate(0.0f, 0.0f, 0.5f);
+    
+    /* Set up the viewing projection. */
+    gl.matrixMode(PROJECTION);
+    gl.frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.5f, 12.0f); 
+    glu.gluLookAt(0.0f, 0.0f, -4.0f, 
+                  0.0f, 0.0f, -3.0f, 
+                  0.0f, 1.0f, 0.0f); 
+    gl.color(0.0, 1.0, 0.0); 
+}</PRE>
+<P>&nbsp;</P>
+<P>All of the actual rendering is done in the paint() method, which is called as needed by Canvas.  Our method clears the canvas's display and depth buffer, and then draws a single triangle. The very last thing it does is exchange our display buffer with our rendering buffer, so that the user can see the triangle.</P>
+<PRE>public void paint() {
+    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+
+    /* Draw a single triangle. */
+    gl.begin(TRIANGLES);
+    gl.vertex(0.0, 0.0, 0.0);
+    gl.vertex(1.0, 0.0, 0.0);
+    gl.vertex(0.0, 1.0, 0.0);
+    gl.end();
+
+    swapBuffers();
+  }</PRE>
+<P>&nbsp;</P>
+<P>We also need a static main function to start things up. Here is what it looks like:</P>
+<PRE>public static void main(String args[]) {
+    Simplest      simplest = new Simplest();
+    Frame         frame    = new Frame();
+
+    frame.setLayout(new GridLayout(1,1));
+    frame.add(simplest);
+    frame.setTitle("The simplest possible OpenGL binding demo.");
+    frame.pack();
+    frame.setSize(new Dimension(400,400));
+    frame.setBackground(java.awt.Color.black);
+    frame.setVisible(true);
+  }
+}</PRE>
+<P>The method simply creates a frame with a single object in it: an instance of our Simplest class. Everything else will be handled by the normal flow of events for a canvas object. The class makes no attempts to deal with input, so there is no way to exit the program other than hitting control-c! Lastly, here is a screenshot of the window when it pops up on the screen:</P>
+</P>
+You can only perform OpenGL operations while the Canvas is locked.  This is handled automatically for you inside of the paint() and glInit() methods.  If you need to perform OpenGL operations outside of those two methods you'll need to execute them via the Canvas's lockedMethod method.
+</P>
+<P><IMG SRC="Simplest.jpg" WIDTH=400 HEIGHT=400 ALT="Picture of a triangle"></P>
+<HR>
+<ADDRESS>Back to Robert Zeh's <A HREF="http://home.earthlink.net/~rzeh">home page</A>.<BR>
+Last Changed July 21th, 2002. </ADDRESS></BODY>
+</HTML>
