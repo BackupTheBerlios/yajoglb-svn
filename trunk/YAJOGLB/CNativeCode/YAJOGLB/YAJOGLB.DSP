@@ -107,6 +107,10 @@ SOURCE=.\cygnusFixes.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\EnvDictionary.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\EnvDictionary.h
 # End Source File
 # Begin Source File
@@ -128,10 +132,6 @@ SOURCE=.\JNIInterface.h
 # Begin Source File
 
 SOURCE=.\memory.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\OpenGL_CallbackObject.c
 # End Source File
 # Begin Source File
 
@@ -204,18 +204,6 @@ SOURCE=.\win32DCDictionary.c
 # Begin Source File
 
 SOURCE=.\win32DCDictionary.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\win32EnvDictionary.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\win32EnvDictionary.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\win32Init.c
 # End Source File
 # Begin Source File
 
