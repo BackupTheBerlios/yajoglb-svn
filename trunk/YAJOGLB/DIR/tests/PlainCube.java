@@ -1,7 +1,7 @@
 /*
  * Plain cube
  *
- * $Id: PlainCube.java,v 1.2 1998/03/30 02:22:21 razeh Exp $
+ * $Id: PlainCube.java,v 1.3 1998/11/01 02:24:27 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -10,11 +10,18 @@
 import OpenGL.*;
 import java.awt.*;
 
-/** This draws a simple cube with normal pointers. */
+/** This draws a simple lighted cube, rotate 30 degress from each
+    axis, with normal pointers. */
 
-public class PlainCube implements GeometryObject, OpenGLConstants {
+public class PlainCube implements GeometryObject, GLConstants {
+  float[] material = { 0.0f, 0.5f, 0.5f, 0.5f };
+
   public void paint(GeometryViewer viewer, GL gl, GLU glu) {
-    gl.color(0.0, 1.0, 0.0);
+    gl.enable(LIGHT0);
+    gl.enable(LIGHTING);
+    gl.pushMatrix();
+    gl.rotate(30.0f, 1.0ff);
+    gl.material(FRONT_AND_BACK, AMBIENT_AND_DIFFUSE, material);
     gl.begin(QUADS);
     gl.normal( 0.0F, 0.0F, 1.0F);
     gl.vertex( 0.5F, 0.5F, 0.5F); gl.vertex(-0.5F, 0.5F, 0.5F);
@@ -40,11 +47,10 @@ public class PlainCube implements GeometryObject, OpenGLConstants {
     gl.vertex(-0.5F,-0.5F,-0.5F); gl.vertex(-0.5F,-0.5F, 0.5F);
     gl.vertex(-0.5F, 0.5F, 0.5F); gl.vertex(-0.5F, 0.5F,-0.5F);
     gl.end();
+    gl.popMatrix();
   }
 
   public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
-    gl.enable(LIGHTING);
-    gl.enable(LIGHT0);
   }
   
 
@@ -62,8 +68,6 @@ public class PlainCube implements GeometryObject, OpenGLConstants {
     frame.setSize(new Dimension(400,400));
     frame.setBackground(java.awt.Color.black);
     frame.setVisible(true);
-
-
   }
 }
 
