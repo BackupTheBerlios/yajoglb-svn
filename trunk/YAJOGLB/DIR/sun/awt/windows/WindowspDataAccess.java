@@ -1,5 +1,5 @@
 /*
- * $Id: WindowspDataAccess.java,v 1.4 1999/04/29 01:26:33 razeh Exp $
+ * $Id: WindowspDataAccess.java,v 1.5 1999/05/08 18:26:27 razeh Exp $
  *
  * Taken (and then modified) from jogl-0.7
  *
@@ -10,6 +10,7 @@ package sun.awt.windows;
 import sun.awt.windows.*;
 import sun.awt.Win32DrawingSurface;
 import OpenGL.OpenGLpDataAccess;
+import OpenGL.OpenGLCanvas;
 import java.awt.Graphics;
 import java.awt.Canvas;
 import java.awt.peer.*;
