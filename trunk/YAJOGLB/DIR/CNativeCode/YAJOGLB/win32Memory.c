@@ -6,19 +6,23 @@
  * functions are.
  *
  * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com) */
+ * Robert Allan Zeh (razeh@balr.com) 
+ */
+
+
 
 #include <windows.h>
-
 #include "memory.h"
-
 
 void *privateMalloc(size_t size)
 {
   return GlobalAlloc(GMEM_FIXED, size);
 }
 
+
+
 void privateFree(void *pointer)
 {
   GlobalFree(pointer);
 }
+
