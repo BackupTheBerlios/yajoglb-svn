@@ -1,7 +1,7 @@
 /*
  * OpenGLCanvasTest class
  *
- * $Id: Stretch.java,v 1.3 1999/02/13 19:15:28 razeh Exp $
+ * $Id: Stretch.java,v 1.4 1999/02/13 19:19:49 razeh Exp $
  * 
  * Copyright 1998
  *
@@ -13,9 +13,13 @@ import java.awt.*;
 import OpenGL.*;
 import java.awt.event.*;
 
+/** This demonstrates the use of gluScaleImage by displaying a raster image
+on the screen that can be stretched by clicking the mouse on different
+portions of the screen. */
 public class Stretch extends OpenGLCanvas 
-  implements GLUConstants, GLConstants, MouseListener, MouseMotionListener, ComponentListener {
+implements GLUConstants, GLConstants, MouseListener, MouseMponentListener {
 
+  /** Our own OpenGL context. */
   private OpenGLContext context;
  
   GLU glu = new GLU();
@@ -60,7 +64,6 @@ public class Stretch extends OpenGLCanvas
 	imageData[endingImagePosition+3] = temp4;
       }
     }
-
   }
 
   /** Change the size of the image to fit imageSizeX and imageSizeY. */
@@ -80,19 +83,22 @@ public class Stretch extends OpenGLCanvas
 		      imageSizeX, imageSizeY, GL_UNSIGNED_BYTE, imageData);
     releaseContext();
   }
-  
+
+  /** Construct a Stretch object by making it a Mouse Listener, Mouse
+      Motion Listener, and Component Listener. */
   public Stretch()  {
     addMouseListener(this);
     addMouseMotionListener(this);
     addComponentListener(this);
   }
 
+  /** Create our OpenGL context, setup our display matricies, and read in
+    our texture file. */
   public void glInit() {
     super.glInit();
 
     context = new OpenGLContext(this);
     aquireContext();
-
 
     gl.matrixMode(PROJECTION);
     gl.loadIdentity();
@@ -109,10 +115,13 @@ public class Stretch extends OpenGLCanvas
     releaseContext();
   }
 
+  /** Take note that the mouse is no longer being held done. */
   public void mouseReleased(java.awt.event.MouseEvent e) {
     dragInProgress = false;
   }
 
+  /** Take note that the user pressed down on the mouse by rescaling 
+    our image. */
   public void mousePressed(java.awt.event.MouseEvent e) {
     dragInProgress = true;
 
@@ -122,23 +131,28 @@ public class Stretch extends OpenGLCanvas
     paint();
   }
 
+  /** Resize our image by calling <code>mousePressed</code>. */
   public void mouseMoved(java.awt.event.MouseEvent e) {
     if (dragInProgress)
       mousePressed(e);
   }
 
+  /** We need this method, which does nothing, to be a MouseListener. */
   public void mouseClicked(java.awt.event.MouseEvent e) {
     ;
   }
 
+  /** We need this method, which does nothing, to be a MouseListener. */
   public void mouseEntered(java.awt.event.MouseEvent e) {
     ;
   }
 
+  /** We need this method, which does nothing, to be a MouseListener. */
   public void mouseExited(java.awt.event.MouseEvent e) {
     ;
   }
 
+  /** We need this method, which does nothing, to be a MouseListener. */
   public void mouseDragged(java.awt.event.MouseEvent e) {
     imageSizeX = e.getX();
     imageSizeY = getSize().height - e.getY() ;
@@ -158,16 +172,22 @@ public class Stretch extends OpenGLCanvas
     }
   }
 
+  /** We need this method, which does nothing, to be a ComponentListener. */
   public void componentHidden(java.awt.event.ComponentEvent e) {
     ;
   }
+
+  /** We need this method, which does nothing, to be a ComponentListener. */
   public void componentMoved(java.awt.event.ComponentEvent e) {
     ;
   }
+
+  /** We need this method, which does nothing, to be a ComponentListener. */
   public void componentShown(java.awt.event.ComponentEvent e) {
     ;
   }
-  
+
+  /** Draw our image with the current scaling parameters. */
   public void paint() {
     aquireContext();
     gl.clear(COLOR_BUFFER_BIT);
@@ -179,7 +199,7 @@ public class Stretch extends OpenGLCanvas
     releaseContext();
   }
 
-    /** Make context the current OpenGL context.  If we fail we just print
+  /** Make context the current OpenGL context.  If we fail we just print
     out the exception and continue on. */
   protected void aquireContext() {
     try {
@@ -193,10 +213,10 @@ public class Stretch extends OpenGLCanvas
     }
   }
 
+  /** Unlock our context. */
   protected void releaseContext() {
     context.unlock();
   }
-
 
   public static void main(String args[]) {
     Stretch       canvas = new Stretch();
@@ -208,6 +228,5 @@ public class Stretch extends OpenGLCanvas
     frame.setSize(new Dimension(100,100));
     frame.setTitle("gluScaleImage test");
     frame.setVisible(true);
-
   }
 }
