@@ -66,6 +66,8 @@ OpenGL_GLUTriangulator.h:
 	(cd ..; make $@)
 OpenGL_OpenGLVertexPointer.h:
 	(cd ..; make $@)
+OpenGL_OpenGLContext.h:
+	(cd ..; make $@)
 # Depends
 OpenGL_OpenGLWidget.c: OpenGL_OpenGLWidget.h cygnusFixes.h memory.h \
                        JNIInterface.h EventHandling.h ErrorHandling.h
