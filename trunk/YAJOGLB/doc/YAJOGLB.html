@@ -27,6 +27,12 @@ HREF="http://www.berkelium.com/OpenGL/sgi-opengl.html">http://www.berkelium.com/
 <P>There is an OpenGL clone named Mesa that you can use under Linux. It is available at <A HREF="http://www.mesa3d.org/">http://www.mesa3d.org</A>. I've written some <A HREF="Linux-notes.html">Linux notes</A> that you should read before using the binding under Linux. </P>
 <P>Once OpenGL is installed on your machine, you also need to have Java on your machine. You can find instructions for installing the Java developer's kit at <A HREF="http://java.sun.com/">http://java.sun.com</A></P>
 
+<P>Because YAJOGLB provies access to portions of GLUT (a utility
+toolkit for OpenGL written by Mark Kilgard, you need to have the GLUT
+dll installed as well.  It is avaiable <a
+href="http://www.opengl.org/resources/libraries/glut.html"> here</a>
+</p>
+
 <P>The Makefiles use a provided python script that, along with gcc,
 generates the dependencies for the C files.  If you don't want to
 install python on your Linux machine you could replace the script with
