@@ -1,7 +1,7 @@
 /* 
  * GL.java
  *
- * $Id: GL.java,v 1.2 1998/10/04 23:42:42 razeh Exp $
+ * $Id: GL.java,v 1.3 1998/11/01 02:16:26 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -61,7 +61,7 @@ package OpenGL;
  * @version 0.1
  * */
 
-public class GL implements OpenGLConstants {
+public class GL implements GLConstants {
 
   /*
    * Misc. OpenGL functions

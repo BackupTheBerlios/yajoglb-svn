@@ -2,7 +2,7 @@
  *
  * OpenGLUConstants
  *
- * $Id: GLUConstants.java,v 1.3 1998/09/10 01:04:17 razeh Exp $
+ * $Id: GLUConstants.java,v 1.4 1998/11/01 02:17:03 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -21,7 +21,7 @@ package OpenGL;
  * @version 0.1
  */
 
-public interface OpenGLUConstants {
+public interface GLUConstants {
   /* Normal vectors */
   static final int         GLU_SMOOTH      = 100000;
   static final int         GLU_FLAT        = 100001;
