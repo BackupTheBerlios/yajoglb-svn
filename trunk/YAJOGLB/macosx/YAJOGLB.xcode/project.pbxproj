@@ -1743,9 +1743,9 @@
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.java;
 			name = CallbackObject.java;
-			path = /Volumes/Users/chrisw/YAJOGLB/YAJOGLB/OpenGL/CallbackObject.java;
-			refType = 0;
-			sourceTree = "<absolute>";
+			path = ../OpenGL/CallbackObject.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
 		};
 		AF87ABCA06DBAEE500D85FD7 = {
 			fileEncoding = 30;
