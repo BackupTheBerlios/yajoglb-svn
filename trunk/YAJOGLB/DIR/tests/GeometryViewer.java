@@ -1,7 +1,7 @@
 /* 
  * Geometry viewer class
  *
- * $Id: GeometryViewer.java,v 1.7 2002/07/21 16:56:42 razeh Exp $
+ * $Id: GeometryViewer.java,v 1.8 2002/09/07 12:04:07 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -467,10 +467,12 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
       new FileDialog(new Frame(), "Save screen dump to...",  
 		     FileDialog.SAVE);
     fileDialog.show();
-    String imageFilename = fileDialog.getDirectory() + "/" + fileDialog.getFile();
-    Object arguments[] = new Object[1];
-    arguments[0] = imageFilename;
-    lockedMethod(lockedWriteImageMethod, this, arguments);
+    if (fileDialog.getFile() != null) {
+      String imageFilename = fileDialog.getDirectory() + "/" + fileDialog.getFile();
+      Object arguments[] = new Object[1];
+      arguments[0] = imageFilename;
+      lockedMethod(lockedWriteImageMethod, this, arguments);
+    }
   }
 
   /** The locked method to write out the image.  It needs to be locked
