@@ -97,8 +97,9 @@ static dictionaryEntry *dictionaryEntryForWidget(JNIEnv *env,
   dictionaryEntry *result = NULL;
 
   while((dictionaryPointer != NULL) && (result == NULL)) {
-    if ((dictionaryPointer->widget == widget))
-      result = dictionaryPointer;
+    if ((*env)->IsSameObject(env, dictionaryPointer->widget, widget) 
+	== JNI_TRUE)
+	result = dictionaryPointer;
     dictionaryPointer = dictionaryPointer->next;
   }
   return result;
@@ -172,10 +173,8 @@ void setGLRCForWidget(JNIEnv *env, jobject widget, HGLRC hGLRC)
       newEntry->hGLRC           = hGLRC;
       newEntry->widget          = widget;
       newEntry->environment     = env;
-      log(env, "new setGLRCForWidget\n");
     } else {
       entry->hGLRC = hGLRC;
-      log(env, "old GLRC\n");
     }
   }
   releaseDCLock();
@@ -195,10 +194,8 @@ void setDCForWidget(JNIEnv *env, jobject widget, HDC hDC)
       newEntry->environment = env;
       newEntry->widget      = widget;
       newEntry->hDC         = hDC;
-      log(env, "new setDCForWidget\n");
     } else {
       entry->hDC = hDC;
-      log(env, "old DC\n");
     }
   }
   releaseDCLock();
@@ -253,11 +250,7 @@ HWND windowForWidget(JNIEnv *env, jobject widget)
     dictionaryEntry *entry = dictionaryEntryForWidget(env, widget);
     if (entry != NULL) {
       result = entry->hWnd;
-      log(env, "found one\n");
-      if (result == NULL) 
-	log(env, "but it's null\n");
-    } else
-      log(env, "no window for widget found\n");
+    } 
   }
   releaseDCLock();
   return result;
@@ -272,15 +265,14 @@ void setWidgetForWindow(HWND hWnd, JNIEnv *env, jobject widget)
 {
   getDCLock();
   {
-    dictionaryEntry *entry = dictionaryEntryForWidget(env, widget);
+    dictionaryEntry *entry = dictionaryEntryForWindow(hWnd);
     if (entry == NULL) {
       dictionaryEntry *newEntry = addDictionaryEntry();
       newEntry->hWnd        = hWnd;
       newEntry->widget      = widget;
       newEntry->environment = env;
-      log(env, "new setWidgetForWindow\n");
     } else
-      entry->hWnd = hWnd;
+      entry->widget = widget;
   }
   releaseDCLock();
 }
@@ -300,10 +292,9 @@ void setEnvironmentForWindow(HWND hWnd, JNIEnv *environment, jobject widget)
       newEntry->hWnd        = hWnd;
       newEntry->widget      = widget;
       newEntry->environment = environment;
-      log(environment, "new setEnvironmentForWindow\n");
     } else
       entry->environment = environment;
   }
-    releaseDCLock();
+  releaseDCLock();
 }
 
