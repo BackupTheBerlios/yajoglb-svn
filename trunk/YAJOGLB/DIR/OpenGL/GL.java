@@ -1,7 +1,7 @@
 /* 
  * GL.java
  *
- * $Id: GL.java,v 1.5 1999/04/29 01:16:58 razeh Exp $
+ * $Id: GL.java,v 1.6 2002/04/14 18:17:38 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
