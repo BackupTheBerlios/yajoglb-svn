@@ -1,7 +1,7 @@
 /* 
  * OpenGLNativeMemoryExhaustedException class
  *
- * $Id: NativeMemoryExhaustedException.java,v 1.1 1998/09/10 01:02:09 razeh Exp $ 
+ * $Id: NativeMemoryExhaustedException.java,v 1.2 1999/04/24 02:15:35 razeh Exp $ 
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
  */
@@ -14,11 +14,14 @@ package OpenGL;
   @version 0.1
 */
 public class OpenGLNativeMemoryExhaustedException extends OpenGLNativeException {
-  /** Constructs an <code> OpenGLNativeMemoryExhaustedException </code> with no message. */
+  /** Constructs an <code> OpenGLNativeMemoryExhaustedException
+      </code> with no message. */
   OpenGLNativeMemoryExhaustedException() {
     super();
   }
-  /** Constructs an <code> OpenGLNativeMemoryExhaustedException </code> with the specified detail message. 
+
+  /** Constructs an <code> OpenGLNativeMemoryExhaustedException
+   </code> with the specified detail message.  
    @param message message the detail message.*/
   OpenGLNativeMemoryExhaustedException(String message) {
     super(message);
