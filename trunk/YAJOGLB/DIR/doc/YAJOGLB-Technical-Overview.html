@@ -23,15 +23,16 @@ trying to get things to work, I broke down and started using
 Microsoft's Visual C++ V6.0, which made things much better. There are
 still traces of Cygnus's code in the distribution though.</P>
 <P>However, I continue to use Cygwin's make and bash for the Java code.</P>
-<P>For version control I used the old trusty Unix standby, RCS
-(someday soon I'll learn CVS). For more information about RCS in
-general, and about RCS on Windows see <A
-HREF="http://www.cyclic.com/cyclic-pages/rcs.html">http://www.cyclic.com/cyclic-pages/rcs.html</A>
-. I've been using a combination of the packages known as <A
-HREF="http://download.cyclic.com/pub/rcs/diff27nt.zip">diff27nt.zip</A>
-and<A HREF="http://download.cyclic.com/pub/rcs/rcs57nt.zip">
-rcs57nt.zip</A> for years now without any problems.</P>
-<P>Using the Cygnus tools under Windows does have one advantage: shifting my development work to Linux is trivial.</P>
+
+<P>At first I used RCS to maintain the files.  However, I RCS doesn't
+support file renaming, so I switched to CVS.  I had hoped to use a
+single common repository for Linux and Windows, but that did not work
+out.  I tried placing the repository on a FAT32 partition that was
+shared by Linux and Windows; there were lots of case problems.  If
+anyone has a single machine solution that works please send me some
+email.
+
+<P>Using the Cygnus tools under Windows does have one advantage: shifting my development work to Linux is trivial.  </P>
 <H3>The package</H3>
 <P>There are only a couple of classes in the package, each with a well-defined purpose. First I will describe the public classes, and later on I will get into the gory details.</P>
 <TABLE BORDER CELLSPACING=1 CELLPADDING=9>
@@ -211,5 +212,5 @@ You can only perform OpenGL operations while the Canvas is locked.  This is hand
 <P><IMG SRC="Simplest.jpg" WIDTH=400 HEIGHT=400 ALT="Picture of a triangle"></P>
 <HR>
 <ADDRESS>Back to Robert Zeh's <A HREF="http://home.earthlink.net/~rzeh">home page</A>.<BR>
-Last Changed July 21th, 2002. </ADDRESS></BODY>
+Last Changed September 7, 2002. </ADDRESS></BODY>
 </HTML>
