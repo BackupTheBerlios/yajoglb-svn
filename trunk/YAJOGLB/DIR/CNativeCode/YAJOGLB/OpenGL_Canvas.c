@@ -19,7 +19,6 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
   USA
-
 */
 
 
@@ -27,6 +26,7 @@
 #ifdef USE_JAWT
 #include <jawt_md.h>
 #endif
+#include "Memory.h"
 #include "SystemIncludes.h"
 #include "cygnusFixes.h"
 #include "OpenGL_Canvas.h"
@@ -42,7 +42,7 @@ static void nativeLockingMethod
   JAWT_DrawingSurfaceInfo* dsi;
   jboolean result;
   jint lock;
-
+  
   // Get the AWT
   awt.version = JAWT_VERSION_1_3;
   result = JAWT_GetAWT(env, &awt);
@@ -68,6 +68,7 @@ static void nativeLockingMethod
 
   // Get the drawing surface info
   dsi = ds->GetDrawingSurfaceInfo(ds);
+  
   {
     jclass canvasClass = (*env)->GetObjectClass(env, canvas);
     jmethodID methodID = getMethodID(env, canvasClass, methodName, "()V",
@@ -159,35 +160,39 @@ JNIEXPORT jobject JNICALL Java_OpenGL_Canvas_lockedMethod
 
   // Get the drawing surface info
   dsi = ds->GetDrawingSurfaceInfo(ds);
+  if (dsi == NULL) {
+    handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get drawing surface information.");
+    ds->Unlock(ds);
+    awt.FreeDrawingSurface(ds);
+    return returnObject;
+  }
 
   {
     jmethodID methodID = (*env)->FromReflectedMethod(env, method);
 
-    if (methodID) {
-      if (args != NULL) {
-	// If we have any arguments we need to convert them into a
-	// jvalues.
-	const jsize argsLength = (*env)->GetArrayLength(env, args);      
-	jvalue *argsAsValues = (jvalue*)privateMalloc(sizeof(jvalue) * argsLength);
-	int i = 0;
-
-	if (argsAsValues == NULL) {
-	  handleOutOfMemoryError(env, "Ran out of memory while trying to invoke a locked method.");
-	  return returnObject;
-	}
-	for(i = 0; i < argsLength; i++) {
-	  argsAsValues[i].l = (*env)->GetObjectArrayElement(env, args, i);
-	}
-	returnObject = (*env)->CallObjectMethodA(env, object, methodID, 
-						 argsAsValues);
-	if (argsAsValues) privateFree(argsAsValues);
-      } else {
-	returnObject = (*env)->CallObjectMethod(env, object, methodID, NULL);
-      }
-
-    } else {
+    if (!methodID) {
       handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get methodID.");
       return returnObject;
+    }
+
+    if (args != NULL) {
+      // If we have any arguments we need to convert them into a
+      // jvalues.
+      const jsize argsLength = (*env)->GetArrayLength(env, args);      
+      jvalue *argsAsValues = (jvalue*)alloca(sizeof(jvalue) * argsLength);
+      int i = 0;
+
+      if (argsAsValues == NULL) {
+	handleOutOfMemoryError(env, "Ran out of memory while trying to invoke a locked method.");
+	return returnObject;
+      }
+      for(i = 0; i < argsLength; i++) {
+	argsAsValues[i].l = (*env)->GetObjectArrayElement(env, args, i);
+      }
+      returnObject = (*env)->CallObjectMethodA(env, object, methodID, 
+					       argsAsValues);
+    } else {
+      returnObject = (*env)->CallObjectMethod(env, object, methodID, NULL);
     }
   }
 
