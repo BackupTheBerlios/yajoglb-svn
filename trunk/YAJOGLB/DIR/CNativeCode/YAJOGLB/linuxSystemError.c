@@ -1,7 +1,7 @@
 /*
  * SystemError.c
  * 
- * $Id: linuxSystemError.c,v 1.1 1999/02/13 19:27:40 razeh Exp $
+ * $Id: linuxSystemError.c,v 1.2 1999/05/03 00:06:28 razeh Exp $
  * 
  * This implements our interface to our operating system's error 
  * reporting routines.  We return a character string that describes
@@ -15,6 +15,7 @@
 
 #include "SystemIncludes.h"
 #include <errno.h>
+#include <string.h>
 #include "Memory.h"
 
 /* This returns an error message describing the latest operating system error. 
