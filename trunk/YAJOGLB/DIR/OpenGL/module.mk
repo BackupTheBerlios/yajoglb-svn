@@ -1,3 +1,4 @@
+DISTRIBUTED_FILES += OpenGL/module.mk
 
 JAVA_SRC += OpenGL/GLConstants.java OpenGL/CHeapItem.java OpenGL/CallbackObject.java	\
             OpenGL/Capabilities.java OpenGL/GLUConstants.java				\
