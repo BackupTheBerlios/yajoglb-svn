@@ -26,19 +26,21 @@ SHELL=/gnuwin32/b18/H-i386-cygwin32/bin/sh
 # The header files for our native code
 NATIVEHEADERS = OpenGL_OpenGLWidget.h \
 		OpenGL_GLUQuadric.h OpenGL_GLUNurbs.h \
-	        OpenGL_GLUTriangulator.h
+	        OpenGL_GLUTriangulator.h OpenGL_OpenGLContext.h \
+                OpenGL_OpenGLVertexPointer.h
 
 all :   packagedir $(JAVA_CLASSES) nativedir
 
 packagedir:
 	(cd $(PACKAGEDIR); $(MAKE))
+	jar -cvf0 OpenGL.jar $(PACKAGEDIR)/*.class
 
 nativedir:
 	(cd $(NATIVECODEDIR); $(MAKE) install)
 
 dist : clean
 	(cd ..; $(RM) -f OpenGL-Java.tar)
-	(cd ..; $(TAR) cvf OpenGL-Java.tar OpenGL-Java)
+	(cd ..; $(TAR) cvf OpenGL-Java.tar Win32-OpenGL-Java)
 	(cd ..; gzip -v OpenGL-Java.tar)
 
 clean :
@@ -62,6 +64,12 @@ OpenGL_GLUNurbs.h: $(PACKAGEDIR)/GLUNurbs.java
 
 OpenGL_GLUTriangulator.h: $(PACKAGEDIR)/GLUTriangulator.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLUTriangulator
+
+OpenGL_OpenGLContext.h: $(PACKAGEDIR)/OpenGLContext.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLContext
+
+OpenGL_OpenGLVertexPointer.h: $(PACKAGEDIR)/OpenGLVertexPointer.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLVertexPointer
 
 
 
