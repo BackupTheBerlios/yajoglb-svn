@@ -1,7 +1,7 @@
 /*
  * Textured cube
  *
- * $Id: TexturedCube.java,v 1.2 2001/07/04 02:20:08 razeh Exp $
+ * $Id: TexturedCube.java,v 1.3 2001/07/06 23:17:25 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -82,8 +82,8 @@ public class TexturedCube implements GeometryObject, GLConstants {
     gl.enable(TEXTURE_2D);
     textureIDs = new int[3];
     gl.genTextures(textureIDs);
-    OpenGLTextureHelp.createTextureForTGAFile(gl, glu,
-					      textureIDs[0], "ogl.tga");
+    TextureHelp.createTextureForTGAFile(gl, glu,
+					textureIDs[0], "ogl.tga");
   }
   
 
