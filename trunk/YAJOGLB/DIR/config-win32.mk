@@ -6,6 +6,6 @@ JLIB                = c:\jdk1.3\lib\classes.zip
 # How to break out directories.
 DIR_SEPARATOR       = \
 # How to break out class paths.
-CLASSPATH_SEPARATOR = ;
+CLASSPATH_SEPARATOR = \;
 
 
