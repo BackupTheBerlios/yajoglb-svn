@@ -1,10 +1,10 @@
 /*
  * JNIInterface.h 
  *
- * $Id: JNIInterface.h,v 1.6 1999/01/04 02:05:48 razeh Exp $
+ * $Id: JNIInterface.h,v 1.7 2001/07/06 23:41:00 razeh Exp $
  *
  * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 
@@ -44,3 +44,17 @@ typedef struct _arrayElements {
 
 arrayElements getArrayElements(JNIEnv *env, jobject array, jboolean *isCopy);
 int releaseArrayElements(JNIEnv *env, jobject jarray, void *carray, int mode); 
+
+
+/* If _LP64 is good enough for the JNI headers, it is good enough for us. */
+#if __WORDSIZE == 64
+#define TO_POINTER(x) ((void*) x)
+#else
+#define TO_POINTER(x) ((void*) (int)x)
+#endif
+
+#define FROM_POINTER(x) ((jlong) (int)x)
+
+#ifndef CALLBACK
+#define CALLBACK
+#endif
