@@ -1,5 +1,5 @@
 /*
- * $Id: X11pDataAccess.java,v 1.3 1999/05/16 23:29:33 razeh Exp $
+ * $Id: X11pDataAccess.java,v 1.4 2002/04/14 18:29:11 razeh Exp $
  *
  * Taken (and then modified) from jogl-0.7
  *
@@ -12,7 +12,7 @@ package sun.awt.motif;
 
 import sun.awt.*;
 import OpenGL.OpenGLpDataAccess;
-import OpenGL.OpenGLCanvas;
+import OpenGL.Canvas;
 import java.awt.Canvas;
 import java.awt.Graphics;
 
@@ -25,8 +25,8 @@ import java.awt.Graphics;
  * @version 0.3
  */
 public class X11pDataAccess implements OpenGLpDataAccess {
-  /** The Display that we setup for the OpenGLCanvas we belong to. 
-   @return the display for our OpenGLCanvas. */
+  /** The Display that we setup for the Canvas we belong to. 
+   @return the display for our OpenGL.Canvas. */
   private int privateDisplay;
   
   /** This returns the X11 drawing surface for a given graphics object. 
@@ -53,14 +53,14 @@ public class X11pDataAccess implements OpenGLpDataAccess {
   /** Returns the drawable for our canvas.
       @param canvas the canvas whose color map we want
       @return the drawable for canvas. */
-  public int getDrawable(Canvas canvas) {
+  public int getDrawable(java.awt.Canvas canvas) {
       return getDrawingSurface(canvas).getDrawable();
   }
 
   /** Returns the color map ID for canvas. 
       @param canvas the canvas whose color map we want
       @return the color map ID for canvas. */
-  public int getColormapID(Canvas canvas) {
+  public int getColormapID(java.awt.Canvas canvas) {
       return getDrawingSurface(canvas).getColormapID();
   }
   
@@ -73,8 +73,8 @@ public class X11pDataAccess implements OpenGLpDataAccess {
 
 
 
-  /** Invoked by our OpenGLCanvas when it attaches to us. */
-  public void attach(OpenGLCanvas canvas) {
+  /** Invoked by our OpenGL.Canvas when it attaches to us. */
+  public void attach(OpenGL.Canvas canvas) {
     
   }
 
