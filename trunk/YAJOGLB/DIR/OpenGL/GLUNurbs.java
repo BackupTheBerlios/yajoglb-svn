@@ -10,16 +10,18 @@ package OpenGL;
 /**
  * GLUNurbs
  *
- * This is a Java standin for the GLU nurbs object. 
+ * This is the Java standin for the GLU nurbs object. 
  *
  * @author Robert Allan Zeh (razeh@balr.com)
+ *
+ * @version 0.1
  */
 
 public class GLUNurbs extends CHeapItem {
 
   /** We override this method to return the result of calling
     gluNewNurbsRenderer(). */
-  protected int obtainCHeapItem() {
+  private int obtainCHeapItem() {
     return gluNewNurbsRenderer();
   }
 
@@ -30,7 +32,7 @@ public class GLUNurbs extends CHeapItem {
   public native void gluDeleteNurbsRenderer(int nobj);
 
   /** We override this to call gluDeleteNurbsRenderer(). */
-  protected void freeCHeapItem(int heapItem) {
+  private void freeCHeapItem(int heapItem) {
     gluDeleteNurbsRenderer(heapItem);
   }
 }
