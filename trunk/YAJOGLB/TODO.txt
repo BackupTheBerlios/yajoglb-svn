@@ -1,5 +1,2 @@
 Remove the private data access information from the Canvas class.
-
-
-
-
+Some of the recently added error checking for CanvasInfo will report exceptions more then once.
