@@ -1,6 +1,6 @@
 #include <windows.h>
 #include "cygnusFixes.h"
-#include "OpenGL_OpenGLWidget.h"
+#include <jni.h>
 
 
 HDC getDCForWidget(JNIEnv *env, jobject widget);

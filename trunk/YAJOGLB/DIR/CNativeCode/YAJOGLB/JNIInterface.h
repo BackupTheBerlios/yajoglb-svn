@@ -1,7 +1,7 @@
 /*
  * JNIInterface.h 
  *
- * $Id: JNIInterface.h,v 1.2 1997/11/16 02:53:15 razeh Exp $
+ * $Id: JNIInterface.h,v 1.3 1998/11/01 21:40:23 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -26,3 +26,12 @@ jmethodID getMethodID(JNIEnv *env, jclass class,
 		      const char *methodName,
 		      const char *methodSignature,
 		      const char *errorMessage);
+
+
+typedef struct _arrayElements {
+	void *arrayElements;
+    char *elementType;
+} arrayElements;
+
+arrayElements getArrayElements(JNIEnv *env, jobject array, jboolean *isCopy);
+int releaseArrayElements(JNIEnv *env, jobject jarray, void *carray, int mode); 
