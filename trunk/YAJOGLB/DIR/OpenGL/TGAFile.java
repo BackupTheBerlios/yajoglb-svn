@@ -2,7 +2,7 @@ package OpenGL;
 
 import java.io.*;
 
-class TGAFile {
+public class TGAFile {
     public TGAFile(String fname, int w, int h){
         this.w = w;
         this.h = h;
