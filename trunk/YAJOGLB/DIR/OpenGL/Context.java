@@ -1,7 +1,7 @@
 /*
  * OpenGLContext
  *
- * $Id: Context.java,v 1.1 1998/09/10 01:01:14 razeh Exp $
+ * $Id: Context.java,v 1.2 1998/11/01 02:17:45 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -38,14 +38,6 @@ public class OpenGLContext extends CHeapItem
   static final String CONTEXT = "OpenGLContext";
   static final String CANVAS  = "OpenGLCanvas";
 
-  /** This private routine is used so that we can pass a constructed
-      hash table to our super construction method. */
-  static private Hashtable startingArgs(OpenGLWidget widget) {
-    Hashtable optionalArguments = new Hashtable();
-    optionalArguments.put(WIDGET, widget);
-    return optionalArguments;
-  }
-
   /** This private routine is used to pass a constructed hash table 
       to our super construction method. */
   static private Hashtable startingArgs(OpenGLCanvas canvas) {
@@ -56,37 +48,12 @@ public class OpenGLContext extends CHeapItem
   
   /** This private routine is used so that we can pass a constructed
       hash table to our super construction method. */
-  static private Hashtable startingArgs(OpenGLWidget widget, 
+  static private Hashtable startingArgs(OpenGLCanvas canvas, 
 					OpenGLContext context) {
     Hashtable optionalArguments = new Hashtable();
-    optionalArguments.put(WIDGET, widget);
+    optionalArguments.put(CANVAS, canvas);
     optionalArguments.put(CONTEXT, context);
     return optionalArguments;
-  }
-
-  /** This private routine is used so that we can pass a constructed
-      hash table to our super construction method. */
-  static private Hashtable startingArgs(OpenGLCanvas widget, 
-					OpenGLContext context) {
-    Hashtable optionalArguments = new Hashtable();
-    optionalArguments.put(CANVAS, widget);
-    optionalArguments.put(CONTEXT, context);
-    return optionalArguments;
-  }
-
-  /** Constructs an OpenGLContext that will draw into widget. 
-   * @param widget the OpenGLWidget to draw into. */
-  public OpenGLContext(OpenGLWidget widget) {
-    super(startingArgs(widget));
-  }
-
-  /** This creates an OpenGLContext attached to widget that shares its
-   * display lists with context.
-   * 
-   * @param widget the widget to draw into.  
-   * @param context the OpenGLContext to share display lists with. */
-  public OpenGLContext(OpenGLWidget widget, OpenGLContext context) {
-    super(startingArgs(widget, context));
   }
 
   /** Constructs an OpenGLContext that will draw into an OpenGLCanvas.
@@ -115,21 +82,6 @@ public class OpenGLContext extends CHeapItem
     nativeReleaseCurrentContext();
   }
 
-  /** Make the supplied context pointer the current context for
-      widget. */
-  private native void makeCurrent(int context, OpenGLWidget widget);
-
-  /** Makes this context the current context for the supplied
-   * widget. All future OpenGL rendering will be done inside of
-   * widget, and with this context's state.  
-   * 
-   * @param widget the OpenGLWidget we should start drawing into.*/
-  public void makeCurrent(OpenGLWidget widget) {
-    makeCurrent(heapPointer(), widget);
-  }
-
-
-
   /** Make the supplied context pointer the current context for canvas. */
   private native void makeCanvasCurrent(int context, OpenGLCanvas canvas);
 
@@ -148,23 +100,13 @@ public class OpenGLContext extends CHeapItem
   private native int createCanvasContext(OpenGLCanvas canvas, int context);
 
 
-  /** This creates an OpenGL Context for the given widget. */
-  private native int createContext(OpenGLWidget widget, int context);
-
   /** This is used to allocate our OpenGL context. */
   protected int obtainCHeapItem(Hashtable optionalArguments) {
-    OpenGLWidget  widget  = (OpenGLWidget)  optionalArguments.get(WIDGET);
     OpenGLContext context = (OpenGLContext) optionalArguments.get(CONTEXT);
     OpenGLCanvas  canvas  = (OpenGLCanvas)  optionalArguments.get(CANVAS);
     
-    if ((context != null) && (widget != null))
-      return createContext(widget, context.heapPointer());
-    
     if ((context != null) && (canvas != null))
       return createCanvasContext(canvas, context.heapPointer());
-
-    if (widget != null) 
-      return createContext(widget, 0);
 
     if (canvas != null)
       return createCanvasContext(canvas, 0);
