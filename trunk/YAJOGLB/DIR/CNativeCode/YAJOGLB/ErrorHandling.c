@@ -9,6 +9,7 @@
  */
 
 #include "cygnusFixes.h"
+#include <stdlib.h>
 #include "ErrorHandling.h"
 
 #define BUFFERLENGTH 32
@@ -42,6 +43,16 @@ void handleError(JNIEnv *env,
 void log(JNIEnv *env, const char *string)
 {
   fprintf(stderr, string);
+}
+
+
+/* Call this function when you have an error that can not be
+   reported via the JVM.  This can happen if you are unable to
+   get an environment pointer for some reason. */
+void fatalUnreportableError(const char *errorString)
+{
+  fprintf(stderr, errorString);
+  abort();
 }
 
 
