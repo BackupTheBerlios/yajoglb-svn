@@ -39,7 +39,10 @@ static void nativeLockingMethod
   JAWT_DrawingSurface* ds;
   jboolean result;
   jint lock;
-  
+  jthrowable lockedMethodException = 0;
+  jthrowable unlockException = 0;
+  jthrowable freeException = 0;
+
   // Get the AWT
   awt.version = JAWT_VERSION_1_4;
   result = JAWT_GetAWT(env, &awt);
@@ -70,13 +73,35 @@ static void nativeLockingMethod
     if (methodID) {
       (*env)->CallVoidMethod(env, canvas, methodID);
     }
+	lockedMethodException = (*env)->ExceptionOccurred(env);
   }
+
+  // Note: these will clear any pending exceptions, so we have to
+  // be careful not to swallow any exceptions that our call to the locked
+  // method might have generated.
 
   // Unlock the drawing surface
   ds->Unlock(ds);
+  unlockException = (*env)->ExceptionOccurred(env);
 
   // Free the drawing surface
   awt.FreeDrawingSurface(ds);
+  freeException = (*env)->ExceptionOccurred(env);
+
+  if (lockedMethodException) {
+	if (((unlockException == 0) && (freeException == 0)) ||
+		(*env)->IsSameObject(env, lockedMethodException, unlockException) &&
+		(*env)->IsSameObject(env, unlockException, freeException))
+	  (*env)->Throw(env, lockedMethodException);
+	return;
+  }
+
+  if (unlockException) {
+	  if ((freeException == 0) ||
+		  (*env)->IsSameObject(env, unlockException, freeException)) 
+		  (*env)->Throw(env, unlockException);
+	return;
+  }
 }
 
 
