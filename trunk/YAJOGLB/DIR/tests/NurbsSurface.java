@@ -1,7 +1,7 @@
 /*
  * NurbsSurface class
  *
- * $Id: NurbsSurface.java,v 1.5 1999/01/27 00:02:07 razeh Exp $
+ * $Id: NurbsSurface.java,v 1.6 1999/05/02 23:31:00 razeh Exp $
  *
  * Copyright 1998
  *
@@ -19,7 +19,9 @@ import java.awt.*;
  *  symmetrical hill. Taken from the SGI examples. 
  */
 
-public class NurbsSurface extends GLUNurbs implements GeometryObject, GLConstants, GLUConstants {
+public class NurbsSurface extends Object implements GeometryObject, GLConstants, GLUConstants {
+
+  GLUNurbs   surface  = null;
 
   public static void main (String args[]) {
     NurbsSurface   surface  = new NurbsSurface();
@@ -35,7 +37,6 @@ public class NurbsSurface extends GLUNurbs implements GeometryObject, GLConstant
     frame.setBackground(java.awt.Color.black);
     frame.setSize(new Dimension(400,400));
   }
-
 
 
   private boolean showPoints;
@@ -60,7 +61,8 @@ public class NurbsSurface extends GLUNurbs implements GeometryObject, GLConstant
   }				
 
   public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
-    
+
+    surface = new GLUNurbs();    
     float mat_diffuse[] = { 0.7f, 0.7f, 0.7f, 1.0f };
     float mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     float mat_shininess[] = { 100.0f };
@@ -77,8 +79,8 @@ public class NurbsSurface extends GLUNurbs implements GeometryObject, GLConstant
 
     initSurface();
 
-    nurbsProperty(GLU_SAMPLING_TOLERANCE, 25.0f);
-    nurbsProperty(GLU_DISPLAY_MODE, GLU_FILL);
+    surface.nurbsProperty(GLU_SAMPLING_TOLERANCE, 25.0f);
+    surface.nurbsProperty(GLU_DISPLAY_MODE, GLU_FILL);
   }
 
   public void paint(GeometryViewer viewer, GL gl, GLU glu) {
@@ -97,11 +99,11 @@ public class NurbsSurface extends GLUNurbs implements GeometryObject, GLConstant
     gl.rotate(330.0f, 1.f,0.f,0.f);
     gl.scale(0.5f, 0.5f, -0.5f);
     
-    beginSurface();
-    nurbsSurface(knots, knots,
+    surface.beginSurface();
+    surface.nurbsSurface(knots, knots,
 		 4 * 3, 3, flatControlPoints, 
 		 4, 4, MAP2_VERTEX_3);
-    endSurface();
+    surface.endSurface();
     
     if (showPoints == true) {
       gl.pointSize(5.0f);
@@ -118,7 +120,7 @@ public class NurbsSurface extends GLUNurbs implements GeometryObject, GLConstant
       gl.enable(LIGHTING);
     }
     gl.popMatrix();
-    gl.flush();
+    //gl.flush();
   }
 
 }

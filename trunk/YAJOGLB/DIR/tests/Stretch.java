@@ -1,7 +1,7 @@
 /*
  * OpenGLCanvasTest class
  *
- * $Id: Stretch.java,v 1.4 1999/02/13 19:19:49 razeh Exp $
+ * $Id: Stretch.java,v 1.5 1999/05/02 23:31:00 razeh Exp $
  * 
  * Copyright 1998
  *
@@ -13,9 +13,9 @@ import java.awt.*;
 import OpenGL.*;
 import java.awt.event.*;
 
-/** This demonstrates the use of gluScaleImage by displaying a raster image
-on the screen that can be stretched by clicking the mouse on different
-portions of the screen. */
+/** This demonstrates the use of gluScaleImage by displaying a raster
+    image on the screen that can be stretched by clicking the mouse on
+    different portions of the screen. */
 public class Stretch extends OpenGLCanvas 
 implements GLUConstants, GLConstants, MouseListener, MouseMponentListener {
 
@@ -165,6 +165,7 @@ implements GLUConstants, GLConstants, MouseListener, MouseMponentListener {
   /** When the window is resized we change our viewport to match the
       new width and height. */
   public void componentResized(ComponentEvent e) {
+
     if (context != null) {
       aquireContext();
       gl.viewport(0, 0, getSize().width, getSize().height);

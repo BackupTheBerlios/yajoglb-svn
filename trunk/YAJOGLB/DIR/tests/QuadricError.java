@@ -1,7 +1,7 @@
 /*
  * QuadricError.java
  *
- * $Id: QuadricError.java,v 1.1 1999/01/27 00:02:07 razeh Exp $
+ * $Id: QuadricError.java,v 1.2 1999/05/02 23:31:00 razeh Exp $
  * 
  * Makes sure that the quadric error method gets called.
  */
@@ -27,8 +27,8 @@ public class QuadricError extends GLUQuadric implements GeometryObject, GLConsta
   }
 
   public static void main(String args[]) {
-     QuadricError   error  = new QuadricError();
      GeometryViewer viewer = new GeometryViewer();
+     QuadricError   error  = new QuadricError();
      ExitableFrame  frame  = new ExitableFrame();
 
      viewer.addElement(error);

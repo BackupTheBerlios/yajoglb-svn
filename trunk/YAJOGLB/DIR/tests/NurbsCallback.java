@@ -1,7 +1,7 @@
 /*
  * NurbsCallback class
  *
- * $Id: NurbsCallback.java,v 1.1 1999/01/27 00:02:07 razeh Exp $
+ * $Id: NurbsCallback.java,v 1.2 1999/05/02 23:31:00 razeh Exp $
  *
  * Copyright 1998
  *
@@ -41,8 +41,8 @@ public class NurbsCallback extends NurbsSurface
   }
 
   public static void main (String args[]) {
-    NurbsCallback   surface  = new NurbsCallback();
     GeometryViewer viewer   = new GeometryViewer();
+    NurbsCallback  surface  = new NurbsCallback();
     ExitableFrame  frame    = new ExitableFrame();
 
     surface.nurbsProperty(GLU_NURBS_MODE, GLU_NURBS_TESSELLATOR);
