@@ -61,7 +61,14 @@ clean :
 	$(MAKE) -C $(PACKAGEDIR) clean
 	$(MAKE) -C $(CHEATINGWINDIR) clean
 	$(MAKE) -C $(CHEATINGMOTIFDIR) clean
+# If we are running under Linux we want to use our own clean.
+ifeq ($(OSTYPE),linux-gnu)
+	$(MAKE) -C $(NATIVECODEDIR) clean
+# Otherwise we assume that we are under Windows.
+else
 	(cd $(NATIVECODEDIR); MAKEFLAGS= ; $(NMAKE) /F YAJOGLB.MAK CLEAN)
+endif
+
 	$(MAKE) -C $(TESTDIR) clean
 
 documentation ::
