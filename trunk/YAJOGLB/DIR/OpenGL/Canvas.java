@@ -1,7 +1,7 @@
 /*
  * OpenGLCanvas class
  *
- * $Id: Canvas.java,v 1.1 1998/09/10 00:57:30 razeh Exp $
+ * $Id: Canvas.java,v 1.2 1998/10/04 23:42:01 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -38,9 +38,9 @@ public class OpenGLCanvas extends Canvas {
     return OpenGLCapabilities.defaultCapabilities();
   }
 
-  /** Sets the capabilities that this widget will use when it is opened
-     up.  This has no effect once the widget has been displayed on
-     screen. */
+  /** Sets the capabilities that this widget will use when we are
+     opened up.  This has no effect once the canvas has been displayed
+     on screen. */
   protected void setCapabilities(OpenGLCapabilities newCapabilities) {
     capabilities = newCapabilities;
   }
@@ -80,7 +80,7 @@ public class OpenGLCanvas extends Canvas {
 
     dataAccess = 
       (OpenGLpDataAccess) new sun.awt.windows.WindowspDataAccess();
-    
+
     if (false == setupOpenGLCanvas(dataAccess.getHDC(this),
 				   dataAccess.getHWnd(this))) {
       throw new OpenGLCanvasSetupFailedException("Unable to setup the canvas");
@@ -98,9 +98,9 @@ public class OpenGLCanvas extends Canvas {
   }
 
   /** This is overriden to handle our canvas setup, and calling
-      glInit() and paint(). This should not be overriden by
-      subclasses! */
-  public void paint(Graphics g) {
+      glInit() and paint(). This is final to prevent any subclasses
+      from mucking things up! */
+  final public void paint(Graphics g) {
     super.paint(g);
     if (false == canvasHasBeenSetup) {
       init();
