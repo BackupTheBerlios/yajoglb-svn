@@ -1,7 +1,7 @@
 /*
  * linuxDPYDictionary.c
  *
- * $Id: linuxDPYDictionary.c,v 1.1 1999/02/13 19:27:40 razeh Exp $
+ * $Id: linuxDPYDictionary.c,v 1.2 1999/03/24 01:47:00 razeh Exp $
  *
  * Copyright 1999
  * Robert Allan Zeh (razeh@balr.com)
@@ -13,20 +13,27 @@
 #include "SystemIncludes.h"
 #include "cygnusFixes.h"
 #include "JNIInterface.h"
+#include "ErrorHandling.h"
 #include "linuxDPYDictionary.h"
 
-/* Returns the display object for the canvas by asking the canvas for it. */
+
+/* Returns the display connection. */
 Display* getDisplayForCanvas(JNIEnv* env, jobject canvas) 
 {
-  jmethodID getDisplayMethodID = NULL;
-  Display*  display = NULL;
-  jclass    canvasClass = (*env)->GetObjectClass(env, canvas);
-  
-  getDisplayMethodID = getMethodID(env, canvasClass, "getDisplay", "()I", "Unable to get the getDisplay() method.");
-  if (getDisplayMethodID) {
-    display = (Display*) (*env)->CallIntMethod(env, canvas, getDisplayMethodID);
+  /* We are going to try creating our own display, rather than using
+     the one provided by AWT.  If we use our own we do not have to worry
+     about the synrchornization problems that arise from two toolkits 
+     going through the same display connection. */
+  static Display *ourOwnDisplay = NULL;
+
+  if (NULL == ourOwnDisplay) {
+    ourOwnDisplay = XOpenDisplay(NULL);
+    if (NULL == ourOwnDisplay) {
+      handleError(env, OPENGL_NATIVE_EXCEPTION, "Unable to obtain a display.");
+    }
   }
-  return display;
+
+  return ourOwnDisplay;
 }
 
 
@@ -41,6 +48,11 @@ GLXDrawable getDrawableForCanvas(JNIEnv* env, jobject canvas)
   getDrawableMethodID = getMethodID(env, canvasClass, "getDrawable", "()I", "Unable to get the getDrawable() method.");
   if (getDrawableMethodID) {
     drawable = (GLXDrawable)(*env)->CallObjectMethod(env, canvas, getDrawableMethodID);
+    if (0 == drawable) {
+      handleError(env, OPENGL_NATIVE_EXCEPTION, "Unable to obtain a drawable for the canvas.");
+    }
+  } else {
+      handleError(env, OPENGL_NATIVE_EXCEPTION, "Unable to get the getDrawable() method.");
   }
   return drawable;
 }
