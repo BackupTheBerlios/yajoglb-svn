@@ -1,7 +1,7 @@
 /*
  * Tess.java
  *
- * $Id: TessVertex.java,v 1.1 1999/01/03 01:30:44 razeh Exp $
+ * $Id: TessVertex.java,v 1.2 1999/01/04 02:00:06 razeh Exp $
  * Taken from the C source inside the redbook examples in glut-3.6.
  * Robert Allan Zeh (razeh@balr.com)
  */
@@ -10,23 +10,19 @@ import OpenGL.*;
 import java.awt.*;
 
 /**
- *  tess.c
- *  This program demonstrates polygon tessellation.
- *  Two tesselated objects are drawn.  The first is a
- *  rectangle with a triangular hole.  The second is a
- *  smooth shaded, self-intersecting star.
- *  <P>
- *  Note the exterior rectangle is drawn with its vertices
- *  in counter-clockwise order, but its interior clockwise.
- *  Note the combineCallback is needed for the self-intersecting
- *  star.  Also note that removing the TessProperty for the 
- *  star will make the interior unshaded (WINDING_ODD).
+ * tess.c 
+ * <P>
+ * This program demonstrates polygon tessellation.  It
+ * draws * part of a Dinosaur from Mark Kilgard's reflection tips.
+ * This demo is really, really slow because it makes a lot of manual
+ * calls to the garbage collect to make sure that the bindingarbage collection properly.
  */
 
 public class TessVertex extends GLUTesselator implements GeometryObject, GLConstants {
   float[] dinoBodyMaterial =  { 0.0f, 0.5f, 0.5f, 0.5f };
   GL gl;
-  
+  boolean edgeFlagCalled;
+
   public void begin(int type, Object polygonData) {
     gl.begin(type);
   }
@@ -37,11 +33,14 @@ public class TessVertex extends GLUTesselator implements GeometryObject, GLConst
 
   public void vertex(Object vertexData, Object polygonData) {
     double[] vertex = (double[]) vertexData;
+    // Invoke the garbage collector to make sure the binding keeps things
+    // around.  This makes things really, really slow.
+    // java.lang.Runtime.getRuntime().gc();
     gl.vertex(vertex[0], vertex[1], vertex[2]);
   }
 
   public void edgeFlag(boolean flag, Object polygonData) {
-    System.out.println("edgeFlag");
+    edgeFlagCalled = true;
   }
 
   public Object combine(double x, double y, double z, 
@@ -85,6 +84,7 @@ public class TessVertex extends GLUTesselator implements GeometryObject, GLConst
     gl.material(FRONT_AND_BACK, AMBIENT_AND_DIFFUSE, dinoBodyMaterial);
 
     // See what happens with the edge flag enabled.
+    edgeFlagCalled = false;
     enableEdgeFlag();
     beginPolygon(null);
     beginContour();
@@ -99,8 +99,10 @@ public class TessVertex extends GLUTesselator implements GeometryObject, GLConst
     endContour();
     endPolygon();
     disableEdgeFlag();
-
-    System.out.println("Edge flag disabled.");
+    if (!edgeFlagCalled) {
+      System.out.println("Edge flag wasn't called!");
+    }
+    
     // See what happens without the edge flag.
     beginPolygon(null);
     beginContour();
@@ -116,19 +118,48 @@ public class TessVertex extends GLUTesselator implements GeometryObject, GLConst
   }
 
   public static void main(String args[]) {
-    TessVertex     tess   = new TessVertex();
-    GeometryViewer viewer = new GeometryViewer();
-    ExitableFrame  frame  = new ExitableFrame();
-    
-    viewer.addElement(tess);
-    viewer.addElement(new Axis());
-    frame.setLayout(new GridLayout(1,1));
-    frame.add(viewer);
-    frame.setTitle("A tesselated polygon");
-    frame.pack();
-    frame.setSize(new Dimension(400,400));
-    frame.setBackground(java.awt.Color.black);
-    frame.setVisible(true);
+    TessVertex     tess1   = new TessVertex();
+    GeometryViewer viewer1 = new GeometryViewer();
+    GeometryViewer viewer2 = new GeometryViewer();
+    ExitableFrame  frame1  = new ExitableFrame();
+    Frame          frame2  = new Frame();
+
+    java.lang.Runtime.getRuntime().traceMethodCalls(true);
+    java.lang.Runtime.getRuntime().traceInstructions(true);
+    viewer1.addElement(tess1);
+    viewer1.addElement(new Axis());
+    frame1.setLayout(new GridLayout(1,1));
+    frame1.add(viewer1);
+    frame1.setTitle("A tesselated polygon - Thread 1");
+    frame1.pack();
+    frame1.setSize(new Dimension(400,400));
+    frame1.setBackground(java.awt.Color.black);
+    frame1.setVisible(true);
+
+    viewer2.addElement(tess1);
+    viewer2.addElement(new Axis());
+    frame2.setLayout(new GridLayout(1,1));
+    frame2.add(viewer2);
+    frame2.setTitle("A tesselated polygon - Thread 2");
+    frame2.pack();
+    frame2.setLocation(frame1.getSize().width + 
+		       frame1.getLocationOnScreen().x,
+		       frame1.getLocationOnScreen().y);
+    frame2.setSize(new Dimension(400,400));
+    frame2.setBackground(java.awt.Color.black);
+    frame2.setVisible(true);
+
+    while(true) {
+      try {
+	Thread.sleep(100);
+      } catch (InterruptedException e) {
+	;
+      }
+      
+      viewer1.paint();
+      viewer2.paint();
+    }
   }
 }
+
 
