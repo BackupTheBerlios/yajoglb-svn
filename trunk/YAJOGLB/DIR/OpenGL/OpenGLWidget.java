@@ -1,6 +1,8 @@
 /* 
  * OpenGLWidget class
  *
+ * $Id: OpenGLWidget.java,v 1.2 1997/11/16 02:50:24 razeh Exp $
+ *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
  */
@@ -42,7 +44,7 @@ import java.awt.AWTEvent;
  *
  * Although we are subclassed from Frame you shouldn't count on any of
  * the Frame methods working!  We implement our own window
- * functionality, so methods like setSize() or setTitle will have no
+ * functionality, so methods like setSize() or setTitle() will have no
  * effect.  Additionally, don't expect to get events other than the
  * ones we implement listener interfaces for.
  *
@@ -54,7 +56,9 @@ OpenGLUConstants, Runnable, MouseListener, MouseMotionListener,
 WindowListener, ComponentListener, KeyListener {
 
   static {
-    /* These are the libraries that need to be loaded under Windows NT. */
+    /* These are the libraries that need to be loaded under Windows
+       NT.  At some point we should move this code into our native
+       code section. */
       System.load("OpenGL4java");
       System.loadLibrary("OPENGL32");
       System.loadLibrary("GLU32");
@@ -78,6 +82,9 @@ WindowListener, ComponentListener, KeyListener {
 
   static int initialWidth  = 400;
   static int initialHeight = 400;
+
+  private OpenGLCapabilities capabilities = null;
+
   synchronized int getContextStatus() {
     return contextStatus;
   }
@@ -85,6 +92,7 @@ WindowListener, ComponentListener, KeyListener {
   synchronized void setContextStatus(int newStatus) {
     contextStatus = newStatus;
   }
+
 
   /** This is called to add in the standard listeners at startup.  We
       express interest in window and component events here to make
@@ -94,14 +102,21 @@ WindowListener, ComponentListener, KeyListener {
     addComponentListener(this);
   }
 
+  /** This performs setup work that has to be done in all of our
+    constructors. */
+  private void OpenGLWidgetSetup() {
+    setSize(initialWidth, initialHeight);
+    addListeners();
+    setCapabilities(defaultCapabilities());
+  }
+
   /** This is a stub for any initialization we will have to do.  It
       does not instantiate the widget; that actually happens in our
       run method.  It happens in our run method because we want to
       setup all of our platform dependent context in the proper
       thread. */
   public OpenGLWidget() {
-    setSize(initialWidth, initialHeight);
-    addListeners();
+    OpenGLWidgetSetup();
   }
 
   /** This sets our title, but does not instaniate the widget; that
@@ -109,9 +124,8 @@ WindowListener, ComponentListener, KeyListener {
       method because we want to setup all of our platform dependent
       context in the proper thread.*/
   public OpenGLWidget(String title) {
-    setSize(initialWidth, initialHeight);
+    OpenGLWidgetSetup();
     setTitle(title);
-    addListeners();
   }
 
   /** This performs our platform dependent startup by calling
@@ -122,9 +136,9 @@ WindowListener, ComponentListener, KeyListener {
 			 getTitle()) == false) {
       throw new OpenGLWidgetOpenFailedException ();
     }
-    System.out.println("Native open worked" + this);
+    System.out.println("Native open worked " + this);
     setContextStatus(ContextEstablished);
-    System.out.println("Starting event loop" + this);
+    System.out.println("Starting event loop " + this);
     eventLoop();
   }  
 
@@ -147,6 +161,29 @@ WindowListener, ComponentListener, KeyListener {
     setNativeTitle(title);
   }
 
+  /** Sets the capabilities that this widget will use when it is opened
+     up.  This has no effect once the widget has been displayed on
+     screen. */
+  protected void setCapabilities(OpenGLCapabilities newCapabilities) {
+    capabilities = newCapabilities;
+  }
+
+  /** Returns the capabilities object that was used when we started
+      our display. */
+  protected OpenGLCapabilities capabilities() {
+    return capabilities;
+  }
+
+  /*
+   * Setup methods
+   */
+
+  /** The default OpenGLCapabilities object that we return at startup
+      for our display. */
+  private OpenGLCapabilities defaultCapabilities() {
+    return OpenGLCapabilities.defaultCapabilities();
+  }
+
   /*
    * Event handling methods
    */
@@ -157,7 +194,7 @@ WindowListener, ComponentListener, KeyListener {
       event was handled and false if it was not.  Normally this is
       called by the native platform code, and you should not need to
       call it yourself. */
-  public boolean handleEvent(OpenGLEvent event) {
+  public boolean handleEvent(AWTEvent event) {
     
     /* The processEvent method won't invoke paint for us, even if we
        hand it a UPDATE event. */
