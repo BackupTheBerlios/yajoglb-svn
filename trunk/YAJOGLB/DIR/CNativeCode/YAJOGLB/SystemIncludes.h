@@ -1,7 +1,7 @@
 /*
  * SystemIncludes.h
  * 
- * $Id: SystemIncludes.h,v 1.2 2002/07/21 16:54:36 razeh Exp $
+ * $Id: SystemIncludes.h,v 1.3 2002/11/23 14:31:00 razeh Exp $
  *
  * Some systems need to always include headers, like <windows.h>.  These
  * are handled here.
@@ -18,6 +18,9 @@
 /* If we are in Windows include <windows.h> */
 #ifdef WIN32
 #include <windows.h>
+/* I'd prefer variable length arrays to alloca, but
+   visual C++ doesn't support variable length arrays. */
+#define alloca _alloca
 #endif
 
 /* We might need to redefine the quadrics, tesselators and nurbs. */
