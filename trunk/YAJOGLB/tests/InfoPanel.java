@@ -24,6 +24,9 @@ class InfoPanel extends Frame implements GLConstants {
     }
   }
   
+  /** Brings up a panel and populates it with information from gl.
+   * @param gl the OpenGL object to extract information from.
+   */
   public InfoPanel(GL gl) {
     super();
     addWindowListener(new WindowListener());

@@ -15,10 +15,9 @@ import OpenGL.*;
 import java.awt.event.*;
 import java.awt.*;
 
-/**  This program draws a NURBS surface in the shape of a 
- *  symmetrical hill. Taken from the SGI examples. 
+/** This program draws a NURBS surface in the shape of a symmetrical
+ *  hill. Taken from the SGI examples.
  */
-
 public class NurbsSurface extends Object implements GeometryObject, GLConstants, GLUConstants {
 
   GLUNurbs surface = null;

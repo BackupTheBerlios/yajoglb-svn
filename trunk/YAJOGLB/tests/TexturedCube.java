@@ -10,9 +10,8 @@
 import OpenGL.*;
 import java.awt.*;
 
-/** This draws a simple textured cube, rotate 30 degress from each
+/** This draws a simple textured cube, rotated 30 degrees from each
     axis, with normal pointers. */
-
 public class TexturedCube implements GeometryObject, GLConstants {
   float[] material = { 0.0f, 0.5f, 0.5f, 0.5f };
   int[] textureIDs;

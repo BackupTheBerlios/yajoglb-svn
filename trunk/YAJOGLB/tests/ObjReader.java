@@ -17,16 +17,25 @@ import java.util.*;
  * This reads in OBJ files.
  */
 class ObjReader {
+  /** Used to read in the file. */
   private LineNumberReader reader;
+  /** Where the obj is stored. */
   private OBJ obj = new OBJ();
+  /** The name of the file we are reading. */
   private String filename;
 
+  /** Read in a obj file.
+   * @param fn the name of the file to read in.
+   */
   ObjReader(String fn) throws FileNotFoundException, IOException {
     filename = fn;
     reader = new LineNumberReader(new InputStreamReader(new FileInputStream(filename)));
     readFile();
   }
 
+  /** Read a vertex and add it to our obj.
+   * @param tokenzier our tokenizer. 
+   */
   protected void readVertex(StringTokenizer tokenizer) {
     double x = 0.0, y = 0.0, z = 0.0, w = 0.0;
     if (tokenizer.hasMoreTokens())
@@ -44,6 +53,9 @@ class ObjReader {
     obj.addElement(new ObjVertex(x, y, z, w));
   }
 
+  /** Read a normal and add it to our obj.
+   * @param tokenzier our tokenizer. 
+   */
   protected void readNormal(StringTokenizer tokenizer) {
     double x = 0.0, y = 0.0, z = 0.0;
     if (tokenizer.hasMoreTokens())
@@ -58,8 +70,11 @@ class ObjReader {
     obj.addElement(new ObjNormal(x, y, z));
   }
 
-  protected void readFace(StringTokenizer tokenizer) throws ObjFormatException {
-    
+  /** Read a face and add it to our obj.
+   * @param tokenzier our tokenizer. 
+   */
+  protected void readFace(StringTokenizer tokenizer) 
+    throws ObjFormatException {
     ObjFace face = new ObjFace(obj);
     while (tokenizer.hasMoreTokens()) {
       StringTokenizer t = new StringTokenizer(tokenizer.nextToken(),
@@ -95,7 +110,11 @@ class ObjReader {
     obj.addElement(face);
   }
 
-  protected void readMaterialLibrary(StringTokenizer tokenizer) throws IOException, ObjFormatException {
+  /** Read a material file and add it to our obj.
+   * @param tokenzier our tokenizer. 
+   */
+  protected void readMaterialLibrary(StringTokenizer tokenizer) 
+    throws IOException, ObjFormatException {
     String libraryName;
     if (tokenizer.hasMoreTokens())
       libraryName = tokenizer.nextToken();
@@ -114,6 +133,10 @@ class ObjReader {
     new ObjMaterialReader(libraryName, obj);
   }
 
+  /** Read in an actual material usage (which is different from
+   * the definition) and add it to our obj.
+   * @param tokenizer our tokenizer. 
+   */
   protected void readUseMaterial(StringTokenizer tokenizer) {
     String material = null;
     if (tokenizer.hasMoreTokens()) {
@@ -122,6 +145,9 @@ class ObjReader {
     }
   }
 
+  /** Read in our file and add all of the OBJ objects to our
+   * obj. 
+   */
   protected OBJ readFile() throws IOException {
     String line;
 

@@ -19,7 +19,6 @@ class MatrixModifiers {
   static void transform_point( float out[], float m[],
 			       float in[] )
   {
-   
     out[0] = 
       (m[0+(0*4)] * in[0]) +
       (m[0+(1*4)] * in[1]) +

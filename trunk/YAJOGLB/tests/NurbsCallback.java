@@ -14,9 +14,49 @@
 import java.awt.*;
 import OpenGL.*;
 
+/** Tests the NURB callbacks.  You should see output that looks
+ * something like:
+<tt>
+begin(6)
+normal(-0.0,0.91381156,0.40613845)
+vertex(0.0,3.0,-3.0)
+normal(0.0,0.0,1.0)
+vertex(-3.0,3.0,-3.0)
+normal(-0.91381156,0.0,0.40613845)
+vertex(-3.0,0.0,-3.0)
+end()
+begin(6)
+normal(0.0,-0.91381156,0.40613845)
+vertex(0.0,-3.0,-3.0)
+normal(-0.0,0.91381156,0.40613845)
+vertex(0.0,3.0,-3.0)
+normal(-0.91381156,0.0,0.40613845)
+vertex(-3.0,0.0,-3.0)
+normal(0.0,0.0,1.0)
+vertex(-3.0,-3.0,-3.0)
+end()
+begin(6)
+normal(-0.0,0.91381156,0.40613845)
+vertex(0.0,3.0,-3.0)
+normal(0.91381156,-0.0,0.40613845)
+vertex(3.0,0.0,-3.0)
+normal(0.0,0.0,1.0)
+vertex(3.0,3.0,-3.0)
+end()
+begin(6)
+normal(0.0,-0.91381156,0.40613845)
+vertex(0.0,-3.0,-3.0)
+normal(0.0,0.0,1.0)
+vertex(3.0,-3.0,-3.0)
+normal(0.91381156,-0.0,0.40613845)
+vertex(3.0,0.0,-3.0)
+normal(-0.0,0.91381156,0.40613845)
+vertex(0.0,3.0,-3.0)
+end()
+</tt>
+ */
 public class NurbsCallback extends NurbsSurface
 {
-  
   class NurbsSurfaceWithCallbacks extends GLUNurbs {
     public void begin(int type) {
       System.out.println("begin(" + type + ")");

@@ -42,6 +42,7 @@ public class Sphere implements GeometryObject, GLConstants, GLUConstants {
     sphere.quadricTexture(textureCoords);
   }
 
+  /** Our quadric used to render our sphere. */
   GLUQuadric sphere;
   
   public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
@@ -52,7 +53,6 @@ public class Sphere implements GeometryObject, GLConstants, GLUConstants {
 
   public void paint(GeometryViewer viewer, GL gl, GLU glu) {  
     gl.pushMatrix();
-    //gl.translate(-2.0, 0.0, 0.0);
     gl.material(FRONT_AND_BACK, AMBIENT_AND_DIFFUSE, sphereMaterial);
     sphere.sphere(sphereRadius, getSlices(), getStacks());
     gl.popMatrix();

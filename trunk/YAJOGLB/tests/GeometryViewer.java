@@ -22,36 +22,67 @@ import OpenGL.*;
  not so good for performance, but this is supposed to be just a simple
  demo...).
 */
-
-class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotionListener, 
-						      KeyListener, ComponentListener, 
-						      GLConstants, GLUConstants {
-  float[] eyePoint, forwardDirection, sidewaysDirection, 
-    upDirection;
+public class GeometryViewer extends OpenGL.Canvas 
+  implements MouseListener, MouseMotionListener, 
+	     KeyListener, ComponentListener, 
+	     GLConstants, GLUConstants {
+  /** Where the viewer is located. */
+  float[] eyePoint;
+  /** Where the viewer is looking. */
+  float[] forwardDirection;
+  /** The viewer's orientation --- the direction the viewer's right
+   * arm points. */
+  float[] sidewaysDirection;
+  /** The viewer's orientation --- the direction the viewer's head points. */
+  float[] upDirection;
+  /** Used for scaling. */
   double scale = 1.0;
     
-  /* We use these for changing the view direction with the mouse. */
-  float [] startingForwardDirection, startingSidewaysDirection,
-    startingUpDirection;
-  int  startingX, startingY;
+  /** Our initial forward direction for a mouse drag. */
+  float [] startingForwardDirection;
+  /** Our initial sideways direction for a mouse drag. */
+  float [] startingSidewaysDirection;
+  /** Our initial up direction for a mouse drag. */
+  float[] startingUpDirection;
+  /** Where the mouse starts horizontally. */
+  int  startingX;
+  /** Where the mouse starts vertically. */
+  int startingY;
+  /** Set to true when the user is dragging the mouse. */
   boolean mouseViewAdjustmentInProgress = false;
 
+  /** Used for our calls to the GLU library. */
   GLU glu = new GLU();
+  /** Used for our calls to OpenGL. */
   GL  gl  = new GL();
   Context context = null;
   Vector renderedObjects = new Vector();
+  /** Used to handle our resize callback, which needs to use the 
+   * locked method interface. 
+   */
   Method resizedMethod;
+  /** Used to handle our info panel callback, which needs to use the 
+   *  locked method interface. 
+   */
   Method lockedInfoPanelMethod;
+  /** Used to handle our image grabbing callback, which needs to use
+   * the locked method interface.
+   */
   Method lockedWriteImageMethod;
+  /** The panel used to display our frame rate. */
   FrameRatePanel frameRate;
 
+  /*** Add an element to the list of elements we render.
+   * @param object the object to render. 
+   */
   public void addElement(GeometryObject object) {
     renderedObjects.addElement(object);
   }
 
-  /* How much we scale a single frame movement by. */
+  /** How much we scale a single frame movement by.  */
   float movementScale = .2f;
 
+  /** Set our initial viewing parameters. */
   private void setupViewingParameters() {
 
     /* Set the viewing position */
@@ -134,6 +165,11 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
       }
   }
 
+  /** Rotate the viewer's position around a point 7 units
+   * a head of the viewer's current position.  The forwardDirection
+   * and sidewaysDirection instance variables are updated.
+   * @param angle the amount to rotate the viewer's position.
+   */
   private void orbitView(float angle) {
     float gazePoint[] = new float[3];
     float orbitScale = 7;
@@ -169,6 +205,12 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
 
   }
 
+  /** Change the viewer's direction around the Z axis (the axis going
+   * into and out of the screen).
+   * @param angle the amount to change the viewer's direction.
+   * @param originalSidewaysDirection the starting sideways direction.
+   * @param originalUpDirection the starting up direction.
+   */
   private void rotateViewOnZ(float angle,
 			     float originalSidewaysDirection[],
 			     float originalUpDirection[])
@@ -183,6 +225,11 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
 				   forwardDirection[2]);
   }
 
+  /** Change the viewer's direction around the horizontal axis.
+   * @param angle the amount to change the viewer's direction.
+   * @param originalForwardDirection the starting forward direction.
+   * @param orignalSidewaysDirection the starting sideways direction.
+   */
   private void rotateViewHorizontally(float angle, 
 				      float originalForwardDirection[],
 				      float originalSidewaysDirection[])
@@ -197,6 +244,11 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
 				   upDirection[2]);
   }
 
+  /** Change the viewer's direction around the vertical axis.
+   * @param angle the amount to change the viewer's direction.
+   * @param originalForwardDirection the starting forward direction.
+   * @param orignalUpDirection the starting up direction.
+   */
   private void rotateViewVertically(float angle,
 				    float originalForwardDirection[],
 				    float originalUpDirection[])
@@ -290,10 +342,19 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
     nativePaint();
   }
 
+  /** Called when the mouse is released; we stop adjusting our
+   * viewpoint when this happens.
+   * @param e describes the mouse release event.
+   */
   public void mouseReleased(java.awt.event.MouseEvent e) {
     mouseViewAdjustmentInProgress = false;
   }
 
+  
+  /** Called when the mouse is clicked; we start adjusting our
+   * viewpoint when this happens.
+   * @param e describes the mouse release event.
+   */
   public void mousePressed(MouseEvent e) {
     float pixels[];
     startingX                 = e.getX();
@@ -304,6 +365,10 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
     mouseViewAdjustmentInProgress = true;
   }
 
+  /** Called when the mouse is moved; we repaint our view so that
+   * you can see the movement's affect right away.
+   * @param e describes the mouse movement event.
+   */
   public void mouseMoved(java.awt.event.MouseEvent e) {
     if (mouseViewAdjustmentInProgress) {
       int   deltaX = (e.getX() - startingX);
@@ -340,6 +405,10 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
     }
   }
 
+  /** Called when the mouse is dragged, which for our purposes
+   * is the same as a movement.
+   * @param e describes the mouse drag event.
+   */
   public void mouseDragged(java.awt.event.MouseEvent e) {
     mouseMoved(e);
   }
@@ -358,16 +427,23 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
     }
   }
 
+  /** Release our current context. */
   protected void releaseContext() {
     context.unlock();
   }
 
   /** When the window is resized we change our viewport to match the
-      new width and height. */
+   * new width and height. 
+   * @param e describes the resize event; ignored.
+  */
   public void componentResized(ComponentEvent e) {
     lockedMethod(resizedMethod, this, null);
   }
 
+  /** We have to do the resize as locked method, and this is the locked
+   * method that does it.
+   * @param arg ignored, non-optional argument for a locked method.
+   */
   public void lockedComponentResized(Object arg) {
     /* It's possible that we may be called before the context has been
        setup, and we don't want to use it until it has been
@@ -386,9 +462,14 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
     releaseContext();
   }
 
+  /** Used for our frame rate, so we know how long we've been up. */
   java.util.Date startDate = null;
+  /** Used for our frame rate, so we know how many times we've
+      painted. */
   float paintCount = 0;
   
+  /** Render all of our GeometryObjects.
+   */
   synchronized public void paint() {
     if (context != null) {
       try {
@@ -459,7 +540,8 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
     ;
   }
 
-  /** Write out the current screen image to a file named "ScreenDump.tga".
+  /** Write out the current screen image to a file name specified
+   * by the user.
    */
   public void writeOutImage() {
     // Get a filename.

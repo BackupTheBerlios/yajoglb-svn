@@ -9,8 +9,11 @@
 import OpenGL.*;
 import java.awt.*;
 
-public class QuadricError extends GLUQuadric implements GeometryObject, GLConstants, GLUConstants {
-
+/** Call a quadric to verify that the error method can get called.
+ */
+public class QuadricError 
+  extends GLUQuadric 
+  implements GeometryObject, GLConstants, GLUConstants {
 
   public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
     /* This should be a bad draw style. */

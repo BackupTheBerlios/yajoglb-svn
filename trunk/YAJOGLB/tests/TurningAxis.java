@@ -13,7 +13,6 @@ import java.util.Date;
 
 /** This draws a simple set of axis with boxes extending out along each
   axis.  The boxes are drawn within a display list. */
-
 public class TurningAxis implements GeometryObject, GLConstants, GLUConstants {
   /** How far out each axis extends. */
   double axisRange = 100.0;

@@ -10,9 +10,8 @@
 import OpenGL.*;
 import java.awt.*;
 
-/** This draws a simple lighted cube, rotate 30 degress from each
+/** This draws a simple lighted cube, rotated 30 degrees from each
     axis, with normal pointers. */
-
 public class PlainCube implements GeometryObject, GLConstants {
   float[] material = { 0.0f, 0.5f, 0.5f, 0.5f };
 
@@ -53,7 +52,6 @@ public class PlainCube implements GeometryObject, GLConstants {
     gl.enable(LIGHTING);
   }
   
-
   public static void main(String args[]) {
     PlainCube      cube   = new PlainCube();
     GeometryViewer viewer = new GeometryViewer();

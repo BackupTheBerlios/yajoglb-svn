@@ -23,8 +23,8 @@ public class Select extends OpenGL.Canvas implements GLConstants, GLUConstants, 
     addComponentListener(this);
   }
 
-  /** Make context the current OpenGL context.  If we fail we just print
-      out the exception and continue on. */
+  /** Make context the current OpenGL context.  If we fail we just
+      print out the exception and continue on. */
   protected void aquireContext() {
     try {
       context.lock();
@@ -48,8 +48,6 @@ public class Select extends OpenGL.Canvas implements GLConstants, GLUConstants, 
     gl.shadeModel(FLAT);
     releaseContext();
   }
-    
-  
 
   /** When the window is resized we change our viewport to match the
       new width and height. */
@@ -76,9 +74,8 @@ public class Select extends OpenGL.Canvas implements GLConstants, GLUConstants, 
     }
   }
 
-
-  /* draw a triangle with vertices at (x1, y1), (x2, y2) 
-   * and (x3, y3) at z units away from the origin.
+  /** Draw a triangle with vertices at (x1, y1), (x2, y2) and (x3, y3)
+   * at z units away from the origin.
    */
   private void drawTriangle(float x1, float y1, float x2, 
 			    float y2, float x3, float y3, float z) {
@@ -89,7 +86,7 @@ public class Select extends OpenGL.Canvas implements GLConstants, GLUConstants, 
     gl.end();
   }
 
-/* draw a rectangular box with these outer x, y, and z values */
+  /* Draw a rectangular box with these outer x, y, and z values */
   private void drawViewVolume (float x1, float x2, float y1, 
 			       float y2, float z1, float z2)
     {
@@ -119,8 +116,8 @@ public class Select extends OpenGL.Canvas implements GLConstants, GLUConstants, 
       gl.vertex (x2, y2, -z2);
       gl.end ();
     }
-  /* drawScene draws 4 triangles and a wire frame
-   * which represents the viewing volume.
+  /** DrawScene draws 4 triangles and a wire frame which represents
+   * the viewing volume.
    */
   private void drawScene ()
     {
@@ -141,8 +138,8 @@ public class Select extends OpenGL.Canvas implements GLConstants, GLUConstants, 
       drawViewVolume (0.0f, 5.0f, 0.0f, 5.0f, 0.0f, 10.0f);
     }
   
-/* processHits prints out the contents of the selection array
- */
+  /** processHits prints out the contents of the selection array
+   */
   private void processHits (int hits, GLSelectionBuffer buffer) {
     System.out.println("hits =  " + hits);
     int i = 0;
@@ -162,12 +159,12 @@ public class Select extends OpenGL.Canvas implements GLConstants, GLUConstants, 
     }
   }
 
-/* selectObjects "draws" the triangles in selection mode, 
- * assigning names for the triangles.  Note that the third
- * and fourth triangles share one name, so that if either 
- * or both triangles intersects the viewing/clipping volume, 
- * only one hit will be registered.
- */
+  /** selectObjects "draws" the triangles in selection mode, 
+   * assigning names for the triangles.  Note that the third
+   * and fourth triangles share one name, so that if either 
+   * or both triangles intersects the viewing/clipping volume, 
+   * only one hit will be registered.
+   */
   static private int BUFSIZE  = 512;
 
   public void selectObjects() {

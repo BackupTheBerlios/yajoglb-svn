@@ -13,8 +13,9 @@ import OpenGL.*;
 
 
 /** This tests the OpenGL package's ability to render in multiple
-    canvases concurrently. */
-
+    canvases concurrently.   It opens two GeometryViewers, and then
+    continually changes the size of a sphere in each GeometryViewer.
+*/
 public class Concurrence {
 
   public static void main(String args[]) {
@@ -26,8 +27,8 @@ public class Concurrence {
     ExitableFrame  frame1  = new ExitableFrame();
     Frame          frame2  = new Frame();
 
-    /* We use this transformation matrix to move the
-     * spheres off to the side. */
+    /* We use this transformation matrix to move the spheres off to
+     * the side. */
     double translation[] = {  1.0, 0.0, 0.0, 0.0, 
 			      0.0, 1.0, 0.0, 0.0,
 			      0.0, 0.0, 1.0, 0.0,

@@ -13,10 +13,14 @@ import java.awt.event.*;
 import OpenGL.*;
 
 /** A simple test of the feedback buffer derived from SGI's example. */
-public class Feedback extends OpenGL.Canvas implements GLConstants, GLUConstants, ComponentListener {
-  private int size;
+public class Feedback extends OpenGL.Canvas implements GLConstants, 
+						       GLUConstants, 
+						       ComponentListener {
+  /** Where the feedback is store. */
   private GLFeedbackBuffer feedbackBuffer = new GLFeedbackBuffer(1024);
+  /** Our OpenGL context. */
   private Context context;
+  /** Our drawing object. */
   private GL gl = new GL();
 
   public Feedback() {
@@ -37,6 +41,7 @@ public class Feedback extends OpenGL.Canvas implements GLConstants, GLUConstants
     }
   }
 
+  /** Unlock our context. */
   protected void releaseContext() {
     context.unlock();
   }
@@ -67,6 +72,7 @@ public class Feedback extends OpenGL.Canvas implements GLConstants, GLUConstants
     }
   }
 
+  /** Our rending method. */
   public void paint() {
     int size;
 
@@ -87,7 +93,7 @@ public class Feedback extends OpenGL.Canvas implements GLConstants, GLUConstants
     }
   }
 
-
+  /** Do some drawing so something goes into the feedback buffer. */
   private void drawGeometry(int mode, GL gl) {
     gl.begin (LINE_STRIP);
     gl.normal (0.0, 0.0, 1.0);
@@ -123,9 +129,10 @@ public class Feedback extends OpenGL.Canvas implements GLConstants, GLUConstants
     return count;
   }
 
-  /** Print out the feedback buffer to out. 
+  /** Send the feedback buffer to out. 
    * 
    * @param out the PrintStream to send output to.
+   * @param size the size of the buffer.
    */
   public void printFeedbackBuffer(PrintStream out, int size) {
     int count;

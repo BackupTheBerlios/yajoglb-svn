@@ -18,11 +18,19 @@ import java.io.IOException.*;
 /** This reads in material files.
  */
 class ObjMaterialReader {
+  /** The line number in the file we are on. */
   private LineNumberReader reader;
+  /** Where the materials are stored. */
   private OBJ obj;
+  /** The file we are reading. */
   private String filename;
 
-  ObjMaterialReader(String fn, OBJ o) throws IOException, FileNotFoundException {
+  /** Construct a material reader. 
+   * @param fn the filename to read.
+   * @param o the OBJ to store the materials.
+   */
+  ObjMaterialReader(String fn, OBJ o) throws IOException, 
+					     FileNotFoundException {
     filename = fn;
     obj = o;
     reader = new LineNumberReader(new InputStreamReader(new FileInputStream(fn)));
@@ -30,9 +38,11 @@ class ObjMaterialReader {
   }
 
   /** 
-   * Read in a material.  
+   * Read in a material. 
+   * @param materialTokenizer the tokenizer for the material.
    */
-  protected void readMaterial(StringTokenizer materialTokenizer) throws ObjFormatException, IOException {
+  protected void readMaterial(StringTokenizer materialTokenizer) throws 
+    ObjFormatException, IOException {
     String name;
     float ambient_r = 0.0f, ambient_g = 0.0f, ambient_b = 0.0f;
     float diffuse_r = 0.0f, diffuse_g = 0.0f, diffuse_b = 0.0f;
@@ -154,6 +164,9 @@ class ObjMaterialReader {
     }
   }
 
+  /** Go through all of the lines in a file and parse out any
+   * Wavefront newmtl commands.
+   */
   protected void readFile() throws IOException {
     String line;
 
@@ -175,6 +188,7 @@ class ObjMaterialReader {
       }
     }
   }
+
   public static void main(String args[]) {
     try {
       OBJ obj = new OBJ();
