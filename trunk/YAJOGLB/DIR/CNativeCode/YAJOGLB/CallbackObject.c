@@ -1,8 +1,8 @@
 /*
   Provides support for callback objects.
  
-  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
-  7346 Lake Street #3W
+  Copyright 2001-2004, Robert Allan Zeh (razeh@yahoo.com)
+  43 Gale
   River Forest, IL 60305
  
   This library is free software; you can redistribute it and/or modify
@@ -25,7 +25,7 @@
 /*
  * CallbackObject.v
  *
- * $Id: CallbackObject.c,v 1.2 2001/07/06 23:39:39 razeh Exp $
+ * $Id: CallbackObject.c,v 1.3 2004/02/07 00:50:30 razeh Exp $
  *
  * This provides an interface to the CallbackObject class so that
  * native methods can obtain the active CallbackObject for a 
