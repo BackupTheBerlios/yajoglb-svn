@@ -1,7 +1,7 @@
 /*
- * OpenGLCanvasTest class
+ * Stretch class
  *
- * $Id: Stretch.java,v 1.8 2001/07/04 02:20:19 razeh Exp $
+ * $Id: Stretch.java,v 1.9 2001/07/06 23:17:03 razeh Exp $
  * 
  * Copyright 1998
  *
@@ -20,7 +20,7 @@ public class Stretch extends OpenGL.Canvas
     implements GLUConstants, GLConstants, MouseListener, MouseMotionListener, ComponentListener {
 
     /** Our own OpenGL context. */
-    private Context context;
+    protected Context context;
  
     GLU glu = new GLU();
     GL  gl  = new GL();
@@ -28,6 +28,8 @@ public class Stretch extends OpenGL.Canvas
     int [] textureIDs;
     TGAFile image;
     private int imageSizeX, imageSizeY;
+    protected int getImageSizeX() { return imageSizeX; }
+    protected int getImageSizeY() { return imageSizeY; }
     byte[] imageData;
     boolean dragInProgress;
 
@@ -67,7 +69,7 @@ public class Stretch extends OpenGL.Canvas
     }
 
     /** Change the size of the image to fit imageSizeX and imageSizeY. */
-    private void rescale() {
+    protected void rescale() {
 	aquireContext();
 	if (imageSizeX < 1)
 	    imageSizeX = 1;
@@ -80,7 +82,7 @@ public class Stretch extends OpenGL.Canvas
 	glu.gluScaleImage(RGBA, 
 			  image.getSize().width, image.getSize().height, GL_UNSIGNED_BYTE,
 			  image.getData(),
-			  imageSizeX, imageSizeY, GL_UNSIGNED_BYTE, imageData);
+			  getImageSizeX(), getImageSizeY(), GL_UNSIGNED_BYTE, imageData);
 	releaseContext();
     }
 
