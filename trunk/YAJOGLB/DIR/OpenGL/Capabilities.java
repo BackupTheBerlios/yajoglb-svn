@@ -1,26 +1,41 @@
 /*
- * OpenGLCapabilities
- *
- * $Id: Capabilities.java,v 1.5 1999/04/29 01:17:14 razeh Exp $
- *
- * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
- */
+  Describes rendering information about a canvas.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
 
 package OpenGL;
 
 /**
  *
- * Defines the screen display capabilities that our OpenGLWidget will 
- * Request at startup.  Changing it after the window has been opened has
- * no effect.
+ * Defines the screen display capabilities that our Canvas will
+ * Request at startup.  Changing it after the window has been opened
+ * has no effect.
  *
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
- * @version 0.3
+ * @version 0.4 
  */
 
-public class OpenGLCapabilities {
+public class Capabilities {
   /** The number of bits per pixel we have for color information. */
   private int colorDepth;
   /** The number of bits per pixel we have for the alpha buffer. */
@@ -49,7 +64,7 @@ public class OpenGLCapabilities {
 
   /** Returns the number of bits per pixel we set for our color depth. 
     @return The number of bits per pixel used for our color depth.*/
-  public int colorDepth() {
+  public int getColorDepth() {
     return colorDepth;
   }
 
@@ -61,7 +76,7 @@ public class OpenGLCapabilities {
   
   /** Returns the number of bits per pixel for the alpha buffer.
     * @return The number of bits per pixel for the alpha buffer. */
-  public int alphaDepth() {
+  public int getAlphaDepth() {
     return alphaDepth;
   }
 
@@ -75,7 +90,7 @@ public class OpenGLCapabilities {
   /** Returns the desired number of pits per pixel for the
       accumulation buffer. 
     * @return the bits per pixel for the accumulation buffer. */
-  public int accumulationDepth() {
+  public int getAccumulationDepth() {
     return accumulationDepth;
   }
 
@@ -88,7 +103,8 @@ public class OpenGLCapabilities {
 
   /** Returns the number of bits per pixel requested for the depth buffer.
     * @return the bits per pixel used by the depth buffer. */
-  public int depthBuffer() {
+
+  public int getDepthBuffer() {
     return depthBuffer;
   }
 
@@ -98,7 +114,7 @@ public class OpenGLCapabilities {
   }
 
   /** Returns the number of pits per pixel for the stencil buffer. */
-  public int stencilBuffer() {
+  public int getStencilBuffer() {
     return stencilBuffer;
   }
 
@@ -118,13 +134,13 @@ public class OpenGLCapabilities {
       break;
     default:
       throw new 
-	IllegalArgumentException("An invalid color type was given to OpenGLCapabilities.setColorType()");
+	IllegalArgumentException("An invalid color type was given to Capabilities.setColorType()");
     }
   }
   
   /** Returns the requested color type. 
     * @return ColorIndex if colors are indexed or RGBA if colors are RGBA quadruples. */
-  public int colorType() {
+  public int getColorType() {
     return colorType;
   }
 
@@ -136,7 +152,7 @@ public class OpenGLCapabilities {
 
   /** Our double buffer request.  
      @return <code>true</code> if double buffering was requested and <code>false</code> otherwise. */
-  public boolean isDoubleBufferedEnabled() {
+  public boolean getDoubleBufferEnabled() {
     return isDoubleBufferEnabled;
   }
 
@@ -152,13 +168,13 @@ public class OpenGLCapabilities {
    @param initialColorType our choice of color modes
    **/
 
-  public OpenGLCapabilities(int initialColorDepth,
-			    int initialAlphaDepth,
-			    int initialAccumulationDepth,
-			    int initialDepthBuffer,
-			    int initialStencilBuffer,
-			    int initialColorType,
-			    boolean initialIsDoubleBufferEnabled)
+  public Capabilities(int initialColorDepth,
+		      int initialAlphaDepth,
+		      int initialAccumulationDepth,
+		      int initialDepthBuffer,
+		      int initialStencilBuffer,
+		      int initialColorType,
+		      boolean initialIsDoubleBufferEnabled)
   {
     setColorDepth(initialColorDepth);
     setAlphaDepth(initialAlphaDepth);
@@ -172,31 +188,31 @@ public class OpenGLCapabilities {
   /** A handy default capability to use that has 16 bits for color, 16
    bits for the depth buffer, enabled double buffering, and RGBA
    color. 
-   @return An OpenGLCapabilities with 16 bits of color, a 16 bit depth buffer, double buffer and RGBA color. */
-  static OpenGLCapabilities defaultCapabilities() {
-    return new OpenGLCapabilities(16, 0, 0, 16, 0, RGBA, true);
+   @return A Capabilities with 16 bits of color, a 16 bit depth buffer, double buffer and RGBA color. */
+  static Capabilities defaultCapabilities() {
+    return new Capabilities(16, 0, 0, 16, 0, RGBA, true);
   }
 
-  /** Creates a string describing the OpenGLCapabilities object.
-      @return A string describing the OpenGLCapabilities object.
+  /** Creates a string describing the Capabilities object.
+      @return A string describing the Capabilities object.
   */
   public String toString() {
     String description;
 
-    description  = "Color depth = " + colorDepth();
-    description += "\nAlpha depth = " + alphaDepth();
-    description += "\nAccumulation buffer depth = " + accumulationDepth();
-    description += "\nDepth buffer depth = " + depthBuffer();
-    description += "\nStencil buffer depth = " + stencilBuffer();
+    description  = "Color depth = " + getColorDepth();
+    description += "\nAlpha depth = " + getAlphaDepth();
+    description += "\nAccumulation buffer depth = " + getAccumulationDepth();
+    description += "\nDepth buffer depth = " + getDepthBuffer();
+    description += "\nStencil buffer depth = " + getStencilBuffer();
     description += "\nColor type = ";
-    if (colorType == RGBA) {
+    if (getColorType() == RGBA) {
       description += "RGBA";
     }
-    if (colorType == ColorIndex) {
+    if (getColorType() == ColorIndex) {
       description += "index";
     }
     description += "\nDouble buffering is ";
-    if (isDoubleBufferEnabled) {
+    if (getDoubleBufferEnabled()) {
       description += "Enabled";
     } else {
       description += "Disable";

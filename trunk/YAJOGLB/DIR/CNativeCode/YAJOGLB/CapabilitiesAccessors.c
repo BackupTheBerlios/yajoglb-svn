@@ -25,7 +25,7 @@
 /*
  * CapabilitiesAccessors.h
  * 
- * $Id: CapabilitiesAccessors.c,v 1.2 2001/07/06 23:40:05 razeh Exp $
+ * $Id: CapabilitiesAccessors.c,v 1.3 2001/11/10 20:32:54 razeh Exp $
  *
  */
 
@@ -48,7 +48,7 @@ jint colorDepth(JNIEnv *env, jobject capabilities)
   jint      colorDepth        = -1;
 
   capabilitiesClass = (*env)->GetObjectClass(env, capabilities);
-  methodID = getMethodID(env, capabilitiesClass, "colorDepth", "()I",
+  methodID = getMethodID(env, capabilitiesClass, "getColorDepth", "()I",
 			 "Unable to get colorDepth method.");
   if (methodID) {
     colorDepth = (*env)->CallIntMethod(env, capabilities, methodID);
@@ -69,7 +69,7 @@ jint alphaDepth(JNIEnv *env, jobject capabilities)
   jint      colorDepth        = -1;
 
   capabilitiesClass = (*env)->GetObjectClass(env, capabilities);
-  methodID = getMethodID(env, capabilitiesClass, "alphaDepth", "()I",
+  methodID = getMethodID(env, capabilitiesClass, "getAlphaDepth", "()I",
 			 "Unable to get alphaDepth method.");
   if (methodID) {
     colorDepth = (*env)->CallIntMethod(env, capabilities, methodID);
@@ -91,7 +91,7 @@ jint depthBuffer(JNIEnv *env, jobject capabilities)
   jint      colorDepth        = -1;
 
   capabilitiesClass = (*env)->GetObjectClass(env, capabilities);
-  methodID = getMethodID(env, capabilitiesClass, "depthBuffer", "()I",
+  methodID = getMethodID(env, capabilitiesClass, "getDepthBuffer", "()I",
 			 "Unable to get depthBuffer method.");
   if (methodID) {
     colorDepth = (*env)->CallIntMethod(env, capabilities, methodID);
@@ -113,7 +113,7 @@ jint stencilBuffer(JNIEnv *env, jobject capabilities)
   jint      stencilBuffer     = -1;
 
   capabilitiesClass = (*env)->GetObjectClass(env, capabilities);
-  methodID = getMethodID(env, capabilitiesClass, "stencilBuffer", "()I",
+  methodID = getMethodID(env, capabilitiesClass, "getStencilBuffer", "()I",
 			 "Unable to get stencilBuffer method.");
   if (methodID) {
     stencilBuffer = (*env)->CallIntMethod(env, capabilities, methodID);
@@ -136,7 +136,7 @@ jint colorType(JNIEnv *env, jobject capabilities)
   jint      colorType         = -1;
 
   capabilitiesClass = (*env)->GetObjectClass(env, capabilities);
-  methodID = getMethodID(env, capabilitiesClass, "colorType", "()I",
+  methodID = getMethodID(env, capabilitiesClass, "getColorType", "()I",
 			 "Unable to get colorType method.");
   if (methodID) {
     colorType = (*env)->CallIntMethod(env, capabilities, methodID);
@@ -157,7 +157,7 @@ jint isDoubleBufferEnabled(JNIEnv *env, jobject capabilities)
   jboolean  isDoubleBufferEnabled;
 
   capabilitiesClass = (*env)->GetObjectClass(env, capabilities);
-  methodID = getMethodID(env, capabilitiesClass, "isDoubleBufferedEnabled", 
+  methodID = getMethodID(env, capabilitiesClass, "getDoubleBufferEnabled", 
 			 "()Z", "Unable to get isDoubleBufferedEnabled.");
   if (methodID) {
     isDoubleBufferEnabled = (*env)->CallBooleanMethod(env, capabilities, methodID);
