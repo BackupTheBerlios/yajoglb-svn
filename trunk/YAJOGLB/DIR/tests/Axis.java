@@ -1,10 +1,10 @@
 /*
  * A set of axis
  *
- * $Id: Axis.java,v 1.4 1999/05/02 23:31:00 razeh Exp $
- * 
+ * $Id: Axis.java,v 1.5 2001/06/10 19:12:55 razeh Exp $
+ *
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 
@@ -18,6 +18,7 @@ public class Axis implements GeometryObject, GLConstants, GLUConstants {
   double axisRange = 100.0;
 
   public void paint(GeometryViewer viewer, GL gl, GLU glu) {
+    //gl.disalu) {
     //gl.disable(LIGHTING);
     gl.enable(LINE_SMOOTH);
     
@@ -110,8 +111,4 @@ public class Axis implements GeometryObject, GLConstants, GLUConstants {
   }
 
   public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
-    axisBoxNumber = makeAxisBoxes(gl, 0.1f);
-  }
-
-}
     axisBoxNumber = makeAxisBoxes(

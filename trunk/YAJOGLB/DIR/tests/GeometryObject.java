@@ -1,10 +1,10 @@
 /*
  * Geometry object.
  *
- * $Id: GeometryObject.java,v 1.2 1999/05/02 23:31:00 razeh Exp $
+ * $Id: GeometryObject.java,v 1.3 2001/06/10 19:14:11 razeh Exp $
  * 
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 import OpenGL.*;

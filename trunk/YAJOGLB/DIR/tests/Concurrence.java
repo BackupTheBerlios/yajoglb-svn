@@ -1,11 +1,11 @@
 /*
  * Concurrence
  *
- * $Id: Concurrence.java,v 1.2 1999/05/02 23:34:42 razeh Exp $
+ * $Id: Concurrence.java,v 1.3 2001/06/10 19:13:13 razeh Exp $
  *
  * Copyright 1998
  *
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 import java.awt.*;
