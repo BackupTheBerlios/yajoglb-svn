@@ -1,7 +1,7 @@
 /*
  * Plain cube
  *
- * $Id: PlainCube.java,v 1.1 1998/03/29 23:31:57 razeh Exp $
+ * $Id: PlainCube.java,v 1.2 1998/03/30 02:22:21 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -14,8 +14,6 @@ import java.awt.*;
 
 public class PlainCube implements GeometryObject, OpenGLConstants {
   public void paint(GeometryViewer viewer, GL gl, GLU glu) {
-    gl.enable(LIGHTING);
-    gl.enable(LIGHT0);
     gl.color(0.0, 1.0, 0.0);
     gl.begin(QUADS);
     gl.normal( 0.0F, 0.0F, 1.0F);
@@ -44,10 +42,16 @@ public class PlainCube implements GeometryObject, OpenGLConstants {
     gl.end();
   }
 
+  public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
+    gl.enable(LIGHTING);
+    gl.enable(LIGHT0);
+  }
+  
+
   public static void main(String args[]) {
     PlainCube      cube   = new PlainCube();
     GeometryViewer viewer = new GeometryViewer();
-    Frame          frame  = new Frame();
+    ExitableFrame  frame  = new ExitableFrame();
     
     viewer.addElement(cube);
     viewer.addElement(new Axis());
@@ -55,8 +59,11 @@ public class PlainCube implements GeometryObject, OpenGLConstants {
     frame.add(viewer);
     frame.setTitle("A plain cube");
     frame.pack();
-    frame.setVisible(true);
     frame.setSize(new Dimension(400,400));
+    frame.setBackground(java.awt.Color.black);
+    frame.setVisible(true);
+
+
   }
 }
 
