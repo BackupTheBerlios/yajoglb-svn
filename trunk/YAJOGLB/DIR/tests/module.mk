@@ -1,4 +1,5 @@
-DISTRIBUTED_FILES += tests/ogl.tga tests/run.sh tests/Readme.html
+DISTRIBUTED_FILES += tests/ogl.tga tests/run.sh tests/Readme.html \
+                     tests/images/*gif tests/images/*jpg tests/earth.tga
 
 JAVA_SRC += tests/VertexPointer.java tests/Stretch.java				\
 	    tests/NurbsSurface.java						\
