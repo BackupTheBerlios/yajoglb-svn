@@ -2,13 +2,15 @@
  *
  * OpenGLUConstants
  *
+ * $Id: GLUConstants.java,v 1.3 1998/09/10 01:04:17 razeh Exp $
+ *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
  */
 
 package OpenGL;
 
-/** OpenGLUConstants 
+/**
  *
  * This defines all of the constants that are used by the GLU library.
  * We have not removed the GLU prepended to all of the constant

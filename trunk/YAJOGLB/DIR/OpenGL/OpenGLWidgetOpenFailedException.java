@@ -1,7 +1,7 @@
 /* 
  * OpenGLWidgetOpenFailedException class
  *
- * $Id: OpenGLWidgetOpenFailedException.java,v 1.2 1998/03/16 00:00:57 razeh Exp $
+ * $Id: OpenGLWidgetOpenFailedException.java,v 1.3 1998/09/10 01:05:53 razeh Exp $
  *
  * Copyright 1997
  *
@@ -11,9 +11,12 @@
 package OpenGL;
 
 /** This exception is thrown when we are unable to open up the widget. 
-
-  @author Robert Allan Zeh (razeh@balr.com)
+ *
+ * @author Robert Allan Zeh (razeh@balr.com)
+ *
+ * @version 0.1
 */
+
 public class OpenGLWidgetOpenFailedException extends OpenGLNativeException {
   OpenGLWidgetOpenFailedException() {
     super();
