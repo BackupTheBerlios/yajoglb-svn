@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "c:\razeh\opengl\oglsdk\include" /I "c:\jdk1.2.2\include" /I "c:\jdk1.2.2\include\win32" /I "f:\devstudio\vc\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /Ob2 /I "c:\razeh\opengl\oglsdk\include" /I "c:\j2sdk1.4.1_01\include" /I "c:\j2sdk1.4.1_01\include\win32" /I "f:\devstudio\vc\include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "USE_JAWT" /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 opengl.lib glu.lib kernel32.lib user32.lib gdi32.lib libcmt.lib /nologo /subsystem:windows /dll /machine:I386 /libpath:"c:\razeh\opengl\oglsdk\lib f:\devstudio\vc\lib" /libpath:"c:\razeh\opengl\oglsdk\lib" /libpath:"f:\devstudio\vc\lib"
+# ADD LINK32 opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib libcmt.lib jawt.lib /nologo /subsystem:windows /dll /machine:I386 /libpath:"c:\j2sdk1.4.1_01\lib" /libpath:"\devstudio\vc\lib"
 
 !ELSEIF  "$(CFG)" == "YAJOGLB - Win32 Debug"
 
@@ -69,7 +69,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "c:\jdk1.3\include" /I "c:\jdk1.3\include\win32" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "USE_JAWT" /FR /FD /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "c:\j2sdk1.4.1_01\include" /I "c:\j2sdk1.4.1_01\include\win32" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "USE_JAWT" /FR /FD /c
 # SUBTRACT CPP /X /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # SUBTRACT BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib libcmt.lib jawt.lib /nologo /subsystem:windows /dll /debug /machine:I386 /nodefaultlib /pdbtype:sept /libpath:"c:\jdk1.3\lib" /libpath:"f:\devstudio\vc\lib"
+# ADD LINK32 opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib libcmt.lib jawt.lib /nologo /subsystem:windows /dll /debug /machine:I386 /nodefaultlib /pdbtype:sept /libpath:"c:\j2sdk1.4.1_01\lib" /libpath:"f:\devstudio\vc\lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
