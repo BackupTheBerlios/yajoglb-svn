@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>YAJOGLB (Yet Another Java OpenGL Binding)</TITLE>
+</HEAD>
+
+<IMG SRC="OpenGL.gif" ALIGN="LEFT" WIDTH=220 HEIGHT=97 ALT="OpenGL logo">
+<H2>YAJOGLB (Yet Another Java OpenGL Binding)</H2>
+<P>This is the home page for YAJOGLB (Yet Another Java OpenGL Binding), my contribution to the world of Java OpenGL bindings. YAJOGLB allows you to use Silicon Graphics's OpenGL 3D graphics library from within Java programs under Microsoft Windows or Linux.</P>
+<H3>What You Need</H3>
+
+<P>You need to have OpenGL installed on your Windows or Linux machine
+before you can use YAJOGLB.  If your video card does not support
+OpenGL directly, several years ago SGI released software
+implementation for Windows.  You can find <A
+HREF="http://www.sgi.com/">SGI</A>'s <A
+HREF="http://www.opengl.org/">OpenGL</A> 1.1 for Windows 95 and
+Windows NT 4.0 at <A
+HREF="http://www.berkelium.com/OpenGL/sgi-opengl.html">http://www.berkelium.com/OpenGL/sgi-opengl.html</A>. Because it is a software based OpenGL implementation it will run on slowly, but on any Windows machine. </P>
+<P>There is an OpenGL clone named Mesa that you can use under Linux. It is available at <A HREF="http://www.mesa3d.org/">http://www.mesa3d.org</A>. I've written some <A HREF="Linux-notes.html">Linux notes</A> that you should read before using the binding under Linux. </P>
+<P>Once OpenGL is installed on your machine, you also need to have Java on your machine. You can find instructions for installing the Java developer's kit at <A HREF="http://java.sun.com/">http://java.sun.com</A></P>
+<P>For the most part, when the individual OpenGL methods are no different from their counterparts in the C API they have been left undocumented. I've found the documentation at <A HREF="http://trant.sgi.com/opengl/docs/man_pages/hardcopy/GL/html/">http://trant.sgi.com/opengl/docs/man_pages/hardcopy/GL/html/</A> to be very helpful. There is also a <A HREF="YAJOGLB-Technical-Overview.html">technical overview</A> in the documentation directory, and some <A HREF="../tests/ReadMe.html">test documentation</A> that includes sample images.</P>
+<P>The last thing you need to download is the <A HREF="http://home.earthlink.net/~rzeh/YAJOGLB/YAJOGLB-0.4.tgz">0.4 YAJOGLB distribution</A>, which is a tarred and gnuziped copy of the package.</P>
+<H3>What You Get</H3>
+<P>Once you have unpacked the distribution, you should have a directory with the following subdirectories:</P>
+<DL>
+<DD><P>CNativeCode - the source code for the native libraries used by the binding to use OpenGL. The DLL (which needs to be in your PATH environment variable for the binding to work) is located in CNativeCode/YAJOGLB/Debug. </P></DD>
+<DD><P>doc - contains documentation on the bindings, which includes this document and a <A HREF="YAJOGLB-Technical-Overview.html">technical overview</A>.</P></DD>
+<DD><P>test - contains sample code used to test the Java bindings, along with some <A HREF="../tests/ReadMe.html">test documentation</A>.</P></DD>
+<DD><P>sun - contains a class that allows the bindings to access the native peer component's drawing surface. This is included in case you can not use the JAWT extension that Sun added to Java in JDK 1.3.</P></DD>
+<DD>OpenGL - contains the Java source code for the bindings.</DD>
+</DL>
+<H3>Differences from the OpenGL API in C</H3>
+<P>There are some differences between how the OpenGL API is expressed in C and how I choose to implement it in Java.&nbsp; The first and most obvious difference is that none of the library functions are stand-alone functions.&nbsp; Because Java does not allow pure functions the OpenGL functions are all members of the GL class.&nbsp; This class serves as a placeholder for the OpenGL functions. Also, each OpenGL.Canvas maintains a window that can be used only for OpenGL rendering.&nbsp; There is an OpenGL.Context class that serves as the "OpenGL Context" that is implicitly used by every OpenGL function. </P>
+<P>The second difference is that the "gl" prefixes have been removed (the "glu" prefix has not, because it would have created some conflicts) from functions and constants.&nbsp; So, for example, glNormal3f is normal, and GL_QUADS is just QUADS. The prefix seemed redundant given that all function calls have to be made through a GL object anyway. </P>
+<P>The argument specifications ("2d", "3f","4sv") at the end of most OpenGL functions have been removed.&nbsp; Java's method overloading is used to distinguish between glVertex3f(1.0, 2.0, 1.0) and glVertex2f(1.0, 2.0). </P>
+<P>Here is an example of the C code that is needed to draw a box with lighting (taken from Microsoft's excellent introduction to OpenGL):</P>
+<PRE>    glBegin(GL_QUADS);
+    glNormal3f( 0.0F, 0.0F, 1.0F);
+    glVertex3f( 0.5F, 0.5F, 0.5F); glVertex3f(-0.5F, 0.5F, 0.5F);
+    glVertex3f(-0.5F,-0.5F, 0.5F); glVertex3f( 0.5F,-0.5F, 0.5F);
+
+    &#133
+
+    glEnd();</PRE>
+<P>&nbsp;Here is what the same code looks like in YAJOGLB, with gl being a GL object.</P>
+<PRE>    gl.begin(QUADS);
+    gl.normal( 0.0F, 0.0F, 1.0F);
+    gl.vertex( 0.5F, 0.5F, 0.5F); gl.vertex(-0.5F, 0.5F, 0.5F);
+    gl.vertex(-0.5F,-0.5F, 0.5F); gl.vertex( 0.5F,-0.5F, 0.5F);
+    
+    &#133
+    
+    gl.end();
+  </PRE>
+<P>Other changes had to be made for the GLUT routines that require "objects" as parameters.&nbsp; In C, some GLU functions take a pointer to some structure that must be manually allocated and deallocated.&nbsp; I decided that this wouldn't do for programming in Java, so I implemented a series of Java objects for each GLU structures.&nbsp; So, the bindings include the GLUNurbs, GLUQuadric, and GLUTriangulator class.&nbsp; Here is an example of what drawing a sphere looks like in C: </P>
+<PRE>
+    GLUquadricObj *quadric = gluNewQuadric();
+    gluQuadricDrawStyle(quadric, GLU_FILL);
+    gluQuadricNormals(quadric, GLU_SMOOTH);
+    gluSphere(quadric, sphereRadius, 15, 10);
+    gluDeleteQuadric(quadric);</PRE>
+<P>Here is what it looks like in Java: </P>
+<PRE>    GLUQuadric sphere = new GLUQuadric();
+    sphere.gluQuadricDrawStyle(GLU_FILL);
+    sphere.gluQuadricNormals(GLU_SMOOTH);
+    sphere.gluSphere(sphereRadius, 15, 10);</PRE>
+<P>Notice that you don't have to deallocate the quadric object, and that instead of being passed as a parameter to the GLU functions, the GLU functions hang off the object.</P>
+<P>Instead of giving the various GLU objects callbacks you override methods on the appropriate class. Instead of supplying an error function for your NURBS object, extend GLUNurbs and override the error method. It will be called whenever the error callback would be.</P>
+<H3>Testing</H3>
+<P>The binding has been tested with JDK 1.3 with an NVIDIA TNT2 under Windows 2000 and GNU/Linux. Please let me know if you get it to work under any other configurations.  Previous versions worked just fine under Windows 98 and Windows NT; I'd be surprised if I had managed to break support for those operating systems.</P>
+<H3>Other OpenGL Bindings</H3>
+<P>There are a host of other OpenGL bindings available. Some of the ones that I know about are:</P>
+<DL>
+<DD><P><A HREF="http://www.arcana.co.uk/products/magician/">Magician</A> A nice but now defunct commercial binding.</P></DD>
+<DD><P><A HREF="http://www.oasis.leo.org/java/classes/graphics/OpenGL4java.dsc.html">An Unoffical Port of Java to OpenGL</A> Leo Chan's OpenGL binding --- the grand daddy of most Java OpenGL bindings. YAJOGLB is one of the few that is not based on Leo Chan's work.</P></DD>
+<DD><P><A HREF="http://www.cmlab.csie.ntu.edu.tw/%7Erobin/JavaGL/index.html">JavaGL</A> A somewhat older OpenGL binding. From the documentation it looks like not all of the OpenGL calls are supported, and that it hasn't changed in about a year.</P></DD>
+<DD><P><A HREF="http://www.palevich.com/3dfx/JavaOpenGL.html">JavaOpenGL</A> Jack Palevich's OpenGL binding, based on the "Unoffical Port of Java to OpenGL", this is a binding that works with Windows. </P></DD>
+<DD><P><A HREF="http://www.pajato.com/jogl/">Jogl</A> A nice set of bindings for that are being used for Adam King's Java3D implementation.</P></DD>
+<DD><P><A HREF="http://parallel.fh-bielefeld.de/pv/news/gl4java.html">GL4Java</A> A Thesis describing an OpenGL Java binding for X-Windows. </P></DD>
+<DD><P><A HREF="http://www.arrakis.es/~aletc/">Tree</A> A Java interface for Mesa, which means that it should work for OpenGL as well.</P></DD>
+</DL>
+<H3>Acknowledgements</H3>
+<P>I'd like to thank my friends Jay Bauer and Dwight Divine for their help with the package; Jay for letting me test it on his machine and Dwight for correcting some mistakes in my documentation. My previous employer, BALR, was also of considerable assistance. Lastly, I wouldn't have been able to write the binding without being able to take a look at some open source software. <A HREF="http://www.pajato.com/jogl/">Jogl</A> showed me how to access an AWT's peer instance to obtain native windows information (since replaced by JAWT), and <A HREF="http://www.ssec.wisc.edu/~brianp/Mesa.html">Mesa</A> (a 3D graphics library with an API similar to OpenGL's) matrix modification routines made their way into the GeometryViewer used in the test package. </P>
+<P>If you use this package, or have any questions about it, please drop me a line at <A HREF="mailto:razeh@yahoo.com">razeh@yahoo.com</A>.</P>
+<HR>
+<ADDRESS>Back to Robert Zeh's <A HREF="http://home.earthlink.net/~rzeh">home page</A>.<BR>
+Last Changed July 14, 2001. </ADDRESS></BODY>
+</HTML>
+
