@@ -24,7 +24,7 @@
 /*
  * CallbackObject
  *
- * $Id: CallbackObject.java,v 1.4 2003/04/19 13:40:53 razeh Exp $
+ * $Id: CallbackObject.java,v 1.5 2004/02/07 00:58:18 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -50,12 +50,6 @@ import java.lang.reflect.*;
  */
  
 abstract class CallbackObject extends CHeapItem {
-  /** Allow the native library to record the current environment pointer
-      so that it can use it in the tesselator call back methods. */
-  synchronized static native void setEnvironmentPointer();
-  /** Allow the native library to release its environment pointer. */
-  synchronized static native void unsetEnvironmentPointer();
-
   /** Get the callback hash table.  This should be overridden by our
    subclasses to return a hash table for each subclass.  For example,
    <code>GLUTesselators</code> should return one hash table and
@@ -94,12 +88,11 @@ abstract class CallbackObject extends CHeapItem {
   }
 
   /** Set this tesselator as the active tesselator for the current
-      thread, and call <code>setEnvironmentPointer</code> It should be
-      called after every native method returns.  This prevents the
-      native library from getting the wrong idea about what the
-      current tesselator is, and from dangling references. */
+      thread, It should be called after every native method returns.
+      This prevents the native library from getting the wrong idea
+      about what the current tesselator is, and from dangling
+      references. */
   protected void setActiveCallbackObject() {
-    setEnvironmentPointer();
     Hashtable activeCallbackDictionary = null;
 
     try {
@@ -133,9 +126,6 @@ abstract class CallbackObject extends CHeapItem {
     }
       
     activeCallbackDictionary.remove(Thread.currentThread());
-    // If we do not care about the active callback we do not need
-    // the environment for it either.
-    unsetEnvironmentPointer();
   }
 
 
