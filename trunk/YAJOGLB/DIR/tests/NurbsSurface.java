@@ -1,7 +1,7 @@
 /*
  * NurbsSurface class
  *
- * $Id: NurbsSurface.java,v 1.2 1998/03/29 23:28:29 razeh Exp $
+ * $Id: NurbsSurface.java,v 1.3 1998/03/30 02:18:26 razeh Exp $
  *
  * Copyright 1998
  *
@@ -13,27 +13,27 @@
 
 import OpenGL.*;
 import java.awt.event.*;
+import java.awt.*;
 
 /**  This program draws a NURBS surface in the shape of a 
- *  symmetrical hill.  
+ *  symmetrical hill. Taken from the SGI examples. 
  */
 
-public class NurbsSurface extends OpenGLWidget {
-  GLU glu = new GLU();
-  GL  gl  = new GL();
+public class NurbsSurface implements GeometryObject, OpenGLConstants, OpenGLUConstants {
 
-  public NurbsSurface() throws OpenGLWidgetOpenFailedException {
-    addMouseListener(this);
-    addMouseMotionListener(this);
-  }
-  
   public static void main (String args[]) {
-    try {
-      NurbsSurface demo = new NurbsSurface();
-      demo.run();
-    } catch (java.lang.Throwable e) {
-      System.err.println("Opps! " + e);
-    }
+    NurbsSurface   surface  = new NurbsSurface();
+    GeometryViewer viewer   = new GeometryViewer();
+    ExitableFrame  frame    = new ExitableFrame();
+
+    viewer.addElement(surface);
+    frame.setLayout(new GridLayout(1,1));
+    frame.add(viewer);
+    frame.setTitle("A Nurbs Surface");
+    frame.pack();
+    frame.setVisible(true);
+    frame.setBackground(java.awt.Color.black);
+    frame.setSize(new Dimension(400,400));
   }
 
 
@@ -61,14 +61,12 @@ public class NurbsSurface extends OpenGLWidget {
 
   GLUNurbs theNurb;
 
-  public void glInit() {
-    super.glInit();
+  public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
     
     float mat_diffuse[] = { 0.7f, 0.7f, 0.7f, 1.0f };
     float mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     float mat_shininess[] = { 100.0f };
 
-    gl.clearColor (0.0f, 0.0f, 0.0f, 0.0f);
     gl.material(FRONT, DIFFUSE, mat_diffuse);
     gl.material(FRONT, SPECULAR, mat_specular);
     gl.material(FRONT, SHININESS, mat_shininess);
@@ -87,7 +85,7 @@ public class NurbsSurface extends OpenGLWidget {
     theNurb.gluNurbsProperty(GLU_DISPLAY_MODE, GLU_FILL);
   }
 
-  public void paint() {
+  public void paint(GeometryViewer viewer, GL gl, GLU glu) {
     float knots[] = {0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
     float flatControlPoints[];
     int i, j, k, flatCounter = 0;
@@ -98,8 +96,6 @@ public class NurbsSurface extends OpenGLWidget {
 	for(k = 0; k < 3; k++)
 	  flatControlPoints[flatCounter++] = controlPoints[i][j][k];
     
-
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
 
     gl.pushMatrix();
     gl.rotate(330.0f, 1.f,0.f,0.f);
@@ -127,20 +123,7 @@ public class NurbsSurface extends OpenGLWidget {
     }
     gl.popMatrix();
     gl.flush();
-    swapBuffers();
   }
 
-  public void componentResized(ComponentEvent e) {
-    super.componentResized(e);
-
-    gl.viewport(0, 0, getSize().width, getSize().height);
-    gl.matrixMode(PROJECTION);
-    gl.loadIdentity();
-    
-    glu.gluPerspective (45.0f, (float)getSize().width/(float)getSize().height, 
-			3.0f, 8.0f);
-    gl.matrixMode(MODELVIEW);
-    gl.loadIdentity();
-    gl.translate (0.0f, 0.0f, -5.0f);
-  }
 }
+
