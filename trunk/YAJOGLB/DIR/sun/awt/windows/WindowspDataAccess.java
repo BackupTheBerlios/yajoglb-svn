@@ -1,5 +1,5 @@
 /*
- * $Id: WindowspDataAccess.java,v 1.5 1999/05/08 18:26:27 razeh Exp $
+ * $Id: WindowspDataAccess.java,v 1.6 1999/05/22 15:30:39 razeh Exp $
  *
  * Taken (and then modified) from jogl-0.7
  *
@@ -7,6 +7,8 @@
 
 package sun.awt.windows;
 
+import sun.awt.DrawingSurface;
+import sun.awt.DrawingSurfaceInfo;
 import sun.awt.windows.*;
 import sun.awt.Win32DrawingSurface;
 import OpenGL.OpenGLpDataAccess;
@@ -30,32 +32,24 @@ public class WindowspDataAccess implements OpenGLpDataAccess {
   public void attach(OpenGLCanvas canvas) {
     ;
   }
-
-  /** Returns the window handle for canvas. */
-  public int getHWnd(Canvas canvas) {
-    int Hwnd;
-    WCanvasPeer peer = (WCanvasPeer) canvas.getPeer();
-    WDrawingSurfaceInfo surface =
-      (WDrawingSurfaceInfo) peer.getDrawingSurfaceInfo();
-    /* If we don't lock the surface we will be unable to aquire the
-       window handle. */
-    surface.lock();
-    Hwnd = surface.getHWnd();
-    surface.unlock();
-    return Hwnd;
-  }
-
+  
   /** Returns the device context for canvas. */
   public int getHDC(Canvas canvas) {
-    WCanvasPeer peer = (WCanvasPeer) canvas.getPeer();
-    WDrawingSurfaceInfo surface =
-      (WDrawingSurfaceInfo) peer.getDrawingSurfaceInfo();
-    /* If we don't lock the surface we will be unable to aquire the
-       device context. */
-    surface.lock();
-    int HDC= surface.getHDC();
-    surface.unlock();
-    return HDC;
+    DrawingSurfaceInfo drawingSurfaceInfo;
+    Win32DrawingSurface win32DrawingSurface;
+    int hdc = 0;
+    
+    drawingSurfaceInfo = ((DrawingSurface)(canvas.getPeer())).getDrawingSurfaceInfo();
+    
+    if (null != drawingSurfaceInfo) {
+      drawingSurfaceInfo.lock();
+      win32DrawingSurface = (Win32DrawingSurface)drawingSurfaceInfo.getSurface();
+      hdc = win32DrawingSurface.getHDC();
+
+      drawingSurfaceInfo.unlock();
+    }
+
+    return hdc;
   }
 
 
