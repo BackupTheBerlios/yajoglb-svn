@@ -1,7 +1,7 @@
 /*
  * Stretch class
  *
- * $Id: Stretch.java,v 1.10 2002/04/06 15:12:58 razeh Exp $
+ * $Id: Stretch.java,v 1.11 2002/04/14 18:12:21 razeh Exp $
  * 
  * Copyright 1998
  *
@@ -83,9 +83,10 @@ public class Stretch extends OpenGL.Canvas
 
     imageData = new byte[imageSize];
     glu.gluScaleImage(RGBA, 
-		      image.getSize().width, image.getSize().height, GL_UNSIGNED_BYTE,
-		      image.getData(),
-		      getImageSizeX(), getImageSizeY(), GL_UNSIGNED_BYTE, imageData);
+		      image.getSize().width, image.getSize().height,
+		      GL_UNSIGNED_BYTE, image.getData(),  
+		      getImageSizeX(), getImageSizeY(),
+		      GL_UNSIGNED_BYTE, imageData);
   }
 
   /** Construct a Stretch object by making it a Mouse Listener, Mouse
@@ -203,14 +204,12 @@ public class Stretch extends OpenGL.Canvas
 
   /** Draw our image with the current scaling parameters. */
   synchronized protected void paint() {
-    System.out.println("paint");
     aquireContext();
     rescale();
     gl.clear(COLOR_BUFFER_BIT);
     gl.rasterPos(0, 0);
-    gl.drawPixels(imageSizeX, imageSizeY, RGBA, GL_UNSIGNED_BYTE,
-		  imageData);
-
+    gl.drawPixels(getImageSizeX(), getImageSizeY(), 
+		  RGBA, GL_UNSIGNED_BYTE, imageData);
     swapBuffers();
     releaseContext();
   }
