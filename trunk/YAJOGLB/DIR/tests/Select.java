@@ -1,7 +1,7 @@
 /*
  * Selection test
  *
- * $Id: Select.java,v 1.2 2001/06/10 19:16:09 razeh Exp $
+ * $Id: Select.java,v 1.3 2001/06/10 20:50:43 razeh Exp $
  *
  * Copyright 1999
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -20,7 +20,7 @@ public class Select extends OpenGLCanvas implements GLConstants, GLUConstants, C
   private OpenGLContext context;
 
   public Select() {
-    addComp(this);
+    addComponentListener(this);
   }
 
   /** Make context the current OpenGL context.  If we fail we just print

@@ -1,7 +1,7 @@
 /*
  * NurbsCallback class
  *
- * $Id: NurbsCallback.java,v 1.5 2001/06/10 19:15:06 razeh Exp $
+ * $Id: NurbsCallback.java,v 1.6 2001/06/10 20:52:21 razeh Exp $
  *
  * Copyright 1998
  *
@@ -23,7 +23,7 @@ public class NurbsCallback extends NurbsSurface
     }
     
     public void vertex(float x, float y, float z) {
-      Systln("vertex(" + x + "," + y + "," + z + ")");
+      System.out.println("vertex(" + x + "," + y + "," + z + ")");
     }
     
     public void normal(float x, float y, float z) {

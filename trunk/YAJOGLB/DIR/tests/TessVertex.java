@@ -1,7 +1,7 @@
 /*
  * Tess.java
  *
- * $Id: TessVertex.java,v 1.4 2001/06/10 19:16:57 razeh Exp $
+ * $Id: TessVertex.java,v 1.5 2001/06/10 20:53:31 razeh Exp $
  *
  * Taken from the C source inside the redbook examples in glut-3.6.
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -69,6 +69,7 @@ public class TessVertex extends GLUTesselator implements GeometryObject, GLConst
 
 
   public void paint(GeometryViewer viewer, GL gl, GLU glu) {
+      System.out.println("paint");
     /* These vertices from Mark Kilgard's reflection tips. */
     double body[][] = { {0, 3, 0}, {1, 1, 0}, {5, 1, 0}, {8, 4 ,0}, {10, 4 ,0}, {11, 5 ,0},
   {11, 11.5 ,0}, {13, 12 ,0}, {13, 13 ,0}, {10, 13.5 ,0}, {13, 14 ,0}, {13, 15 ,0}, {11, 16 ,0},

@@ -1,7 +1,7 @@
 /*
  * Plain cube
  *
- * $Id: PlainCube.java,v 1.5 2001/06/10 19:15:39 razeh Exp $
+ * $Id: PlainCube.java,v 1.6 2001/06/10 20:52:56 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -18,7 +18,7 @@ public class PlainCube implements GeometryObject, GLConstants {
 
   public void paint(GeometryViewer viewer, GL gl, GLU glu) {
     gl.pushMatrix();
-    gl.rotate(30.0f, 1.0ff);
+    gl.rotate(30.0f, 1.0f, 1.0f, 1.0f);
     gl.material(FRONT_AND_BACK, AMBIENT_AND_DIFFUSE, material);
     gl.begin(QUADS);
     gl.normal( 0.0F, 0.0F, 1.0F);

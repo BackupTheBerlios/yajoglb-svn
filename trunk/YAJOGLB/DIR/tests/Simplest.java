@@ -1,7 +1,7 @@
 /*
  * Simplest possible OpenGL demo
  *
- * $Id: Simplest.java,v 1.2 2001/06/10 19:16:20 razeh Exp $
+ * $Id: Simplest.java,v 1.3 2001/06/10 20:52:42 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -18,7 +18,8 @@ class Simplest extends OpenGLCanvas implements GLConstants {
 
   /** glInit is called to create our OpenGLContext and setup our model
       view and projection matricies. */
-  public void glInixt = new OpenGLContext(this);
+  public void glInit() {
+    context = new OpenGLContext(this);
     context.makeCurrent(this);
     
     /* Make sure that we use our depth buffer. */

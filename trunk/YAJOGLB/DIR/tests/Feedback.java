@@ -1,7 +1,7 @@
 /*
  * Feedback test
  *
- * $Id: Feedback.java,v 1.2 2001/06/10 19:13:51 razeh Exp $
+ * $Id: Feedback.java,v 1.3 2001/06/10 20:52:47 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -16,7 +16,7 @@ import OpenGL.*;
 public class Feedback extends OpenGLCanvas implements GLConstants, GLUConstants, ComponentListener {
   private int size;
   private GLFeedbackBuffer feedbackBuffer = new GLFeedbackBuffer(1024);
-  private Openxt;
+  private OpenGLContext context;
   private GL gl = new GL();
 
   public Feedback() {

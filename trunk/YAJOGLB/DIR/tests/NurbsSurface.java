@@ -1,7 +1,7 @@
 /*
  * NurbsSurface class
  *
- * $Id: NurbsSurface.java,v 1.8 2001/06/10 19:15:21 razeh Exp $
+ * $Id: NurbsSurface.java,v 1.9 2001/06/10 20:53:07 razeh Exp $
  *
  * Copyright 1998
  *
@@ -21,7 +21,9 @@ import java.awt.*;
 
 public class NurbsSurface extends Object implements GeometryObject, GLConstants, GLUConstants {
 
-  GLUNurbs   surface   public static void main (String args[]) {
+  GLUNurbs surface = null;
+
+  public static void main (String args[]) {
     NurbsSurface   surface  = new NurbsSurface();
     GeometryViewer viewer   = new GeometryViewer();
     ExitableFrame  frame    = new ExitableFrame();

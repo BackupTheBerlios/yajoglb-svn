@@ -1,7 +1,7 @@
 /*
  * OpenGLCanvasTest class
  *
- * $Id: Stretch.java,v 1.6 2001/06/10 19:16:45 razeh Exp $
+ * $Id: Stretch.java,v 1.7 2001/06/10 20:53:14 razeh Exp $
  * 
  * Copyright 1998
  *
@@ -17,7 +17,7 @@ import java.awt.event.*;
     image on the screen that can be stretched by clicking the mouse on
     different portions of the screen. */
 public class Stretch extends OpenGLCanvas 
-implements GLUConstants, GLConstants, MouseListener, MouseMponentListener {
+implements GLUConstants, GLConstants, MouseListener, MouseMotionListener, ComponentListener {
 
   /** Our own OpenGL context. */
   private OpenGLContext context;

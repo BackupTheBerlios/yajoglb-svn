@@ -1,7 +1,7 @@
 /*
  * Sphere
  *
- * $Id: Sphere.java,v 1.4 2001/06/10 19:16:35 razeh Exp $
+ * $Id: Sphere.java,v 1.5 2001/06/10 20:52:52 razeh Exp $
  *
  * Copyright 1998
  *
@@ -20,7 +20,8 @@ public class Sphere implements GeometryObject, GLConstants, GLUConstants {
 
   /** This sets the radius of the sphere we will draw. */
   public void setSphereRadius(float newRadius) {
-    sphereRadi }
+    sphereRadius = newRadius;
+  }
 
   /** This returns the radius of the sphere we will draw. */
   public double getSphereRadius() {

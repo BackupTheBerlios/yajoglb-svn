@@ -1,7 +1,7 @@
 /*
  * A set of axis
  *
- * $Id: Axis.java,v 1.5 2001/06/10 19:12:55 razeh Exp $
+ * $Id: Axis.java,v 1.6 2001/06/10 20:53:19 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -111,4 +111,6 @@ public class Axis implements GeometryObject, GLConstants, GLUConstants {
   }
 
   public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
-    axisBoxNumber = makeAxisBoxes(
+      axisBoxNumber = makeAxisBoxes(gl, 0.1f);
+  }
+}
