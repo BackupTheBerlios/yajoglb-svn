@@ -13,7 +13,10 @@ JAVA_SRC += tests/VertexPointer.java tests/Stretch.java				\
 	    tests/TurningAxis.java tests/InfoPanel.java			\
 	    tests/StretchTexture.java tests/OBJ.java tests/ObjFace.java \
 	    tests/ObjRender.java tests/ObjVertex.java tests/ObjReader.java  \
-	    tests/ObjMaterialReader.java tests/ObjMaterial.java
+	    tests/ObjMaterialReader.java tests/ObjMaterial.java tests/ObjNormal.java \
+	    tests/ObjFormatException.java tests/ObjDrawable.java tests/FrameRatePanel.java \
+	    tests/VertexInfo.java tests/GLUTShapes.java
+
 
 
 
