@@ -12,7 +12,7 @@
 
 
 #include <windows.h>
-#include "memory.h"
+#include "Memory.h"
 
 void *privateMalloc(size_t size)
 {

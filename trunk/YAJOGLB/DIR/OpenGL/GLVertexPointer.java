@@ -1,7 +1,7 @@
 /* 
  * GLVertexPointer class
  *
- * $Id: GLVertexPointer.java,v 1.2 1998/11/01 02:17:30 razeh Exp $
+ * $Id: GLVertexPointer.java,v 1.3 1999/01/27 00:00:11 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -16,7 +16,7 @@ package OpenGL;
  * to map Java array's to C arrays, but the mapping may be different
  * from call to call, or from thread to thread.  If you don't release
  * the array outside of a JNI call, you run the risk of a memory
- * leak. If The C array pointer may even point to a copy of the actual
+ * leak. The C array pointer may even point to a copy of the actual
  * Java array, rather than the actual array. <P>
  *
  * The approach I've taken is to gather up all of the OpenGL vertex

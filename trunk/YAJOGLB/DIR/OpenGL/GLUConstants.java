@@ -2,7 +2,7 @@
  *
  * GLUConstants
  *
- * $Id: GLUConstants.java,v 1.5 1998/11/01 02:17:17 razeh Exp $
+ * $Id: GLUConstants.java,v 1.6 1999/01/27 00:00:11 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -126,4 +126,15 @@ public interface GLUConstants {
   /* New in GLU 1.1 */
   static final int         GLU_VERSION     = 100800;
   static final int         GLU_EXTENSIONS  = 100801;
+
+  /* NURBS callbacks and properties */
+  static final int GLU_NURBS_MODE =                   100160;
+  static final int GLU_NURBS_TESSELLATOR =            100161;
+  static final int GLU_NURBS_RENDERER =               100162;
+  static final int GLU_NURBS_BEGIN =                  100164;
+  static final int GLU_NURBS_VERTEX =                 100165;
+  static final int GLU_NURBS_NORMAL =                 100166;
+  static final int GLU_NURBS_COLOR =                  100167;
+  static final int GLU_NURBS_TEX_COORD =              100168;
+  static final int GLU_NURBS_END =                    100169;
 }

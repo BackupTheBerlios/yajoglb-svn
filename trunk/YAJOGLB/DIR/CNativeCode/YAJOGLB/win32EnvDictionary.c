@@ -1,7 +1,7 @@
 /*
  * win32EnvDictionary.c
  *
- * $Id: win32EnvDictionary.c,v 1.1 1999/01/04 02:00:27 razeh Exp $
+ * $Id: win32EnvDictionary.c,v 1.2 1999/01/26 23:55:44 razeh Exp $
  *
  * This module handles getting and setting the current JNIEnv
  * pointer for this thread under Win32.
@@ -146,5 +146,6 @@ JNIEnv *environmentPointerForCurrentThread()
 		fatalUnreportableError("Unable to get an location to hold a JNI environment pointer while getting the environment pointer.");
 		return NULL;
 	}
+
 	return env;
 }

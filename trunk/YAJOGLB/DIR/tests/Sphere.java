@@ -1,7 +1,7 @@
 /*
  * Sphere
  *
- * $Id: Sphere.java,v 1.2 1998/11/01 02:27:25 razeh Exp $
+ * $Id: Sphere.java,v 1.3 1999/01/27 00:02:07 razeh Exp $
  *
  * Copyright 1998
  *
@@ -32,14 +32,14 @@ public class Sphere implements GeometryObject, GLConstants, GLUConstants {
   public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
     sphere = new GLUQuadric();
     sphere.quadricDrawStyle(GLU_FILL);
-    sphere.gluQuadricDrawStyle(GLU_FILL);
-    sphere.gluQuadricNormals(GLU_SMOOTH);
+    sphere.quadricNormals(GLU_SMOOTH);
+  }
 
   public void paint(GeometryViewer viewer, GL gl, GLU glu) {  
     gl.pushMatrix();
     gl.translate(-2.0, 0.0, 0.0);
     gl.material(FRONT_AND_BACK, AMBIENT_AND_DIFFUSE, sphereMaterial);
     sphere.sphere(sphereRadius, 15, 10);
-    sphere.gluSphere(sphereRadius, 15, 10);
+    gl.popMatrix();
   }
 }

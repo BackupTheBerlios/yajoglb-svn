@@ -1,7 +1,7 @@
 /* 
  * GL.java
  *
- * $Id: GL.java,v 1.3 1998/11/01 02:16:26 razeh Exp $
+ * $Id: GL.java,v 1.4 1999/01/27 00:00:11 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -149,7 +149,7 @@ public class GL implements GLConstants {
       loadMatrixd(darr); 
     }else {
       throw new 
-          IllegalArgumentException("Expected a double array of length 16");
+          IllegalArgumentException("Expected a double array of length 16.");
     }
   }
 
@@ -158,7 +158,7 @@ public class GL implements GLConstants {
       loadMatrixf(darr);
     } else {
       throw new 
-          IllegalArgumentException("Expected a double array of length 16");
+          IllegalArgumentException("Expected a double array of length 16.");
     }
   }
   
@@ -170,7 +170,7 @@ public class GL implements GLConstants {
       multMatrixd(M);
     } else {
       throw new 
-          IllegalArgumentException("Expected a double array of length 16");
+          IllegalArgumentException("Expected a double array of length 16.");
    }
   }
   public void multMatrix(float M[]) {
@@ -178,7 +178,7 @@ public class GL implements GLConstants {
       multMatrixf(M);
     } else {
       throw new 
-          IllegalArgumentException("Expected a double array of length 16");
+          IllegalArgumentException("Expected a double array of length 16.");
    }
   }
   private native void rotated(double angle, double x, double y, double z);

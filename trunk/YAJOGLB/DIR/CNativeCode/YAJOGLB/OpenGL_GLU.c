@@ -1,7 +1,7 @@
 /*
  * OpenGL_GLU.c
  *
- * $Id: OpenGL_GLU.c,v 1.2 1998/12/23 00:42:07 razeh Exp $
+ * $Id: OpenGL_GLU.c,v 1.3 1999/01/26 23:55:44 razeh Exp $
  *
  * This implements the generic GLU methods.
  *
@@ -29,17 +29,12 @@
 */
 
 
-/*
- * transformation matrix methods
- * 
- */
+////////////////////////////////////////////////////////////////////////
+// Transformation matrix methods.
+////////////////////////////////////////////////////////////////////////
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluLookAt
- * Signature: (DDDDDDDDD)V
- */
+
 JNIEXPORT void JNICALL Java_OpenGL_GLU_gluLookAt
   (JNIEnv *env, jobject obj, 
    jdouble eye_x,    jdouble eye_y,    jdouble eye_z,
@@ -52,11 +47,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluLookAt
 }
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluOrtho2D
- * Signature: (DDDD)V
- */
+
 JNIEXPORT void JNICALL Java_OpenGL_GLU_gluOrtho2D
   (JNIEnv *env, jobject obj, jdouble left, jdouble right, 
    jdouble bottom, jdouble top)
@@ -66,11 +57,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluOrtho2D
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluPerspective
- * Signature: (DDDD)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLU_gluPerspective
   (JNIEnv *env, jobject obj, jdouble fovy, jdouble aspect, 
    jdouble z_near, jdouble z_far)
@@ -80,11 +66,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluPerspective
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluPickMatrix
- * Signature: (DDDD[I)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLU_gluPickMatrix
   (JNIEnv *env, jobject obj, jdouble x, jdouble y, 
    jdouble width, jdouble height, jintArray viewport)
@@ -101,6 +82,8 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluPickMatrix
   (*env)->ReleaseIntArrayElements(env, viewport, viewportInts, 0);
 }
 
+
+
 JNIEXPORT jstring JNICALL Java_OpenGL_GLU_gluGetString
   (JNIEnv *env, jobject obj, jint name)
 {
@@ -112,11 +95,8 @@ JNIEXPORT jstring JNICALL Java_OpenGL_GLU_gluGetString
     return NULL;
 }
 
-/*
- * Class:     OpenGL_GLU
- * Method:    project
- * Signature: (DDD[D[D[I[D)V
- */
+
+
 JNIEXPORT void JNICALL Java_OpenGL_GLU_gluProject
   (JNIEnv *env, jobject obj, 
    jdouble objX, jdouble objY, jdouble objZ, 
@@ -177,11 +157,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluProject
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    unProject
- * Signature: (DDD[D[D[I[D)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLU_gluUnProject
   (JNIEnv *env, jobject obj, 
    jdouble winX, jdouble winY, jdouble winZ, 
@@ -242,17 +217,12 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluUnProject
 
 
 
-/*
- *
- * Mipmapping and image scaling
- *
- */
+////////////////////////////////////////////////////////////////////////
+// Mipmapping and image scaling.
+////////////////////////////////////////////////////////////////////////
 
-/*
- * Class:     OpenGL_GLU
- * Method:    scaleImage
- * Signature: (IIII[Ljava/lang/Object;III[Ljava/lang/Object;)I
- */
+
+
 JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluScaleImage
   (JNIEnv *env, jobject obj, 
    jint format, jint widthin, jint heightin, 
@@ -290,11 +260,6 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluScaleImage
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluBuild1DMipmaps
- * Signature: (IIIII[B)I
- */
 JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild1DMipmaps__IIIII_3B
   (JNIEnv *env, jobject obj, 
    jint target, jint components, jint width, jint format, jint type, 
@@ -316,11 +281,6 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild1DMipmaps__IIIII_3B
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluBuild1DMipmaps
- * Signature: (IIIII[S)I
- */
 JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild1DMipmaps__IIIII_3S
   (JNIEnv *env, jobject obj, 
    jint target, jint components, jint width, jint format, jint type, 
@@ -342,11 +302,6 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild1DMipmaps__IIIII_3S
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    build1DMipmaps
- * Signature: (IIIII[I)I
- */
 JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild1DMipmaps__IIIII_3I
   (JNIEnv *env, jobject obj, 
    jint target, jint components, jint width, jint format, jint type, 
@@ -368,11 +323,6 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild1DMipmaps__IIIII_3I
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluBuild1DMipmaps
- * Signature: (IIIII[F)I
- */
 JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild1DMipmaps__IIIII_3F
   (JNIEnv *env, jobject obj, 
    jint target, jint components, jint width, jint format, jint type, 
@@ -394,11 +344,6 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild1DMipmaps__IIIII_3F
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluBuild2DMipmaps
- * Signature: (IIIIII[B)I
- */
 JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild2DMipmaps__IIIIII_3B
   (JNIEnv *env, jobject obj, 
    jint target, jint components, 
@@ -420,11 +365,6 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild2DMipmaps__IIIIII_3B
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluBuild2DMipmaps
- * Signature: (IIIIII[S)I
- */
 JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild2DMipmaps__IIIIII_3S
   (JNIEnv *env, jobject obj, 
    jint target, jint components, 
@@ -446,11 +386,6 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild2DMipmaps__IIIIII_3S
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluBuild2DMipmaps
- * Signature: (IIIIII[I)I
- */
 JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild2DMipmaps__IIIIII_3I
   (JNIEnv *env, jobject obj, 
    jint target, jint components, 
@@ -472,11 +407,6 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild2DMipmaps__IIIIII_3I
 
 
 
-/*
- * Class:     OpenGL_GLU
- * Method:    gluBuild2DMipmaps
- * Signature: (IIIIII[F)I
- */
 JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild2DMipmaps__IIIIII_3F
   (JNIEnv *env, jobject obj, 
    jint target, jint components, 
@@ -499,17 +429,6 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild2DMipmaps__IIIIII_3F
 
 
 
-
-
-
-
-
-
-/*
- * Class:     OpenGL_GLU
- * Method:    gluErrorString
- * Signature: (I)Ljava/lang/String;
- */
 JNIEXPORT jstring JNICALL Java_OpenGL_GLU_gluErrorString
   (JNIEnv *env, jobject obj, jint errorCode)
 {

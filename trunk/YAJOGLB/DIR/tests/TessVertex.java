@@ -1,7 +1,8 @@
 /*
  * Tess.java
  *
- * $Id: TessVertex.java,v 1.2 1999/01/04 02:00:06 razeh Exp $
+ * $Id: TessVertex.java,v 1.3 1999/01/27 00:02:07 razeh Exp $
+ *
  * Taken from the C source inside the redbook examples in glut-3.6.
  * Robert Allan Zeh (razeh@balr.com)
  */

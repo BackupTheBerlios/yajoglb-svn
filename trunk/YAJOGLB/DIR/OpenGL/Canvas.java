@@ -1,7 +1,7 @@
 /*
  * OpenGLCanvas class
  *
- * $Id: Canvas.java,v 1.3 1998/11/01 22:32:49 razeh Exp $
+ * $Id: Canvas.java,v 1.4 1999/01/27 00:00:11 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -58,7 +58,7 @@ public class OpenGLCanvas extends Canvas {
 
   /** Returns the handle to the device context for this canvas.  Windows
       specific. */
-  protected int getHDC() {
+  int getHDC() {
     OpenGLpDataAccess dataAccess;
 
     dataAccess = 
@@ -70,7 +70,7 @@ public class OpenGLCanvas extends Canvas {
 
   /** Returns the handle to the window for this canvas.  Windows
       specific. */
-  protected int getHWnd() {
+  int getHWnd() {
     OpenGLpDataAccess dataAccess;
 
     dataAccess = 
@@ -119,9 +119,9 @@ public class OpenGLCanvas extends Canvas {
       buffer. */
   private native void nativeSwapBuffers(int HDC);
 
-  /** This swaps in the double buffer that we've been using.  If you
-      don't call this after you draw, nothing will be displayed on the
-      screen. */
+  /** This swaps in the double buffer that we've been using.  If
+      double buffering is enabled and you don't call this after you
+      draw, nothing will be displayed on the screen. */
   public void swapBuffers() {
     nativeSwapBuffers(getHDC());
   }

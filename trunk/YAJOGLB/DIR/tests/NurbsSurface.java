@@ -1,7 +1,7 @@
 /*
  * NurbsSurface class
  *
- * $Id: NurbsSurface.java,v 1.4 1998/11/01 02:28:17 razeh Exp $
+ * $Id: NurbsSurface.java,v 1.5 1999/01/27 00:02:07 razeh Exp $
  *
  * Copyright 1998
  *
@@ -19,7 +19,7 @@ import java.awt.*;
  *  symmetrical hill. Taken from the SGI examples. 
  */
 
-public class NurbsSurface implements GeometryObject, GLConstants, GLUConstants {
+public class NurbsSurface extends GLUNurbs implements GeometryObject, GLConstants, GLUConstants {
 
   public static void main (String args[]) {
     NurbsSurface   surface  = new NurbsSurface();
@@ -59,8 +59,6 @@ public class NurbsSurface implements GeometryObject, GLConstants, GLUConstants {
     }			
   }				
 
-  GLUNurbs theNurb;
-
   public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
     
     float mat_diffuse[] = { 0.7f, 0.7f, 0.7f, 1.0f };
@@ -79,10 +77,8 @@ public class NurbsSurface implements GeometryObject, GLConstants, GLUConstants {
 
     initSurface();
 
-    theNurb = new GLUNurbs();
-
-    theNurb.gluNurbsProperty(GLU_SAMPLING_TOLERANCE, 25.0f);
-    theNurb.gluNurbsProperty(GLU_DISPLAY_MODE, GLU_FILL);
+    nurbsProperty(GLU_SAMPLING_TOLERANCE, 25.0f);
+    nurbsProperty(GLU_DISPLAY_MODE, GLU_FILL);
   }
 
   public void paint(GeometryViewer viewer, GL gl, GLU glu) {
@@ -101,11 +97,11 @@ public class NurbsSurface implements GeometryObject, GLConstants, GLUConstants {
     gl.rotate(330.0f, 1.f,0.f,0.f);
     gl.scale(0.5f, 0.5f, -0.5f);
     
-    theNurb.gluBeginSurface();
-    theNurb.gluNurbsSurface(knots, knots,
-			    4 * 3, 3, flatControlPoints, 
-			    4, 4, MAP2_VERTEX_3);
-    theNurb.gluEndSurface();
+    beginSurface();
+    nurbsSurface(knots, knots,
+		 4 * 3, 3, flatControlPoints, 
+		 4, 4, MAP2_VERTEX_3);
+    endSurface();
     
     if (showPoints == true) {
       gl.pointSize(5.0f);
