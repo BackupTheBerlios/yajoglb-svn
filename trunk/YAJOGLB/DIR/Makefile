@@ -119,7 +119,7 @@ nativeheaders: $(NATIVEHEADERS)
 # Visual C++
 win32 :   win32-config packagedir cheatingwindir $(NATIVEHEADERS) win32-nativedir testdir
 
-win32-conifg:
+win32-config:
 	$(CP) Makefile.config-win32 Makefile.config
 
 win32-nativedir:
