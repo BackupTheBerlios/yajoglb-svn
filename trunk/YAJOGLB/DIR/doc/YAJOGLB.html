@@ -1,8 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
 <HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 <TITLE>YAJOGLB (Yet Another Java OpenGL Binding)</TITLE>
 </HEAD>
+
 
 <IMG SRC="OpenGL.gif" ALIGN="LEFT" WIDTH=220 HEIGHT=97 ALT="OpenGL logo">
 <H2>YAJOGLB (Yet Another Java OpenGL Binding)</H2>
@@ -21,12 +23,20 @@ HREF="http://www.berkelium.com/OpenGL/sgi-opengl.html">http://www.berkelium.com/
 <P>Once OpenGL is installed on your machine, you also need to have Java on your machine. You can find instructions for installing the Java developer's kit at <A HREF="http://java.sun.com/">http://java.sun.com</A></P>
 <P>The Makefiles use a provided python script that, along with gcc, generates
 the dependencies for the C files.  If you don't want to install python on your Linux machine you could replace the script with a touch command.  Of course, make won't know when to recompile your files if you do that. </P>
-<P>For the most part, when the individual OpenGL methods are no different from their counterparts in the C API they have been left undocumented. I've found the documentation at <A HREF="http://trant.sgi.com/opengl/docs/man_pages/hardcopy/GL/html/">http://trant.sgi.com/opengl/docs/man_pages/hardcopy/GL/html/</A> to be very helpful. There is also a <A HREF="YAJOGLB-Technical-Overview.html">technical overview</A> in the documentation directory, and some <A HREF="../tests/ReadMe.html">test documentation</A> that includes sample images.</P>
+<P>For the most part, when the individual OpenGL methods are no
+different from their counterparts in the C API they have been left
+undocumented. I've found the documentation at <A
+HREF="http://www.opengl.org/developers/documentation/man_pages/hardcopy/GL/html/">http://www.opengl.org/developers/documentation/man_pages/hardcopy/GL/html/</A>
+to be very helpful. There is also a <A
+HREF="YAJOGLB-Technical-Overview.html">technical overview</A> in the
+documentation directory, and some <A HREF="../tests/ReadMe.html">test
+documentation</A> that includes sample images.</P>
+
 <P>The last thing you need to download is the <A HREF="http://home.earthlink.net/~rzeh/YAJOGLB/YAJOGLB-0.4.tgz">0.4 YAJOGLB distribution</A>, which is a tarred and gnuziped copy of the package.</P>
 <H3>What You Get</H3>
 <P>Once you have unpacked the distribution, you should have a directory with the following subdirectories:</P>
 <DL>
-<DD><P>CNativeCode - the source code for the native libraries used by the binding to use OpenGL. The DLL (which needs to be in your PATH environment variable for the binding to work) is located in CNativeCode/YAJOGLB/Debug.  Under Linux you can build the dynamic library with make.  </P></DD>
+<DD><P>CNativeCode - the source code for the native libraries used by the binding to use OpenGL. The distribution includes the Windows DLL (which needs to be in your PATH environment variable for the binding to work) is located in the directory CNativeCode/YAJOGLB/Debug.  Under Linux you can build the dynamic library with make.  </P></DD>
 <DD><P>doc - contains documentation on the bindings, which includes this document and a <A HREF="YAJOGLB-Technical-Overview.html">technical overview</A>.</P></DD>
 <DD><P>test - contains sample code used to test the Java bindings, along with some <A HREF="../tests/ReadMe.html">test documentation</A>.</P></DD>
 <DD><P>sun - contains a class that allows the bindings to access the native peer component's drawing surface. These are no longer used, and are included if you can not use the JAWT extension that Sun added to Java in JDK 1.3.  However, I am no longer testing them.  </P></DD>
@@ -42,7 +52,7 @@ the dependencies for the C files.  If you don't want to install python on your L
     glVertex3f( 0.5F, 0.5F, 0.5F); glVertex3f(-0.5F, 0.5F, 0.5F);
     glVertex3f(-0.5F,-0.5F, 0.5F); glVertex3f( 0.5F,-0.5F, 0.5F);
 
-    &#133
+    ...
 
     glEnd();</PRE>
 <P>&nbsp;Here is what the same code looks like in YAJOGLB, with gl being a GL object.</P>
@@ -51,7 +61,7 @@ the dependencies for the C files.  If you don't want to install python on your L
     gl.vertex( 0.5F, 0.5F, 0.5F); gl.vertex(-0.5F, 0.5F, 0.5F);
     gl.vertex(-0.5F,-0.5F, 0.5F); gl.vertex( 0.5F,-0.5F, 0.5F);
     
-    &#133
+    ...
     
     gl.end();
   </PRE>
@@ -72,7 +82,7 @@ the dependencies for the C files.  If you don't want to install python on your L
 <H3>Testing</H3>
 <P>The binding has been tested with JDK 1.3 with an NVIDIA TNT2 under Windows 2000 and GNU/Linux. Please let me know if you get it to work under any other configurations.  Previous versions worked just fine under Windows 98 and Windows NT; I'd be surprised if I had managed to break support for those operating systems.</P>
 <H3>Other OpenGL Bindings</H3>
-<P>There are a host of other OpenGL bindings available. Some of the ones that I know about are:</P>
+<P>There are a host of other OpenGL bindings available. Some of the ones that I know about are (I've kept projects with broken links):</P>
 <DL>
 <DD><P><A HREF="http://www.arcana.co.uk/products/magician/">Magician</A> A nice but now defunct commercial binding.</P></DD>
 <DD><P><A HREF="http://www.oasis.leo.org/java/classes/graphics/OpenGL4java.dsc.html">An Unoffical Port of Java to OpenGL</A> Leo Chan's OpenGL binding --- the grand daddy of most Java OpenGL bindings. YAJOGLB is one of the few that is not based on Leo Chan's work.</P></DD>
@@ -82,11 +92,20 @@ the dependencies for the C files.  If you don't want to install python on your L
 <DD><P><A HREF="http://parallel.fh-bielefeld.de/pv/news/gl4java.html">GL4Java</A> A Thesis describing an OpenGL Java binding for X-Windows. </P></DD>
 <DD><P><A HREF="http://www.arrakis.es/~aletc/">Tree</A> A Java interface for Mesa, which means that it should work for OpenGL as well.</P></DD>
 </DL>
+<H3>Known problems</H3>
+
+There is only one know problem that I know of: the Concurrence demo is
+jerky when you move the image around with the mouse or keyboard.  I
+suspect this has something to do with using different threads for the
+animation and the motion control.  In theory the GeometryViewer
+doesn't need to do a paint call when an animation loop is running, but
+it doesn't know that.
+
 <H3>Acknowledgements</H3>
 <P>I'd like to thank my friends Jay Bauer and Dwight Divine for their help with the package; Jay for letting me test it on his machine and Dwight for correcting some mistakes in my documentation. My previous employer, BALR, was also of considerable assistance. Lastly, I wouldn't have been able to write the binding without being able to take a look at some open source software. <A HREF="http://www.pajato.com/jogl/">Jogl</A> showed me how to access an AWT's peer instance to obtain native windows information (since replaced by JAWT), and <A HREF="http://www.ssec.wisc.edu/~brianp/Mesa.html">Mesa</A> (a 3D graphics library with an API similar to OpenGL's) matrix modification routines made their way into the GeometryViewer used in the test package. </P>
 <P>If you use this package, or have any questions about it, please drop me a line at <A HREF="mailto:razeh@yahoo.com">razeh@yahoo.com</A>.</P>
 <HR>
 <ADDRESS>Back to Robert Zeh's <A HREF="http://home.earthlink.net/~rzeh">home page</A>.<BR>
-Last Changed July 14, 2001. </ADDRESS></BODY>
+Last Changed November 17, 2002. </ADDRESS></BODY>
 </HTML>
 
