@@ -9,36 +9,260 @@
  * for nurbs.
  */
 
+#include "cygnusFixes.h"
 #include <windows.h>
 #include <GL/glu.h>
-
-#include "cygnusFixes.h"
+#include "JNIInterface.h"
+#include "ErrorHandling.h"
 #include "OpenGL_GLUNurbs.h"
+#include "CallbackObject.h"
+#include "EnvDictionary.h"
+
+
+
+////////////////////////////////////////////////////////////////////////
+// Environment mapping.
+////////////////////////////////////////////////////////////////////////
+
+
+
+/* This returns the current tesselator that callbacks should use. */
+static jobject getActiveNurbs(JNIEnv *env)
+{
+	jclass      nurbsClass              = NULL;
+	jobject     activeNurbs             = NULL;
+	int         error                   = 0;
+
+	// Get the nurbs class
+	if (!error) {
+		nurbsClass = getClass(env, "OpenGL/GLUNurbs", 
+			"Unable to get the OpenGL/GLUNubs class.");
+		error = (NULL == nurbsClass);
+	}
+
+	activeNurbs = getActiveCallbackObjectForClass(env, nurbsClass);
+	
+	return activeNurbs;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////
+// Callback functions.
+////////////////////////////////////////////////////////////////////////
+
+
+
+/* This is the callback for GLU_NURBS_BEGIN. */
+static void CALLBACK begin(GLenum type)
+{
+	JNIEnv *env = environmentPointerForCurrentThread();
+
+	if ((NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
+		jobject    activeNurbs   = getActiveNurbs(env);
+		jmethodID  methodID      = NULL;
+
+		methodID = getMethodIDForObject(env, activeNurbs, "begin", "(I)V", "Unable to locate the begin method.");
+		if (NULL != methodID) {
+			(*env)->CallVoidMethod(env, activeNurbs, methodID, type);
+		}
+	}
+}
+
+
+
+/* This handles the callback for GLU_NURBS_VERTEX. */
+static void CALLBACK vertex(GLfloat *vertex)
+{
+	JNIEnv *env = environmentPointerForCurrentThread();
+
+	if ((NULL != vertex) && (NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
+		jobject    activeNurbs   = getActiveNurbs(env);
+		jmethodID  methodID      = NULL;
+		GLfloat    x, y, z;
+
+		x = vertex[0]; y = vertex[1]; z = vertex[2];
+		methodID = getMethodIDForObject(env, activeNurbs, "vertex", "(FFF)V", "Unable to locate the vertex method.");
+		if (NULL != methodID) {
+			(*env)->CallVoidMethod(env, activeNurbs, methodID, x, y, z);
+		}
+	}
+}
+
+
+
+/* This handles the callback for GLU_NURBS_NORMAL. */
+static void CALLBACK normal(GLfloat *normal)
+{
+	JNIEnv *env = environmentPointerForCurrentThread();
+
+	if ((NULL != normal) && (NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
+		jobject    activeNurbs   = getActiveNurbs(env);
+		jmethodID  methodID      = NULL;
+		GLfloat    x, y, z;
+
+		x = normal[0]; y = normal[1]; z = normal[2];
+		methodID = getMethodIDForObject(env, activeNurbs, "normal", "(FFF)V", "Unable to locate the normal method.");
+		if (NULL != methodID) {
+			(*env)->CallVoidMethod(env, activeNurbs, methodID, x, y, z);
+		}
+	}
+}
+
+
+
+/* This handles the callback for GLU_NURBS_COLOR. */
+static void CALLBACK color(GLfloat *color)
+{
+	JNIEnv *env = environmentPointerForCurrentThread();
+
+	if ((NULL != color) && (NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
+		jobject    activeNurbs   = getActiveNurbs(env);
+		jmethodID  methodID      = NULL;
+		GLfloat    r, g, b, a;
+
+		r = color[0]; g = color[1]; b = color[2]; a = color[3];
+		methodID = getMethodIDForObject(env, activeNurbs, "color", "(FFFF)V", "Unable to locate the color method.");
+		if (NULL != methodID) {
+			(*env)->CallVoidMethod(env, activeNurbs, methodID, r, g, b, a);
+		}
+	}
+}
+
+
+
+/* This handles the callback for GLU_NURBS_TEXTURE_COORD. */
+static void CALLBACK texCoord(GLfloat *texCoord)
+{
+	unsigned int texCoordLength = 0;
+	JNIEnv      *env = environmentPointerForCurrentThread();
+
+	// First we have to figure out how long the texCoord array is.
+	if (glIsEnabled(GL_MAP1_TEXTURE_COORD_1) || glIsEnabled(GL_MAP2_TEXTURE_COORD_1)) {
+		texCoordLength = 1;
+	}
+
+	if (glIsEnabled(GL_MAP1_TEXTURE_COORD_2) || glIsEnabled(GL_MAP2_TEXTURE_COORD_2)) {
+		texCoordLength = 2;
+	}
+
+	if (glIsEnabled(GL_MAP1_TEXTURE_COORD_3) || glIsEnabled(GL_MAP2_TEXTURE_COORD_3)) {
+		texCoordLength = 3;
+	}
+
+	if (glIsEnabled(GL_MAP1_TEXTURE_COORD_4) || glIsEnabled(GL_MAP2_TEXTURE_COORD_4)) {
+		texCoordLength = 4;
+	}
+
+	if (0 == texCoordLength) {
+		handleError(env, OPENGL_NATIVE_EXCEPTION, "Unable to determine the texture coordinate length in the texCoord callback.");
+	}
+
+	if ((NULL != env) && (0 != texCoordLength) && (NULL == (*env)->ExceptionOccurred(env))) {
+		jobject     activeNurbs   = getActiveNurbs(env);
+		jmethodID   methodID      = NULL;
+		jfloatArray jTexCoord     = (*env)->NewFloatArray(env, texCoordLength);
+
+		// Create a Java array to hold texCoord.
+		if (NULL != jTexCoord) {
+			(*env)->SetFloatArrayRegion(env, jTexCoord, 0, texCoordLength, texCoord);
+		} else {
+			handleError(env, OPENGL_NATIVE_EXCEPTION, "Unable to allocate an array for the texCoord callback.");
+			return;
+		}
+
+		methodID = getMethodIDForObject(env, activeNurbs, "texCoord", "([F)V", "Unable to locate the texCoord method.");
+		if (NULL != methodID) {
+			(*env)->CallVoidMethod(env, activeNurbs, methodID, jTexCoord);
+		}
+	}
+}
+
+
+
+/* This handles the callback for GLU_END. */
+static void CALLBACK end(void)
+{
+	JNIEnv *env = environmentPointerForCurrentThread();
+
+	if ((NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
+		jobject    activeNurbs   = getActiveNurbs(env);
+		jmethodID  methodID      = NULL;
+
+		methodID = getMethodIDForObject(env, activeNurbs, "end", "()V", "Unable to locate the end method.");
+		if (NULL != methodID) {
+			(*env)->CallVoidMethod(env, activeNurbs, methodID);
+		}
+	}
+}
+
+
+
+/* This handles the error callback. */
+static void CALLBACK error(GLenum errorNumber)
+{
+	JNIEnv *env = environmentPointerForCurrentThread();
+
+	if ((NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
+		jobject    activeNurbs   = getActiveNurbs(env);
+		jmethodID  methodID      = NULL;
+
+		methodID = getMethodIDForObject(env, activeNurbs, "error", "(I)V", "Unable to locate the error method.");
+		if (NULL != methodID) {
+			(*env)->CallVoidMethod(env, activeNurbs, methodID, errorNumber);
+		}
+	}
+}
+
+
+////////////////////////////////////////////////////////////////////////
+// Creation and destruction functions.
+////////////////////////////////////////////////////////////////////////
+
+
 
 /*
  * Class:     OpenGL_GLUNurbs
- * Method:    gluNewNurbsRenderer
+ * Method:    newNurbsRenderer
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_OpenGL_GLUNurbs_gluNewNurbsRenderer
+JNIEXPORT jint JNICALL Java_OpenGL_GLUNurbs_newNurbsRenderer
   (JNIEnv *env, jobject obj)
 {
-  return (int) gluNewNurbsRenderer();
+  GLUnurbs *newNurbs = gluNewNurbsRenderer();
+
+  if (NULL != newNurbs) {
+	  gluNurbsCallback(newNurbs, GLU_NURBS_BEGIN_EXT, begin);
+	  gluNurbsCallback(newNurbs, GLU_NURBS_VERTEX_EXT, vertex);
+	  gluNurbsCallback(newNurbs, GLU_NURBS_NORMAL_EXT, normal);
+	  gluNurbsCallback(newNurbs, GLU_NURBS_COLOR_EXT, color);
+	  gluNurbsCallback(newNurbs, GLU_NURBS_TEX_COORD_EXT, texCoord);
+	  gluNurbsCallback(newNurbs, GLU_NURBS_END_EXT, end);
+	  gluNurbsCallback(newNurbs, GLU_ERROR, error);
+  }
+  return (int)newNurbs;
 }
 
 /*
  * Class:     OpenGL_GLUNurbs
- * Method:    gluDeleteNurbsRenderer
+ * Method:    deleteNurbsRenderer
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluDeleteNurbsRenderer
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_deleteNurbsRenderer
   (JNIEnv *env, jobject obj, jint nurbs)
 {
   gluDeleteNurbsRenderer((void*) nurbs); 
 }
 
 
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluLoadSamplingMatrices
+
+
+////////////////////////////////////////////////////////////////////////
+// Drawing functions.
+////////////////////////////////////////////////////////////////////////
+
+
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_loadSamplingMatrices
   (JNIEnv *env, jobject obj, jint nurbs, jfloatArray jmodelMatrix, 
    jfloatArray jprojMatrix, jintArray jviewport)
 {
@@ -75,7 +299,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluLoadSamplingMatrices
  * Method:    gluNurbsProperty
  * Signature: (IIF)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluNurbsProperty
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsProperty
   (JNIEnv *env, jobject obj, jint nurbs, jint property, jfloat value)
 {
   gluNurbsProperty((void*)nurbs, property, value);
@@ -83,7 +307,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluNurbsProperty
 
 
 
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluBeginCurve
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_beginCurve
   (JNIEnv *env, jobject obj, jint nurb)
 {
   gluBeginCurve((void*)nurb);
@@ -91,7 +315,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluBeginCurve
 
 
 
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluEndCurve
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endCurve
   (JNIEnv *env, jobject obj, jint nurb)
 {
   gluEndCurve((void*)nurb);
@@ -104,7 +328,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluEndCurve
  * Method:    gluNurbsCurve
  * Signature: (I[FI[FII)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluNurbsCurve
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsCurve
   (JNIEnv *env, jobject obj, jint nurb, 
    jfloatArray jknot, jint stride, 
    jfloatArray jctlarray, jint order, 
@@ -138,7 +362,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluNurbsCurve
  * Method:    gluBeginSurface
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluBeginSurface
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_beginSurface
   (JNIEnv *env, jobject obj, jint nurb)
 {
   gluBeginSurface((void*) nurb);
@@ -151,7 +375,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluBeginSurface
  * Method:    gluEndSurface
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluEndSurface
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endSurface
   (JNIEnv *env, jobject obj, jint nurb)
 {
   gluEndSurface((void*) nurb);
@@ -164,7 +388,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluEndSurface
  * Method:    gluNurbsSurface
  * Signature: (I[F[FII[FIII)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluNurbsSurface
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsSurface
   (JNIEnv *env, jobject obj, 
    jint nurb, jfloatArray jsKnots, jfloatArray jtKnots, 
    jint sStride, jint tStride, jfloatArray jcontrol, 
@@ -202,7 +426,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluNurbsSurface
 
 
 
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluGetNurbsProperty
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_getNurbsProperty
   (JNIEnv *env, jobject obj, jint nurb, jint property, jfloatArray jvalue)
 {
   jfloat *value;
@@ -223,7 +447,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluGetNurbsProperty
  * Method:    gluBeginTrim
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluBeginTrim
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_beginTrim
   (JNIEnv *env, jobject obj, jint nurb)
 {
   gluBeginTrim((void*) nurb);
@@ -236,7 +460,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluBeginTrim
  * Method:    gluEndTrim
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluEndTrim
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endTrim
   (JNIEnv *env, jobject obj, jint nurb)
 {
   gluEndTrim((void*) nurb);
@@ -249,7 +473,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluEndTrim
  * Method:    gluPwlCurve
  * Signature: (I[FII)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_gluPwlCurve
+JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_pwlCurve
   (JNIEnv *env, jobject obj, jint nurb, 
    jfloatArray jdata, jint stride, jint type)
 {

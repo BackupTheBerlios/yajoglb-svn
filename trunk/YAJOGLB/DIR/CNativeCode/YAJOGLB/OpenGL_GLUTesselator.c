@@ -1,7 +1,7 @@
 /*
  * OpenGL_OpenGLTesselator.c
  *
- * $Id: OpenGL_GLUTesselator.c,v 1.3 1999/01/04 02:02:00 razeh Exp $
+ * $Id: OpenGL_GLUTesselator.c,v 1.4 1999/01/26 23:55:44 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -20,6 +20,7 @@
 
 #include "cygnusFixes.h"
 #include "memory.h"
+#include "CallbackObject.h"
 #include "ErrorHandling.h"
 #include "EnvDictionary.h"
 #include "JNIInterface.h"
@@ -170,42 +171,20 @@ static vertexDataContainer *newVertexDataContainer(JNIEnv *env,
 
 
 /* This returns the current tesselator that callbacks should use. */
-static jobject getActiveTesselator()
+static jobject getActiveTesselator(JNIEnv *env)
 {
-	JNIEnv*   env                     = NULL;
-	jobject   activeTesselator        = NULL;
-	jclass    tesselatorClass         = NULL;
-	jmethodID activeTesselatorMethod  = NULL;
-	int       error                   = 0;
+	jclass      tesselatorClass         = NULL;
+	jobject     activeTesselator        = NULL;
+	int         error                   = 0;
 
-	// Get an environment pointer.
-	if (!error) {
-		env = environmentPointerForCurrentThread();
-		error = (NULL == env);
-	}
-
-	// Get the tesselator class.
+	// Get the tesselator class
 	if (!error) {
 		tesselatorClass = getClass(env, "OpenGL/GLUTesselator", 
 			"Unable to get the OpenGL/GLUTesselator class.");
 		error = (NULL == tesselatorClass);
 	}
 
-	// Get the tesselator method.
-	if (!error) {
-		activeTesselatorMethod = 
-			getStaticMethodID(env, tesselatorClass,
-						  	  "activeTesselatorForThread",
-						      "()LOpenGL/GLUTesselator;",
-						      "Unable to obtain the active tesselator method.");
-		error = (NULL == activeTesselatorMethod);
-	}
-
-	// Get the active tesselator by asking the GLUTesselator class for it.
-	if (!error) {
-		activeTesselator = 
-			(*env)->CallStaticObjectMethod(env, tesselatorClass,  activeTesselatorMethod);
-	}
+	activeTesselator = getActiveCallbackObjectForClass(env, tesselatorClass);
 	
 	return activeTesselator;
 }
@@ -217,7 +196,7 @@ static jobject getActiveTesselator()
 tesselatorContainer *getActiveTesselatorContainer(JNIEnv *env)
 {
 	tesselatorContainer *activeTesselator = NULL;
-	jobject              jtesselator      = getActiveTesselator();
+	jobject              jtesselator      = getActiveTesselator(env);
 	jmethodID            methodID         = NULL;
 
 	if (NULL != jtesselator) {
@@ -249,7 +228,7 @@ static void CALLBACK errorData(GLenum errorNumber, polygonDataContainer *polygon
 
 	if (NULL != polygonDataContainer &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
-		jobject   jtesselator = getActiveTesselator();
+		jobject   jtesselator = getActiveTesselator(env);
 		jobject   polygonData = polygonDataContainer->polygonData;
 	    jmethodID methodID    = NULL;
 
@@ -271,7 +250,7 @@ static void CALLBACK errorData(GLenum errorNumber, polygonDataContainer *polygon
 
 	if (NULL != polygonDataContainer &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
-		jobject   jtesselator = getActiveTesselator();
+		jobject   jtesselator = getActiveTesselator(env);
 		jobject   polygonData = polygonDataContainer->polygonData;
 	    jmethodID methodID    = NULL;
 
@@ -293,7 +272,7 @@ static void CALLBACK endData(polygonDataContainer *polygonDataContainer)
 
 	if (NULL != polygonDataContainer &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
-		jobject   jtesselator = getActiveTesselator();
+		jobject   jtesselator = getActiveTesselator(env);
 		jobject   polygonData = polygonDataContainer->polygonData;
 		jmethodID methodID    = NULL;
 
@@ -316,7 +295,7 @@ static void CALLBACK vertexData(vertexDataContainer  *vertexDataContainer,
 
 	if ((NULL != vertexDataContainer) && (NULL != polygonDataContainer) &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
-		jobject   jtesselator = getActiveTesselator();
+		jobject   jtesselator = getActiveTesselator(env);
 		jobject   polygonData = polygonDataContainer->polygonData;
 		jobject   vertexData  = vertexDataContainer->vertexData;
 		jmethodID methodID    = NULL;
@@ -341,7 +320,7 @@ static void CALLBACK combineData(GLdouble coords[3], vertexDataContainer *vertex
 
 	if (NULL != polygonDataContainer &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
-		jobject              jtesselator   = getActiveTesselator();
+		jobject              jtesselator   = getActiveTesselator(env);
 		JNIEnv              *env           = environmentPointerForCurrentThread();
 		jobject              polygonData   = polygonDataContainer->polygonData;
 		tesselatorContainer *tessContainer = getActiveTesselatorContainer(env);
@@ -406,7 +385,7 @@ static void CALLBACK edgeFlagData(GLboolean flag, polygonDataContainer *polygonD
 
 	if (NULL != polygonDataContainer &&
 		(NULL != env) && (NULL == (*env)->ExceptionOccurred(env))) {
-		jobject   jtesselator = getActiveTesselator();
+		jobject   jtesselator = getActiveTesselator(env);
 		jobject   polygonData = polygonDataContainer->polygonData;
 		jmethodID methodID    = NULL;
 
