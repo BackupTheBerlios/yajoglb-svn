@@ -1,7 +1,7 @@
 /*
  * OpenGLCanvas class
  *
- * $Id: Canvas.java,v 1.2 1998/10/04 23:42:01 razeh Exp $
+ * $Id: Canvas.java,v 1.3 1998/11/01 22:32:49 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -11,12 +11,17 @@ package OpenGL;
 
 import java.awt.*;
 
-/** This provides an embedded object that OpenGL can render into. */
+/** This provides an embedded object that OpenGL can render into.  It
+ * is similar to a normal Canvas object, but it can be setup with
+ * OpenGLCapabilities that describe how OpenGL should render into the
+ * canvas.  For example, the precision of the depth buffer is
+ * specified via the OpenGLCapabilities.  If no capabilities are
+ * specified, a default capabilities object will be used.  */
 public class OpenGLCanvas extends Canvas {
   
   /* Make sure that we load in our native library. */
   static {
-    System.load("OpenGL4java");
+    System.load("YAJOGLB");
   }
 
   /** This holds the capabilities we will request of our display. */
