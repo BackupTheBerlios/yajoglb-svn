@@ -1,7 +1,7 @@
 /*
  * Concurrence
  *
- * $Id: Concurrence.java,v 1.1 1998/09/12 00:46:35 razeh Exp $
+ * $Id: Concurrence.java,v 1.2 1999/05/02 23:34:42 razeh Exp $
  *
  * Copyright 1998
  *
@@ -28,7 +28,7 @@ public class Concurrence {
 
     viewer1.addElement(cube);
     viewer1.addElement(sphere1);
-    viewer1.addElement(new Axis());
+    viewer1.addElement(new TurningAxis());
     frame1.setLayout(new GridLayout(1,1));
     frame1.add(viewer1);
     frame1.setTitle("Thread #1");
@@ -39,7 +39,7 @@ public class Concurrence {
 
     viewer2.addElement(cube);
     viewer2.addElement(sphere2);
-    viewer2.addElement(new Axis());
+    viewer2.addElement(new TurningAxis());
     frame2.setLayout(new GridLayout(1,1));
     frame2.add(viewer2);
     frame2.setTitle("Thread #2");
@@ -49,7 +49,6 @@ public class Concurrence {
 		       frame1.getLocationOnScreen().y);
     frame2.setSize(new Dimension(400,400));
     frame2.setBackground(java.awt.Color.black);
-
     frame2.setVisible(true);
 
     int sphereCycle = 0;
@@ -69,5 +68,4 @@ public class Concurrence {
       viewer2.paint();
     }
   }
-
 }
