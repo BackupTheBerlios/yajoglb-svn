@@ -2,10 +2,10 @@
  *
  * OpenGLConstants
  *
- * $Id: GLConstants.java,v 1.5 1999/04/29 01:16:58 razeh Exp $
+ * $Id: GLConstants.java,v 1.6 2002/04/14 18:18:17 razeh Exp $
  *
- * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * Copyright 1997,2001
+ * Robert Allan Zeh (razeh@yahoo.com)
  *
  */
 
@@ -18,9 +18,9 @@ package OpenGL;
  * was removed), in the same manner that all of the gl prefixes were
  * removed from the OpenGL function names.
  *
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
- * @version 0.3 */
+ * @version 0.4 */
 
 public interface GLConstants {
   static final int CURRENT_BIT		= 0x00000001;
