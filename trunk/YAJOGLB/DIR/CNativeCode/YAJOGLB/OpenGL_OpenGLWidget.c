@@ -1,7 +1,7 @@
 /*
  * OpenGL_OpenGLWidget.c
  *
- * $Id: OpenGL_OpenGLWidget.c,v 1.2 1997/11/16 02:52:40 razeh Exp $
+ * $Id: OpenGL_OpenGLWidget.c,v 1.3 1998/11/01 21:42:58 razeh Exp $
  *
  * This module implements the NT portion of the main event loop for
  * our OpenGLWidget.
@@ -23,6 +23,7 @@
 #include "ErrorHandling.h"
 #include "memory.h"
 #include "JNIInterface.h"
+#include "SystemError.h"
 
 CRITICAL_SECTION WidgetCriticalSection;
 /* This is called to setup all of our locking methods. */
@@ -46,58 +47,10 @@ static void releaseWidgetLock()
 
 static HPALETTE hPalette  = NULL;
 
-/* Get the OpenGL context for widget into the current thread. */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_getOpenGLContextIntoMyThread
-  (JNIEnv *env, jobject widget)
-{
-  /* If we already have an OpenGL context there is no reason to do
-     anything. */
-  if (wglGetCurrentContext() == NULL) {
-    HGLRC currentGLRC;
-    HDC   currentDC = getDCForWidget(env, widget);
-
-    if (getDCForWidget(env, widget) == NULL) {
-      handleError(env, "OpenGL/OpenGLNativeException",
-		  "BadDC");
-      return;
-    }
-
-    if (getGLRCForWidget(env, widget) == NULL) {
-      handleError(env, "OpenGL/OpenGLNativeException",
-		  "BadGLRC");
-      return;
-    }
-    
-    currentGLRC = wglCreateContext(currentDC);
-    if (currentGLRC == NULL) {
-      handleError(env, "OpenGL/OpenGLNativeException",
-		  "wglCreateContext returns NULL");
-      return;
-    }
-    
-    if (wglCopyContext(getGLRCForWidget(env, widget), currentGLRC, 
-		       GL_ALL_ATTRIB_BITS)  == FALSE) {
-      MessageBox(WindowFromDC(WindowFromDC(currentDC)), 
-		 "Unable to copy context.", "Error",
-		 MB_ICONERROR | MB_OK);
-    }
-    
-    if (wglMakeCurrent(currentDC, currentGLRC) == FALSE) {
-      MessageBox(WindowFromDC(currentDC), 
-		 "Unable to make context current.", "Error",
-		 MB_ICONERROR | MB_OK);
-    }
-    
-    if (wglGetCurrentContext() == NULL) 
-      MessageBox(WindowFromDC(currentDC), 
-		 "Current context is still NULL", "Error",
-		 MB_ICONERROR | MB_OK);
-  }
-}
 
 
 
-void
+static void
 setupPixelFormat(JNIEnv *env, jobject capabilities, HDC hDC)
 {
   int colorDepth = 0, alphaDepth = 0, depthBuffer = 0, stencilBuffer = 0;
@@ -153,7 +106,7 @@ setupPixelFormat(JNIEnv *env, jobject capabilities, HDC hDC)
 
 
 
-void
+static void
 setupPalette(HDC hDC)
 {
     int pixelFormat = GetPixelFormat(hDC);
@@ -205,10 +158,11 @@ setupPalette(HDC hDC)
 /* Set things up for OpenGL rendering in hWnd. */
 static void handleWindowCreation(HWND hWnd) 
 {
-  HDC       currentDC;
-  HGLRC     currentGLRC;
-  JNIEnv   *widgetEnvironment;
-  jobject   widget, capabilities;
+  HDC       currentDC            = NULL;
+  HGLRC     currentGLRC          = NULL;
+  JNIEnv   *widgetEnvironment    = NULL;
+  jobject   widget               = NULL,
+	        capabilities         = NULL;
   
   widgetEnvironment = environmentForWindow(hWnd);
   widget            = widgetForWindow(hWnd);
@@ -227,8 +181,8 @@ static void handleWindowCreation(HWND hWnd)
 
   /* Get the capabilities object out of our widget. */
   {
-    jclass widgetClass;
-    jmethodID capabilitiesMethodID;
+    jclass widgetClass             = NULL;
+    jmethodID capabilitiesMethodID = NULL;
     widgetClass = 
       (*widgetEnvironment)->GetObjectClass(widgetEnvironment, widget);
 
@@ -246,23 +200,9 @@ static void handleWindowCreation(HWND hWnd)
   currentDC = GetDC(hWnd);
   setupPixelFormat(widgetEnvironment, capabilities, currentDC);
   setupPalette(currentDC);
-  currentGLRC = wglCreateContext(currentDC);
-  
-  if (currentGLRC == NULL) {
-    handleError(widgetEnvironment, "OpenGL/OpenGLNativeException",
-		"Unable to get current GLRC");
-    return;
-  }
-  
-  if (wglMakeCurrent(currentDC, currentGLRC) == FALSE) {
-    handleError(widgetEnvironment, "OpenGL/OpenGLNativeException",
-		"Unable to make GL context current");
-    return;
-  }
-  
+
   log(widgetEnvironment, "In window creation\n");
   setDCForWidget(widgetEnvironment, widget, currentDC);
-  setGLRCForWidget(widgetEnvironment, widget, currentGLRC);
   
   handOffWindowActivated(widgetEnvironment, widget);
   log(widgetEnvironment, "done with window creation\n");
@@ -297,8 +237,8 @@ WndProc(
       currentDC   = GetWindowDC(hWnd);
      
       if (currentGLRC != NULL) {
-	wglMakeCurrent(NULL, NULL);
-	wglDeleteContext(currentGLRC);
+	    wglMakeCurrent(NULL, NULL);
+	    wglDeleteContext(currentGLRC);
       }
       if (hPalette) {
 	DeleteObject(hPalette);
@@ -310,60 +250,51 @@ WndProc(
   break;
   case WM_SIZE:
     /* track window size changes */
-    {
-      HGLRC currentGLRC = wglGetCurrentContext();
-     
-      if (currentGLRC) {
-	int     winWidth          = (int) LOWORD(lParam);
-	int     winHeight         = (int) HIWORD(lParam);
-	JNIEnv *widgetEnvironment = environmentForWindow(hWnd);
-	jobject widget            = widgetForWindow(hWnd);
+	{
+      	int     winWidth          = (int) LOWORD(lParam);
+	    int     winHeight         = (int) HIWORD(lParam);
+	    JNIEnv *widgetEnvironment = environmentForWindow(hWnd);
+	    jobject widget            = widgetForWindow(hWnd);
        
-	if ((widgetEnvironment != NULL) && (widget != NULL))
-	  handOffWindowResized(widgetEnvironment, widget, winWidth, 
+	    if ((widgetEnvironment != NULL) && (widget != NULL))
+	      handOffWindowResized(widgetEnvironment, widget, winWidth, 
 			       winHeight);
-	return 0;
-      } else {
-	MessageBox(hWnd, "Unknown GLRC in WM_SIZE", "Error",
-		   MB_ICONERROR | MB_OK);
-      }
+	      return 0;
     }
   break;
   case WM_PALETTECHANGED:
     /* realize palette if this is *not* the current window */
     {
-      HGLRC   currentGLRC       = wglGetCurrentContext();
       HDC     currentDC         = GetWindowDC(hWnd);
       JNIEnv *widgetEnvironment = environmentForWindow(hWnd);
       jobject widget            = widgetForWindow(hWnd);
      
-      if (currentGLRC && hPalette && (HWND) wParam != hWnd) {
-	UnrealizeObject(hPalette);
-	SelectPalette(currentDC, hPalette, FALSE);
-	RealizePalette(currentDC);
-	if ((widgetEnvironment != NULL) && (widget != NULL)) {
-	  handOffWindowExposed(widgetEnvironment, widget);
-	}
+      if (hPalette && (HWND) wParam != hWnd) {
+		UnrealizeObject(hPalette);
+		SelectPalette(currentDC, hPalette, FALSE);
+		RealizePalette(currentDC);
+	  if ((widgetEnvironment != NULL) && (widget != NULL)) {
+		handOffWindowExposed(widgetEnvironment, widget);
+		}	
       }
     }
   break;
   case WM_QUERYNEWPALETTE:
     /* realize palette if this is the current window */
     {
-      HGLRC   currentGLRC       = wglGetCurrentContext();
       JNIEnv *widgetEnvironment = environmentForWindow(hWnd);
       jobject widget            = widgetForWindow(hWnd);
      
-      if (currentGLRC && hPalette) {
-	HDC currentDC = GetWindowDC(hWnd);
+      if (hPalette) {
+    	HDC currentDC = GetWindowDC(hWnd);
        
-	UnrealizeObject(hPalette);
-	SelectPalette(currentDC, hPalette, FALSE);
-	RealizePalette(currentDC);
-	if ((widgetEnvironment != NULL) && (widget != NULL)) {
-	  handOffWindowExposed(widgetEnvironment, widget);
-	}
-	return TRUE;
+	    UnrealizeObject(hPalette);
+	    SelectPalette(currentDC, hPalette, FALSE);
+	    RealizePalette(currentDC);
+      if ((widgetEnvironment != NULL) && (widget != NULL)) {
+	    handOffWindowExposed(widgetEnvironment, widget);
+	  }
+	    return TRUE;
       }
     }
   break;
@@ -374,27 +305,19 @@ WndProc(
       PAINTSTRUCT ps;
       BeginPaint(hWnd, &ps);
      
-      if ((widgetEnvironment != NULL) && (wglGetCurrentContext() != NULL) &&
-	  (widget != NULL)) {
-	handOffWindowExposed(widgetEnvironment, widget);
+      if ((widgetEnvironment != NULL) && (widget != NULL)) {
+	     handOffWindowExposed(widgetEnvironment, widget);
       } else {
-	if (widgetEnvironment == NULL)
-	  MessageBox(hWnd, "no widget environment.",  "Error", 
-		     MB_ICONERROR | MB_OK);
+	   if (widgetEnvironment == NULL)
+	       MessageBox(hWnd, "no widget environment.",  "Error", 
+		              MB_ICONERROR | MB_OK);
 
-	if (widget == NULL)
-	  MessageBox(hWnd, "no widget.",  "Error", 
-		     MB_ICONERROR | MB_OK);
+       if (widget == NULL)
+	       MessageBox(hWnd, "no widget.",  "Error", 
+		              MB_ICONERROR | MB_OK);
 
-	if (wglGetCurrentContext() == NULL)
-	  MessageBox(hWnd, "no GL context.",  "Error", 
-		     MB_ICONERROR | MB_OK);
-
-
-	  MessageBox(hWnd, "Unable to handoff paint event.",  "Error", 
-		     MB_ICONERROR | MB_OK);
-
-
+	   MessageBox(hWnd, "Unable to handoff paint event.",  "Error", 
+		          MB_ICONERROR | MB_OK);
       }
      
       EndPaint(hWnd, &ps);
@@ -409,7 +332,7 @@ WndProc(
       jobject widget            = widgetForWindow(hWnd);
      
       if ((widgetEnvironment != NULL) && (widget != NULL))
-	handOffKeyPressed(widgetEnvironment, widget, (int) wParam);
+	      handOffKeyPressed(widgetEnvironment, widget, (int) wParam);
     }
   break;
 
@@ -420,7 +343,7 @@ WndProc(
       jobject widget            = widgetForWindow(hWnd);
      
       if ((widgetEnvironment != NULL) && (widget != NULL))
-	handOffKeyReleased(widgetEnvironment, widget, (int) wParam);
+		handOffKeyReleased(widgetEnvironment, widget, (int) wParam);
     }
   break;
 
@@ -434,8 +357,8 @@ WndProc(
       jobject widget            = widgetForWindow(hWnd);
      
       if ((widget != NULL) && (widgetEnvironment != NULL)) {
-	handOffMouseUp(widgetEnvironment, widget,
-		       LOWORD(lParam), HIWORD(lParam));
+		handOffMouseUp(widgetEnvironment, widget,
+					   LOWORD(lParam), HIWORD(lParam));
       }
       return 0;
     }
@@ -450,8 +373,8 @@ WndProc(
       jobject widget            = widgetForWindow(hWnd);
      
       if ((widget != NULL) && (widgetEnvironment != NULL)) {
-	handOffMouseDown(widgetEnvironment, widget,
-			 LOWORD(lParam), HIWORD(lParam));
+		handOffMouseDown(widgetEnvironment, widget,
+						 LOWORD(lParam), HIWORD(lParam));
       }
       return 0;
     }
@@ -462,8 +385,8 @@ WndProc(
       jobject widget            = widgetForWindow(hWnd);
      
       if ((widget != NULL) && (widgetEnvironment != NULL)) {
-	handOffMouseMove(widgetEnvironment, widget,
-			 LOWORD(lParam), HIWORD(lParam));
+		handOffMouseMove(widgetEnvironment, widget,
+						 LOWORD(lParam), HIWORD(lParam));
       }
       return 0;
     }
@@ -519,7 +442,7 @@ static int registerWindowClass(JNIEnv *env,
 
 
 /* This native method handles opening up our widget. */
-JNIEXPORT jboolean 
+JNIEXPORT jboolean JNICALL
 Java_OpenGL_OpenGLWidget_openOpenGLWidget(JNIEnv *env, jobject obj,
 					  jint x, jint y, 
 					  jint width, jint height,
@@ -537,7 +460,7 @@ Java_OpenGL_OpenGLWidget_openOpenGLWidget(JNIEnv *env, jobject obj,
     const char *className      = "OpenGLWidget";
     
     jboolean copy              = JNI_TRUE;
-    jobject  widget;
+    jobject  widget            = NULL;
 
     /* Make sure that only one thread is trying to create a window at
        a time. */
@@ -594,8 +517,8 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_eventLoop
     log(env, "Starting event loop\n");
     /* process messages */
     while (GetMessage(&msg, NULL, 0, 0) == TRUE) {
-	TranslateMessage(&msg);
-	DispatchMessage(&msg);
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
     }
     
     log(env, "Exiting event loop\n");
@@ -613,8 +536,9 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_setNativeTitle
 
   title = (*env)->GetStringUTFChars(env, jtitle, &copy);
   if (title == NULL) {
-    handleError(env, "OpenGL/OpenGLNativeException",
-		"Unable to get new title string for widget");
+	char *errorMessage = systemErrorMessage();
+	handleError(env, "OpenGL/OpenGLNativeException", errorMessage);
+	privateFree(errorMessage);
     return;
   }
 
