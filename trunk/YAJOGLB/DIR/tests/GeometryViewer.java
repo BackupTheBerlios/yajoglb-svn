@@ -1,7 +1,7 @@
 /* 
  * Geometry viewer class
  *
- * $Id: GeometryViewer.java,v 1.1 1998/03/30 02:16:31 razeh Exp $
+ * $Id: GeometryViewer.java,v 1.2 1998/11/01 02:29:21 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -15,8 +15,11 @@ import OpenGL.*;
 
 
 /** A simple framework for drawing geometry that the user can navigate
- through. */
-class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionListener, KeyListener, ComponentListener, OpenGLConstants, OpenGLUConstants {
+ through with the mouse and keyboard.  Only depth testing is enabled
+ by default, so lighting has to be handled by the objects (which sucks
+ for performance purposes, but this is supposed to be just a simple
+ demo...). */
+class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionListener, KeyListener, ComponentListener, GLConstants, GLUConstants {
   float[] eyePoint, forwardDirection, sidewaysDirection, 
         upDirection;
 
@@ -64,7 +67,8 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
   }
 
   /** We extend this method to add our key event interest.  We do this
-      because we want to receive KeyEvents. */
+      because we want to receive KeyEvents, MouseEvents,
+      MouseMotionEvents, and ComponentEvents. */
   protected void addListeners() {
     addKeyListener(this);
     addMouseListener(this);
@@ -77,7 +81,7 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
     setupViewingParameters();
   }
 
-
+  /** Enable depth testing, and position our viewer. */
   synchronized public void glInit() {
     context = new OpenGLContext(this);
 
@@ -98,7 +102,10 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
       GeometryObject g = (GeometryObject)e.nextElement();
       g.glInit(this, gl, glu);
     }
+
+    gl.matrixMode(MODELVIEW);
     releaseContext();
+
   }
 
   private void orbitView(float angle) {
@@ -210,6 +217,21 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
     case 'e':
     case 'E':
       orbitView(-1.0f);
+
+      break;
+
+    case 'i':
+    case 'I':
+      aquireContext();
+      System.out.println("Vendor = " + gl.getString(VENDOR));
+      System.out.println("Renderer = " + gl.getString(RENDERER));
+      System.out.println("Version = " + gl.getString(VERSION));
+      System.out.println("Extensions = " + gl.getString(EXTENSIONS));
+      releaseContext();
+      break;
+    case 'w':
+    case 'W':
+      writeOutImage();
       break;
     }
 
@@ -229,6 +251,7 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
     case KeyEvent.VK_RIGHT:
       rotateViewHorizontally(-1.0f, forwardDirection, sidewaysDirection);
       break;
+
     }
 
     paint();
@@ -291,15 +314,15 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
   /** Make context the current OpenGL context.  If we fail we just print
     out the exception and continue on. */
   protected void aquireContext() {
-      try {
-	context.lock();
-	context.makeCurrent(this);
-      } catch (java.lang.Throwable exception) {
-	System.out.println(exception);
-	System.out.println("The exception is in " + 
-			   java.lang.Thread.currentThread());
-	exception.printStackTrace();
-      }
+    try {
+      context.lock();
+      context.makeCurrent(this);
+    } catch (java.lang.Throwable exception) {
+      System.out.println(exception);
+      System.out.println("The exception is in " + 
+			 java.lang.Thread.currentThread());
+      exception.printStackTrace();
+    }
   }
 
   protected void releaseContext() {
@@ -320,23 +343,27 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
   }
 
   public void paint() {
-    aquireContext();
-    gl.pushMatrix();
-    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
-    glu.gluLookAt(eyePoint[0], eyePoint[1], eyePoint[2],
-		  eyePoint[0] + forwardDirection[0],
-		  eyePoint[1] + forwardDirection[1],
-		  eyePoint[2] + forwardDirection[2],
-		  upDirection[0], upDirection[1], upDirection[2]);
-
-    for (Enumeration e = renderedObjects.elements() ; 
-	 e.hasMoreElements() ;) {
-      GeometryObject g = (GeometryObject)e.nextElement();
-      g.paint(this, gl, glu);
+    /* Sometimes we get mouse events before our glInit() call, which
+       means that our context will not have been setup yet. */
+    if (context != null) {
+      aquireContext();
+      gl.pushMatrix();
+      gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+      glu.gluLookAt(eyePoint[0], eyePoint[1], eyePoint[2],
+		    eyePoint[0] + forwardDirection[0],
+		    eyePoint[1] + forwardDirection[1],
+		    eyePoint[2] + forwardDirection[2],
+		    upDirection[0], upDirection[1], upDirection[2]);
+      
+      for (Enumeration e = renderedObjects.elements() ; 
+	   e.hasMoreElements() ;) {
+	GeometryObject g = (GeometryObject)e.nextElement();
+	g.paint(this, gl, glu);
+      }
+      gl.popMatrix();
+      swapBuffers();
+      releaseContext();
     }
-    gl.popMatrix();
-    swapBuffers();
-    releaseContext();
   }
 
   /* Methods we need to implement for our listener status. */
@@ -364,5 +391,15 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
   public void componentShown(java.awt.event.ComponentEvent e) {
     ;
   }
-  
+
+  public void writeOutImage() {
+    aquireContext();
+    TGAFile file = new TGAFile(gl, this);
+    try {
+      file.write("ScreenDump.tga");
+    } catch (java.io.IOException exception) {
+      System.out.println("Exception");
+    }
+    releaseContext();
+  }
 }

@@ -1,7 +1,7 @@
 /*
  * Sphere
  *
- * $Id: Sphere.java,v 1.1 1998/09/12 00:49:32 razeh Exp $
+ * $Id: Sphere.java,v 1.2 1998/11/01 02:27:25 razeh Exp $
  *
  * Copyright 1998
  *
@@ -13,7 +13,7 @@
 import OpenGL.*;
 
 /** Draws a very simple sphere using the GLU library. */
-public class Sphere implements GeometryObject, OpenGLConstants, OpenGLUConstants {
+public class Sphere implements GeometryObject, GLConstants, GLUConstants {
 
   float[] sphereMaterial   = { 1.0f, 0.0f, 0.0f, 0.5f };
   double sphereRadius = .75;
