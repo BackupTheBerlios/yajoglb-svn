@@ -1,7 +1,7 @@
 /*
  * OpenGLTextureHelp.java
  *
- * $Id: TextureHelp.java,v 1.2 1998/09/10 01:04:01 razeh Exp $
+ * $Id: TextureHelp.java,v 1.3 1998/10/20 00:56:32 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -32,8 +32,8 @@ public class OpenGLTextureHelp {
 					     String fileName) {
 
     gl.bindTexture(gl.TEXTURE_2D, textureID);
-    TGAFile tga = new TGAFile(fileName, 128, 128);
-    glu.gluBuild2DMipmaps(gl.TEXTURE_2D, 4, tga.width(), tga.height(),
+    TGAFile tga = new TGAFile(fileName);
+    glu.gluBuild2DMipmaps(gl.TEXTURE_2D, 4, tga.getSize().width, tga.getSize().height,
 			  gl.RGBA, gl.GL_UNSIGNED_BYTE, tga.getData());
 
     gl.texParameter(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
