@@ -1,7 +1,7 @@
 /*
  * OpenGL_OpenGLCanvas.c
  *
- * $Id: win32_OpenGL_Canvas.c,v 1.1 1998/11/01 21:42:58 razeh Exp $
+ * $Id: win32_OpenGL_Canvas.c,v 1.2 1998/11/04 00:33:20 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -30,45 +30,77 @@ static void throwCanvasException(JNIEnv *env)
     privateFree((void*)errorMessage);
 }
 
-
-
 static void
 setupPixelFormat(JNIEnv *env, jobject capabilities, HDC hDC)
 {
-  int colorDepth = 0, alphaDepth = 0, depthBuffer = 0, stencilBuffer = 0;
+  jint colorDepth = 0, alphaDepth = 0, depthBuffer = 0, stencilBuffer = 0;
 
-  lookupIntField(env, capabilities, 
-		 "colorDepth", &colorDepth);
-  lookupIntField(env, capabilities, 
-		 "alphaDepth", &alphaDepth);
-  lookupIntField(env, capabilities, 
-		 "depthBuffer", &depthBuffer);
-  lookupIntField(env, capabilities,
-		 "stencilBuffer", &stencilBuffer);
   {
-    PIXELFORMATDESCRIPTOR pfd = {
+	jclass    capabilitiesClass = NULL;
+	jmethodID methodID          = NULL;
+
+	capabilitiesClass = (*env)->GetObjectClass(env, capabilities);
+	/* The color depth. */
+	methodID = getMethodID(env, capabilitiesClass, "colorDepth", "()I",
+		"Unable to get colorDepth method");
+	if (methodID) {
+		colorDepth = (*env)->CallIntMethod(env, capabilities, methodID);
+	} else {
+		return;
+	}
+
+	/* The alpha depth. */
+	methodID = getMethodID(env, capabilitiesClass, "alphaDepth", "()I",
+		"Unable to get the alphaDepth method");
+	if (methodID) {
+		alphaDepth = (*env)->CallIntMethod(env, capabilities, methodID);
+	} else {
+		return;
+	}
+
+	/* The depth buffer depth. */
+	methodID = getMethodID(env, capabilitiesClass, "depthBuffer", "()I",
+		"Unable to get the depthBuffer method");
+	if (methodID) {
+		depthBuffer = (*env)->CallIntMethod(env, capabilities, methodID);
+	} else {
+		return;
+	}
+
+	/* The stencil buffer. */
+	methodID = getMethodID(env, capabilitiesClass, "stencilBuffer", "()I",
+		"Unable to get the stencilBuffer method");
+	if (methodID) {
+		stencilBuffer = (*env)->CallIntMethod(env, capabilities, methodID);
+	} else {
+		return;
+	}
+  }
+
+  {
+	PIXELFORMATDESCRIPTOR pfd = {
         sizeof(PIXELFORMATDESCRIPTOR),  /* size */
         1,                              /* version */
         PFD_SUPPORT_OPENGL |
         PFD_DRAW_TO_WINDOW |
         PFD_DOUBLEBUFFER,               /* support double-buffering */
         PFD_TYPE_RGBA,                  /* color type */
-        colorDepth,                     /* prefered color depth */
+        (unsigned char)colorDepth,      /* prefered color depth */
         0, 0, 0, 0, 0, 0,               /* color bits (ignored) */
         alphaDepth != 0,                /* alpha buffer */
-        alphaDepth,                     /* alpha bits (ignored) */
+        (unsigned char)alphaDepth,      /* alpha bits (ignored) */
         0,                              /* no accumulation buffer */
         0, 0, 0, 0,                     /* accum bits (ignored) */
-        depthBuffer,                    /* bits per pixel --- depth buffer */
-        stencilBuffer,                  /* bits per pixel --- stencil buffer */
+        (unsigned char)depthBuffer,     /* bits per pixel --- depth buffer */
+        (unsigned char)stencilBuffer,   /* bits per pixel --- stencil buffer */
         0,                              /* no auxiliary buffers */
         PFD_MAIN_PLANE,                 /* main layer */
         0,                              /* reserved */
         0, 0, 0,                        /* no layer, visible, damage masks */
     };
 
-    int pixelFormat;
-
+    int pixelFormat = 0;
+	int setPixelFormatResult = 0; 
 
     pixelFormat = ChoosePixelFormat(hDC, &pfd);
     if (pixelFormat == 0) {
@@ -76,7 +108,8 @@ setupPixelFormat(JNIEnv *env, jobject capabilities, HDC hDC)
       return;
     }
 
-    if (SetPixelFormat(hDC, pixelFormat, &pfd) != TRUE) {
+	setPixelFormatResult = SetPixelFormat(hDC, pixelFormat, &pfd);
+    if (setPixelFormatResult != TRUE) {
       throwCanvasException(env);
       return;
     }
@@ -163,8 +196,7 @@ JNIEXPORT jboolean JNICALL Java_OpenGL_OpenGLCanvas_setupOpenGLCanvas
   {
     jclass canvasClass             = NULL;
     jmethodID capabilitiesMethodID = NULL;
-    canvasClass = 
-      (*env)->GetObjectClass(env, canvas);
+    canvasClass = (*env)->GetObjectClass(env, canvas);
 
     capabilitiesMethodID = 
       getMethodID(env, canvasClass,
