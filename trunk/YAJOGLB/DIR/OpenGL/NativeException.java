@@ -1,7 +1,7 @@
 /*
  * OpenGLNativeException class
  *
- * $Id: NativeException.java,v 1.2 1998/09/10 01:01:59 razeh Exp $
+ * $Id: NativeException.java,v 1.3 1999/04/29 01:17:14 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -14,7 +14,7 @@ package OpenGL;
   * 
   * @author Robert Allan Zeh (razeh@balr.com)
   *
-  * @version 0.1 
+  * @version 0.3
   */
 
 public class OpenGLNativeException extends java.lang.RuntimeException {

@@ -1,7 +1,7 @@
 /*
  * GLFeedbackBuffer
  *
- * $Id: GLFeedbackBuffer.java,v 1.3 1999/01/27 00:00:11 razeh Exp $
+ * $Id: GLFeedbackBuffer.java,v 1.4 1999/04/29 01:16:58 razeh Exp $
  *
  * Copyright 1998
  *
@@ -22,11 +22,16 @@ package OpenGL;
  *
  * @author Robert Allan Zeh (razeh@balr.com)
  *
- * @version 0.1 
+ * @version 0.3
  */
 
 public class GLFeedbackBuffer extends GLNativeFloatArray
 {
+  /** Make sure that we load in our native library. */
+  static {
+    NativePackageLoader.loadNativeLibrary();
+  }
+
   /** Creates a feedback buffer.
       @param bufferSize the size of our buffer. */
   public GLFeedbackBuffer(int bufferSize) {

@@ -1,7 +1,7 @@
 /*
  * GLSelectionBuffer
  *
- * $Id: GLSelectionBuffer.java,v 1.1 1999/01/27 00:00:11 razeh Exp $
+ * $Id: GLSelectionBuffer.java,v 1.2 1999/04/29 01:16:58 razeh Exp $
  *
  * Copyright 1999
  *
@@ -22,11 +22,16 @@ package OpenGL;
  *
  * @author Robert Allan Zeh
  *
- * @version 0.1
+ * @version 0.3
  */
 
 public class GLSelectionBuffer extends GLNativeIntArray
 {
+  /** Make sure that we load in our native library. */
+  static {
+    NativePackageLoader.loadNativeLibrary();
+  }
+
   /** Create a selection buffer for use by the
       <code>selectBuffer</code> method.
       @param bufferSize the size of the selection buffer to create. */

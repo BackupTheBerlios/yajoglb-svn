@@ -1,7 +1,7 @@
 /*
  * OpenGLCanvasSetupFailedException class
  *
- * $Id: CanvasSetupFailedException.java,v 1.2 1998/09/10 01:00:27 razeh Exp $
+ * $Id: CanvasSetupFailedException.java,v 1.3 1999/04/29 01:17:14 razeh Exp $
  *
  * Copyright 1998
  *
@@ -14,7 +14,7 @@ package OpenGL;
  *
  * @author Robert Allan Zeh (razeh@balr.com)
  *
- * @version 0.1
+ * @version 0.3
 */
 
 public class OpenGLCanvasSetupFailedException extends OpenGLNativeException {

@@ -2,7 +2,7 @@
  *
  * OpenGLContextException class
  *
- * $Id: ContextException.java,v 1.1 1998/09/10 01:01:22 razeh Exp $
+ * $Id: ContextException.java,v 1.2 1999/04/29 01:17:14 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -15,7 +15,7 @@ package OpenGL;
  * 
  * @author Robert Allan Zeh (razeh@balr.com)
  * 
- * @version 0.1
+ * @version 0.3
  */
 
 class OpenGLContextException extends OpenGLNativeException {

@@ -1,7 +1,7 @@
 /*
  * GLUTesselator
  *
- * $Id: GLUTesselator.java,v 1.2 1999/01/27 00:00:11 razeh Exp $
+ * $Id: GLUTesselator.java,v 1.3 1999/04/29 01:16:58 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -39,10 +39,15 @@ import java.util.Hashtable;
  *
  * @author Robert Allan Zeh (razeh@balr.com)
  *
- * @version 0.1 
+ * @version 0.3
  */
 
 public class GLUTesselator extends CallbackObject {
+  
+  /** Make sure that we load in our native library. */
+  static {
+    NativePackageLoader.loadNativeLibrary();
+  }
 
   /*
    * All of the native methods are synchronized to prevent multiple threads
@@ -72,21 +77,22 @@ public class GLUTesselator extends CallbackObject {
    */
   
   /** Overridden to return the result of calling
-      <code>gluNewTess()</code>.  Do not override this method. */
+      <code>gluNewTess()</code>. 
+      @return a heap pointer to a newly allocated tesselator. */
   final int obtainCHeapItem(Hashtable optionalArguments) {
-    return gluNewTess();
+    return newTess();
   }
 
   /** Get a new tesselator object. */
-  synchronized private native int gluNewTess();
+  synchronized private native int newTess();
 
   /** Remove the tesselator we are a stand-in for. */
-  synchronized private native void gluDeleteTess(int tess);
+  synchronized private native void deleteTess(int tess);
 
   /** Overridden to delete the object we are a stand-in for.  Do not
       override this method. */
   final void freeCHeapItem(int heapItem) {
-    gluDeleteTess(heapItem);
+    deleteTess(heapItem);
   }
 
 

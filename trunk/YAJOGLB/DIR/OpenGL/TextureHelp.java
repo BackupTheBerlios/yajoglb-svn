@@ -1,7 +1,7 @@
 /*
  * OpenGLTextureHelp.java
  *
- * $Id: TextureHelp.java,v 1.3 1998/10/20 00:56:32 razeh Exp $
+ * $Id: TextureHelp.java,v 1.4 1999/04/29 01:17:14 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -16,7 +16,7 @@ package OpenGL;
  *
  * @author Robert Allan Zeh (razeh@balr.com) 
  *
- * @version 0.1
+ * @version 0.3
  */
 
 public class OpenGLTextureHelp {

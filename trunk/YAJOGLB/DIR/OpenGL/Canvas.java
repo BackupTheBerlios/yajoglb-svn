@@ -1,7 +1,7 @@
 /*
  * OpenGLCanvas class
  *
- * $Id: Canvas.java,v 1.5 1999/02/13 19:30:08 razeh Exp $
+ * $Id: Canvas.java,v 1.6 1999/04/29 01:17:14 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -17,12 +17,18 @@ import java.lang.Class;
  * OpenGLCapabilities that describe how OpenGL should render into the
  * canvas.  For example, the precision of the depth buffer is
  * specified via the OpenGLCapabilities.  If no capabilities are
- * specified, a default capabilities object will be used.  */
+ * specified, a default capabilities object will be used.  
+ *
+ * @author Robert Allan Zeh (razeh@balr.com)
+ *
+ * @version 0.3
+ */
+
 public class OpenGLCanvas extends Canvas {
   
-  /* Make sure that we load in our native library. */
+  /** Make sure that we load in our native library. */
   static {
-    System.load("YAJOGLB");
+    NativePackageLoader.loadNativeLibrary();
   }
 
   /** This holds the capabilities we will request of our display. */
@@ -37,6 +43,7 @@ public class OpenGLCanvas extends Canvas {
     try {
       Class dataAccessClass = Class.forName(dataAccessClass());
       dataAccess = (OpenGLpDataAccess)dataAccessClass.newInstance();
+      dataAccess.attach(this);
     } catch (java.lang.InstantiationException exception) {
       throw new OpenGLNativeException("Unable to create a data access instance: " +
 				      exception);
@@ -84,19 +91,24 @@ public class OpenGLCanvas extends Canvas {
     ;
   }
 
-  /** The method that subclasses should override for rendering. */
+  /** The method that subclasses should override for rendering.  It is 
+   invoked by <code>paint(Graphics g)</code>. */
   public void paint() {
-    ;
+
   }
 
   /** This is overriden to handle our canvas setup, and calling
       glInit() and paint(). This is final to prevent any subclasses
-      from mucking things up! */
+      from mucking things up! <P> We do not call our super method,
+      because doing so leaves our display set to the foreground color
+      after redisplays under X.  */
   final public void paint(Graphics g) {
-    super.paint(g);
+
+    // If we have not been setup, set ourself up.
     if (false == canvasHasBeenSetup) {
       init();
       glInit();
+      // Make sure the setup only happens once.
       canvasHasBeenSetup = true;
     }
     paint();
@@ -118,14 +130,10 @@ public class OpenGLCanvas extends Canvas {
 
   private OpenGLpDataAccess dataAccess;
 
-  /** Returns the X11 display pointer. */
-  int getDisplay() {
-    return dataAccess.getDisplay(this);
-  }
-  
-  /** Returns the X11 drawable pointer. */
-  int getDrawable() {
-    return dataAccess.getDrawable(this);
+  /** Returns the data access object used to return our drawable and
+      hDC. */
+  OpenGLpDataAccess getDataAccess() {
+    return dataAccess;
   }
 
   /** Returns the Win32 hDC. */

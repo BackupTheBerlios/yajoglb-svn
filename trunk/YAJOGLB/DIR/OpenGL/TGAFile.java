@@ -3,20 +3,28 @@ package OpenGL;
 import java.io.*;
 import java.awt.Dimension;
 
+/** Supports the reading and writing of simple TGA files.
+ *
+ * @author Robert Allan Zeh (razeh@balr.com)
+ *
+ * @version 0.3
+ */
+
+
 public class TGAFile {
-  /** Construct a TGAFile object from a OpenGL object and a canvas.
-      It writes out the entire canvas. */
+  /** Construct a TGAFile object from a OpenGL object and a canvas. 
+   * @param gl the OpenGL context to use for our readPixels call.
+   * @param canvas the canvas we use to create our TGA object from.
+   */
   public TGAFile(GL gl, OpenGLCanvas canvas) {
-    int errorCode;
-
-
     setSize(new Dimension(canvas.getSize().width, canvas.getSize().height));
     data = (byte[]) gl.readPixels(0, 0, getSize().width, getSize().height, 
 				  GLConstants.RGBA, GLConstants.GL_UNSIGNED_BYTE);
-
   }
 
-  /** Write out a TGA file. */
+  /** Write out a TGA file. 
+   * @param filename the name of the file we will open and write to. 
+   */
   public void write(String filename) throws java.io.IOException {
     BufferedOutputStream output = new BufferedOutputStream(new DataOutputStream(new FileOutputStream(filename)), 10240);
 
@@ -55,7 +63,10 @@ public class TGAFile {
     output.close();
   }
 
-  /** Read in a TGAFile from a named file. */
+  /** Read in a TGAFile from a named file.  We are not very careful
+   * about the image formats that we read in.
+   * @param filename the name of the file that we construct our image from  
+   */
   public TGAFile(String filename){
     byte headerInformation[] = new byte[18];
     int MSWidthByte, LSWidthByte, MSHeightByte, LSHeightByte;
@@ -67,13 +78,6 @@ public class TGAFile {
       for(int i = 0; i < 18; i++) {
 	headerInformation[i] = (byte) in.read();
       }
-
-      /*imageType = headerInformation[3];
-      if (imageType != 2) {
-	throw new ;
-      }
-
-      */
 
       MSWidthByte = headerInformation[13];
       LSWidthByte = headerInformation[12];
@@ -105,12 +109,21 @@ public class TGAFile {
       e.printStackTrace();
     }
   }
-  
+
+  /** Returns the raw TGA data, in RGBA format.
+   * @return an array of bytes describing our image.
+   */
   public byte[] getData() { return data;}
+  /** Returns the size of our image.
+   * @return the size of our image. 
+   */
   public Dimension getSize() { return size; }
+  /** Sets the size of our image.  This does not change our data array, so
+   * really bad things can happen if you set our size to something that
+   * doesn't match our data array.
+   * @param newSize the size of our image after the call. 
+   */
   public void setSize(Dimension newSize) { size = newSize; }
   private Dimension size;
   private byte[] data;
-
-
 };

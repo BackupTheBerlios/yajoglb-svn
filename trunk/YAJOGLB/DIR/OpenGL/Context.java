@@ -1,7 +1,7 @@
 /*
  * OpenGLContext
  *
- * $Id: Context.java,v 1.3 1999/02/13 19:30:08 razeh Exp $
+ * $Id: Context.java,v 1.4 1999/04/29 01:16:53 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -28,10 +28,16 @@ import java.util.Hashtable;
  * 
  * @author Robert Allan Zeh (razeh@balr.com)
  *
- * @version 0.1 */
+ * @version 0.3
+ */
 
 public class OpenGLContext extends CHeapItem
 {
+  /** Make sure that we load in our native library. */
+  static {
+    NativePackageLoader.loadNativeLibrary();
+  }
+
   /* These strings are used as keys inside of the hash table we pass
      around our constructors. */
   private static final String WIDGET  = "OpenGLWidget";

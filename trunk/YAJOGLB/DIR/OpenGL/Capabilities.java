@@ -1,7 +1,7 @@
 /*
  * OpenGLCapabilities
  *
- * $Id: Capabilities.java,v 1.4 1999/02/13 19:30:08 razeh Exp $
+ * $Id: Capabilities.java,v 1.5 1999/04/29 01:17:14 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -16,7 +16,8 @@ package OpenGL;
  * no effect.
  *
  * @author Robert Allan Zeh (razeh@balr.com)
- * @verison 0.1
+ *
+ * @version 0.3
  */
 
 public class OpenGLCapabilities {

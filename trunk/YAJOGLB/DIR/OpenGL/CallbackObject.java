@@ -1,7 +1,7 @@
 /*
  * CallbackObject
  *
- * $Id: CallbackObject.java,v 1.1 1999/01/27 00:00:11 razeh Exp $
+ * $Id: CallbackObject.java,v 1.2 1999/04/29 01:16:58 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -23,7 +23,7 @@ import java.lang.reflect.*;
  *
  * @author Robert Allan Zeh (razeh@balr.com)
  *
- * @version 0.1
+ * @version 0.3
  */
  
 abstract class CallbackObject extends CHeapItem {
@@ -51,11 +51,11 @@ abstract class CallbackObject extends CHeapItem {
   static private Method getActiveCallbackDictionaryMethod(Class ourClass) {
     Method activeCallbackDictionaryMethod = null;
 
-    /** Loop through all of our super classes, looking for the
-	<code>getActiveCallbackDictionary</code> method.  The 
-<code>getDeclaredMethod</code>
-	method only returns methods actually declared in the class
-	it is invoked from, which is why we need to loop. */
+    /* Loop through all of our super classes, looking for the
+	<code>getActiveCallbackDictionary</code> method.  The
+	<code>getDeclaredMethod</code> method only returns methods
+	actually declared in the class it is invoked from, which is
+	why we need to loop. */
     while((null == activeCallbackDictionaryMethod) && 
 	  (null != ourClass)) {
       try {
