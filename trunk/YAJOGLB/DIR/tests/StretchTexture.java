@@ -1,7 +1,7 @@
 /*
  * StetchTexture class
  *
- * $Id: StretchTexture.java,v 1.2 2002/04/06 15:12:59 razeh Exp $
+ * $Id: StretchTexture.java,v 1.3 2002/04/14 18:11:16 razeh Exp $
  *
  * Copyright 2001
  *
@@ -29,7 +29,7 @@ public class StretchTexture extends Stretch
 
     synchronized public void paint() {
 	aquireContext();
-
+	
 	// Instead of flipping the image, we flip the texture coordinates.
 	float texScale = 1.f;
 	gl.clear(COLOR_BUFFER_BIT);
@@ -49,8 +49,6 @@ public class StretchTexture extends Stretch
 	gl.vertex(getImageSizeX(), 0);
 	gl.end();
 
-	System.out.println("x = " + getImageSizeX());
-	System.out.println("y = " + getImageSizeY());
 	swapBuffers();
 	releaseContext();
     }
@@ -59,16 +57,16 @@ public class StretchTexture extends Stretch
      * Resize our component, and reset our project matrix so that we
      * are still directly mapping pixels to coordinates.
      */
-    public void lockedComponentResized(ComponentEvent e) {
-	super.lockedComponentResized(e);
-	if (context != null) {
-	    aquireContext();
-	    gl.matrixMode(PROJECTION);
-	    gl.loadIdentity();
-	    glu.gluOrtho2D(0, getSize().width, 0, getSize().height);
-	    gl.matrixMode(MODELVIEW);
-	    releaseContext();
-	}
+    public void lockedComponentResized(Object e) {
+      super.lockedComponentResized(e);
+      if (context != null) {
+	aquireContext();
+	gl.matrixMode(PROJECTION);
+	gl.loadIdentity();
+	glu.gluOrtho2D(0, getSize().width, 0, getSize().height);
+	gl.matrixMode(MODELVIEW);
+	releaseContext();
+      }
     }
 
     public void glInit() {
