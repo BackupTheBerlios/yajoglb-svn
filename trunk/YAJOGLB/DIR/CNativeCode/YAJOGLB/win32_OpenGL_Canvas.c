@@ -1,7 +1,7 @@
 /*
  * OpenGL_OpenGLCanvas.c
  *
- * $Id: win32_OpenGL_Canvas.c,v 1.2 1998/11/04 00:33:20 razeh Exp $
+ * $Id: win32_OpenGL_Canvas.c,v 1.3 1998/12/23 00:42:24 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -42,7 +42,7 @@ setupPixelFormat(JNIEnv *env, jobject capabilities, HDC hDC)
 	capabilitiesClass = (*env)->GetObjectClass(env, capabilities);
 	/* The color depth. */
 	methodID = getMethodID(env, capabilitiesClass, "colorDepth", "()I",
-		"Unable to get colorDepth method");
+		"Unable to get colorDepth method.");
 	if (methodID) {
 		colorDepth = (*env)->CallIntMethod(env, capabilities, methodID);
 	} else {
@@ -51,7 +51,7 @@ setupPixelFormat(JNIEnv *env, jobject capabilities, HDC hDC)
 
 	/* The alpha depth. */
 	methodID = getMethodID(env, capabilitiesClass, "alphaDepth", "()I",
-		"Unable to get the alphaDepth method");
+		"Unable to get the alphaDepth method.");
 	if (methodID) {
 		alphaDepth = (*env)->CallIntMethod(env, capabilities, methodID);
 	} else {
@@ -60,7 +60,7 @@ setupPixelFormat(JNIEnv *env, jobject capabilities, HDC hDC)
 
 	/* The depth buffer depth. */
 	methodID = getMethodID(env, capabilitiesClass, "depthBuffer", "()I",
-		"Unable to get the depthBuffer method");
+		"Unable to get the depthBuffer method.");
 	if (methodID) {
 		depthBuffer = (*env)->CallIntMethod(env, capabilities, methodID);
 	} else {
@@ -69,7 +69,7 @@ setupPixelFormat(JNIEnv *env, jobject capabilities, HDC hDC)
 
 	/* The stencil buffer. */
 	methodID = getMethodID(env, capabilitiesClass, "stencilBuffer", "()I",
-		"Unable to get the stencilBuffer method");
+		"Unable to get the stencilBuffer method.");
 	if (methodID) {
 		stencilBuffer = (*env)->CallIntMethod(env, capabilities, methodID);
 	} else {
