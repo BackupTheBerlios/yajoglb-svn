@@ -1,7 +1,7 @@
 /* 
  * Geometry viewer class
  *
- * $Id: GeometryViewer.java,v 1.6 2002/04/06 15:12:25 razeh Exp $
+ * $Id: GeometryViewer.java,v 1.7 2002/07/21 16:56:42 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -18,11 +18,14 @@ import OpenGL.*;
 
 /** A simple framework for drawing geometry that the user can navigate
  through with the mouse and keyboard.  Only depth testing is enabled
- by default, so lighting has to be handled by the objects (which sr
- performance purposes, but this is supposed to be just a simple
- demo...). */
+ by default, so lighting has to be handled by the objects (which is
+ not so good for performance, but this is supposed to be just a simple
+ demo...).
+*/
 
-class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotionListener, KeyListener, ComponentListener, GLConstants, GLUConstants {
+class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotionListener, 
+						      KeyListener, ComponentListener, 
+						      GLConstants, GLUConstants {
   float[] eyePoint, forwardDirection, sidewaysDirection, 
     upDirection;
   double scale = 1.0;
@@ -39,6 +42,7 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
   Vector renderedObjects = new Vector();
   Method resizedMethod;
   Method lockedInfoPanelMethod;
+  Method lockedWriteImageMethod;
   FrameRatePanel frameRate;
 
   public void addElement(GeometryObject object) {
@@ -94,6 +98,8 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
 					   parameterTypes);
       lockedInfoPanelMethod = getClass().getMethod("lockedInfoPanel", 
 						   parameterTypes);
+      lockedWriteImageMethod = getClass().getMethod("lockedWriteImage",
+						    parameterTypes);
     } catch (java.lang.NoSuchMethodException e) {
       System.err.println("Unable to find a method.");
     }
@@ -373,6 +379,7 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
     }
   }
 
+  /** Brings up our info panel. */
   public void lockedInfoPanel(Object arg) {
     aquireContext();
     new InfoPanel(gl);
@@ -460,13 +467,25 @@ class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotion
       new FileDialog(new Frame(), "Save screen dump to...",  
 		     FileDialog.SAVE);
     fileDialog.show();
+    String imageFilename = fileDialog.getDirectory() + "/" + fileDialog.getFile();
+    Object arguments[] = new Object[1];
+    arguments[0] = imageFilename;
+    lockedMethod(lockedWriteImageMethod, this, arguments);
+  }
+
+  /** The locked method to write out the image.  It needs to be locked
+   * because it aquires the GL context.
+   * @param imageFilename the name of the file to write out.
+   */
+  public void lockedWriteImage(Object imageFilename) {
+    String filename = (String) imageFilename;
     aquireContext();
     TGAFile file = new TGAFile(gl, this);
     try {
-      file.write(fileDialog.getDirectory() + "/" + fileDialog.getFile());
+      file.write(filename);
     } catch (java.io.IOException exception) {
       System.out.println("Exception " + exception + 
-			 " writing ScreenDump.tga to disk.");
+			 " writing " + filename + " to disk.");
     }
     releaseContext();
   }
