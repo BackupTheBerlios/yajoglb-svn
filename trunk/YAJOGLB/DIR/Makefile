@@ -10,7 +10,7 @@ NMAKE            = //F/DEVSTUDIO/vc/bin/nmake
 CHEATINGWINDIR   = sun/awt/windows
 CHEATINGMOTIFDIR = sun/awt/motif
 TESTDIR          = tests
-SUFFIXES     +   = .class .java
+SUFFIXES        += .class .java
 COMPILE.java     = $(JAVAC) $(JFLAGS) 
 PACKAGENAME      = YAJOGLB-0.3
 
@@ -56,7 +56,8 @@ dist :
 	(cd ..; $(TAR) cvf $(PACKAGENAME).tgz --gzip --exclude RCS --exclude "*.obj" --exclude "*~" --exclude "*.idb" --exclude "*.pdb" --exclude "*.ilk" --exclude "*.pch" $(PACKAGENAME))
 
 clean : 
-	$(RM) -f *~ *.class *.jar
+	$(RM) -f *~ *.class *.jar 
+	(cd $(NATIVECODEDIR); $(RM) -f $(NATIVEHEADERS))
 	$(MAKE) -C $(PACKAGEDIR) clean
 	$(MAKE) -C $(CHEATINGWINDIR) clean
 	$(MAKE) -C $(CHEATINGMOTIFDIR) clean
@@ -105,6 +106,7 @@ OpenGL_GLNativeIntArray.h: $(PACKAGEDIR)/GLNativeIntArray.java
 OpenGL_GLSelectionBuffer.h: $(PACKAGEDIR)/GLSelectionBuffer.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLSelectionBuffer
 
+nativeheaders: $(NATIVEHEADERS)
 
 #
 # The native make methods.
