@@ -1,15 +1,11 @@
 # Some Cygnus tools stuff
 
+include ../Makefile.common
+include ../Makefile.config
+
 # Some rules for compiling java
-JAVAH         = javah
-JAVAC         = javac
-JLIB          = C:\jdk1.1.4\lib\classes.zip
-CLASSPATH     = -classpath ".;..;$(JLIB)"
-JFLAGS        = $(CLASSPATH) -g
-SUFFIXES     += .class .java
-COMPILE.java  = $(JAVAC) $(JFLAGS) 
-%.class: %.java
-	$(COMPILE.java) $<
+CLASSPATH     = -classpath "..$(CLASSPATH_SEPARATOR).$(CLASSPATH_SEPARATOR)$(JLIB)"
+JFLAGS        = $(CLASSPATH) $(OPTIMIZATIONFLAG)
 
 JAVA_SRC        = VertexPointer.java Stretch.java NurbsSurface.java \
 		  GeometryViewer.java GeometryObject.java PlainCube.java \
@@ -41,6 +37,8 @@ Concurrence.class: baseClasses Sphere.class
 Sphere.class: baseClasses
 TexturedCube.class: baseClasses
 
+checkout:
+	$(CO) $(JAVA_SRC)
 
 clean :
 	$(RM) $(JAVA_CLASSES) $(JAVA_CLASSES) *~

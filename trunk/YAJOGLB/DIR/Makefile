@@ -1,62 +1,70 @@
 # Some rules and constants for compiling java
-PACKAGEDIR    = OpenGL
-JAVAC         = javac
-JAVAH         = javah
-JAVADOC       = javadoc
-JFLAGS        = 
-TAR           = tar
-RM            = rm
-SUFFIXES     += .class .java
-COMPILE.java  = $(JAVAC) $(JFLAGS) 
+PACKAGEDIR       = OpenGL
+JAVAC            = javac
+JAVAH            = javah
+JAVADOC          = javadoc
+JFLAGS           = 
+CP               = cp
+TAR              = tar
+NMAKE            = //F/DEVSTUDIO/vc/bin/nmake
+CHEATINGWINDIR   = sun/awt/windows
+CHEATINGMOTIFDIR = sun/awt/motif
+TESTDIR          = tests
+SUFFIXES     +   = .class .java
+COMPILE.java     = $(JAVAC) $(JFLAGS) 
+PACKAGENAME      = YAJOGLB-0.3
+
 %.class: %.java
 	$(COMPILE.java) $<
 
 DOCDIR          = documentation
-JAVA_SRC        = OpenGLWidgetTest.java MatrixModifiers.java \
-                  SizeChanger.java OpenGLSphereAndCube.java \
-                  OpenGLSphereAndTexturedCube.java
-JAVA_CLASSES    = OpenGLWidgetTest.class MatrixModifiers.class \
-                  SizeChanger.class OpenGLSphereAndCube.class \
-                  OpenGLSphereAndTexturedCube.class
-NATIVECODEDIR   = CNativeCode      		  
+NATIVECODEDIR   = CNativeCode/YAJOGLB      		  
 
 # Some Cygnus tools stuff
-SHELL=/gnuwin32/b18/H-i386-cygwin32/bin/sh
 
 # The header files for our native code
-NATIVEHEADERS = OpenGL_OpenGLWidget.h \
-		OpenGL_GLUQuadric.h OpenGL_GLUNurbs.h \
-	        OpenGL_GLUTriangulator.h OpenGL_OpenGLContext.h \
-                OpenGL_OpenGLVertexPointer.h OpenGL_GLU.h OpenGL_GL.h \
-		OpenGL_OpenGLCanvas
+NATIVEHEADERS = OpenGL_GLUQuadric.h OpenGL_GLUNurbs.h \
+	        OpenGL_OpenGLContext.h OpenGL_GLUTesselator.h \
+                OpenGL_GLU.h OpenGL_GL.h OpenGL_GLVertexPointer.h \
+		OpenGL_OpenGLCanvas.h OpenGL_GLFeedbackBuffer.h \
+		OpenGL_CallbackObject.h OpenGL_GLNativeFloatArray.h \
+		OpenGL_GLNativeIntArray.h OpenGL_GLSelectionBuffer.h
 
-all :   packagedir $(JAVA_CLASSES) nativedir
+default:
+	@echo "Type one of the following:"
+	@echo "  make win32 for Microsoft Windows with the Cygnus toolset and Visual C++."
+	@echo "  make linux for the Linux systems."
+	@echo "  make solaris for Solaris."
 
 packagedir:
-	(cd $(PACKAGEDIR); $(MAKE))
+	$(MAKE) -C $(PACKAGEDIR)
+
+cheatingwindir:
+	$(MAKE) -C $(CHEATINGWINDIR)
+
+cheatingmotifdir:
+	$(MAKE) -C $(CHEATINGMOTIFDIR)
+
+jarFile: packagedir
 	jar -cvf0 OpenGL.jar $(PACKAGEDIR)/*.class
 
-nativedir:
-	(cd $(NATIVECODEDIR); $(MAKE) install)
+testdir: 
+	$(MAKE) -C $(TESTDIR) 
 
-dist : clean
-	(cd ..; $(RM) -f OpenGL-Java.tar)
-	(cd ..; $(TAR) cvf OpenGL-Java.tar Win32-OpenGL-Java)
-	(cd ..; gzip -v OpenGL-Java.tar)
+dist : 
+	(cd ..; $(RM) -f $(PACKAGENAME).tar.gz)
+	(cd ..; $(TAR) cvf $(PACKAGENAME).tgz --gzip --exclude RCS --exclude "*.obj" --exclude "*~" --exclude "*.idb" --exclude "*.pdb" --exclude "*.ilk" --exclude "*.pch" $(PACKAGENAME))
 
-clean :
-	$(RM) -f $(JAVA_CLASSES) $(JAVA_CLASSES) *~ *.class *.jar
-	(cd $(PACKAGEDIR); $(MAKE) clean)
-	(cd $(NATIVECODEDIR); $(MAKE) clean)
-	(cd tests; $(MAKE) clean)
-	(cd OpenGLLibFixes; $(MAKE) clean)
-
+clean : 
+	$(RM) -f *~ *.class *.jar
+	$(MAKE) -C $(PACKAGEDIR) clean
+	$(MAKE) -C $(CHEATINGWINDIR) clean
+	$(MAKE) -C $(CHEATINGMOTIFDIR) clean
+	(cd $(NATIVECODEDIR); MAKEFLAGS= ; $(NMAKE) /F YAJOGLB.MAK CLEAN)
+	$(MAKE) -C $(TESTDIR) clean
 
 documentation ::
 	$(JAVADOC) -d $(DOCDIR) OpenGL
-
-OpenGL_OpenGLWidget.h: $(PACKAGEDIR)/OpenGLWidget.java
-	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLWidget
 
 OpenGL_GLUQuadric.h: $(PACKAGEDIR)/GLUQuadric.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLUQuadric
@@ -64,14 +72,8 @@ OpenGL_GLUQuadric.h: $(PACKAGEDIR)/GLUQuadric.java
 OpenGL_GLUNurbs.h: $(PACKAGEDIR)/GLUNurbs.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLUNurbs
 
-OpenGL_GLUTriangulator.h: $(PACKAGEDIR)/GLUTriangulator.java
-	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLUTriangulator
-
 OpenGL_OpenGLContext.h: $(PACKAGEDIR)/OpenGLContext.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLContext
-
-OpenGL_OpenGLVertexPointer.h: $(PACKAGEDIR)/OpenGLVertexPointer.java
-	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLVertexPointer
 
 OpenGL_GLU.h: $(PACKAGEDIR)/GLU.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLU
@@ -82,6 +84,56 @@ OpenGL_GL.h: $(PACKAGEDIR)/GL.java
 OpenGL_OpenGLCanvas.h: $(PACKAGEDIR)/OpenGLCanvas.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLCanvas
 
+OpenGL_GLUTesselator.h: $(PACKAGEDIR)/GLUTesselator.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLUTesselator
+
+OpenGL_GLFeedbackBuffer.h: $(PACKAGEDIR)/GLFeedbackBuffer.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLFeedbackBuffer
+
+OpenGL_GLVertexPointer.h: $(PACKAGEDIR)/GLVertexPointer.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLVertexPointer
+
+OpenGL_CallbackObject.h: $(PACKAGEDIR)/CallbackObject.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).CallbackObject
+
+OpenGL_GLNativeFloatArray.h: $(PACKAGEDIR)/GLNativeFloatArray.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLNativeFloatArray
+
+OpenGL_GLNativeIntArray.h: $(PACKAGEDIR)/GLNativeIntArray.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLNativeIntArray
+
+OpenGL_GLSelectionBuffer.h: $(PACKAGEDIR)/GLSelectionBuffer.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLSelectionBuffer
 
 
+#
+# The native make methods.
+#
+
+# Make methods for Microsoft Windows, with the Cygnus environment and
+# Visual C++
+win32 :   packagedir cheatingwindir $(NATIVEHEADERS) win32-nativedir testdir
+
+win32-nativedir:
+	(cd $(NATIVECODEDIR); ./YAJOGLB.BAT)
+
+
+# Make methods for Linux
+linux : linux-config packagedir cheatingmotifdir $(NATIVEHEADERS) linux-nativedir testdir
+
+linux-config:
+	$(CP) Makefile.config-linux Makefile.config
+
+linux-nativedir:
+	$(MAKE) -C $(NATIVECODEDIR) -f Makefile.linux
+
+
+# Make methods for Solaris
+solaris : packagedir cheatingmotifdir $(NATIVEHEADERS) solaris-nativedir testdir
+
+solaris-config:
+	$(CP) Makefile.config-solaris Makefile.config
+
+solaris-nativedir:
+	$(MAKE) -C $(NATIVECODEDIR) -f Makefile.solaris
 
