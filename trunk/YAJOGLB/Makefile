@@ -3,12 +3,16 @@ SYSTEM:=$(shell uname)
 
 ifeq ($(SYSTEM), Linux)
 include config-linux.mk
-else 
+else
  ifeq ($(SYSTEM), solaris)
  include config-solaris.mk
  else
-  ifeq ($(findstring CYGWIN_NT, $(strip $(SYSTEM))), CYGWIN_NT)
-  include config-win32.mk
+ ifeq ($(SYSTEM), Darwin)
+  include config-macosx.mk
+  else
+   ifeq ($(findstring CYGWIN_NT, $(strip $(SYSTEM))), CYGWIN_NT)
+   include config-win32.mk
+   endif
   endif
  endif
 endif

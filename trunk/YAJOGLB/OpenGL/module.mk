@@ -9,7 +9,6 @@ JAVA_SRC += OpenGL/GLConstants.java OpenGL/CHeapItem.java OpenGL/CallbackObject.
 	    OpenGL/GLVertexPointer.java							\
             OpenGL/Context.java OpenGL/ContextException.java				\
 	    OpenGL/GLU.java								\
-            OpenGL/GL.java OpenGL/OpenGLpDataAccess.java				\
 	    OpenGL/Canvas.java OpenGL/GLFeedbackBuffer.java				\
 	    OpenGL/CanvasSetupFailedException.java					\
 	    OpenGL/GLUTesselator.java OpenGL/GLNativeArray.java				\
