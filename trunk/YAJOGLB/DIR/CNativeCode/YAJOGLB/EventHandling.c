@@ -1,8 +1,10 @@
 /*
  * EventHandling.c
  *
+ * $Id: EventHandling.c,v 1.2 1997/11/16 02:54:09 razeh Exp $
+ *
  * This code handles invoking the handleEvent method for our widget
- * with a newly created OpenGLEvent object.
+ * with a the appropriate event object.
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com) 
@@ -15,45 +17,8 @@
 #include "ErrorHandling.h"
 #include "JNIInterface.h"
 
-/* The Cygnus compiler breaks if we try to include the widget header files,
-   so we just define the constants right here. */
-#ifdef __CYGWIN32__
-#undef OpenGL_OpenGLEvent_GLWINDOW_OPENED
-#define OpenGL_OpenGLEvent_GLWINDOW_OPENED 1L
-#undef OpenGL_OpenGLEvent_GLWINDOW_RESIZED
-#define OpenGL_OpenGLEvent_GLWINDOW_RESIZED 2L
-#undef OpenGL_OpenGLEvent_GLWINDOW_EXPOSED
-#define OpenGL_OpenGLEvent_GLWINDOW_EXPOSED 3L
-#undef OpenGL_OpenGLEvent_GLWINDOW_KEYDOWN
-#define OpenGL_OpenGLEvent_GLWINDOW_KEYDOWN 4L
-#undef OpenGL_OpenGLEvent_GLWINDOW_MOUSEMOVE
-#define OpenGL_OpenGLEvent_GLWINDOW_MOUSEMOVE 5L
-#undef OpenGL_OpenGLEvent_GLWINDOW_MOUSEDOWN
-#define OpenGL_OpenGLEvent_GLWINDOW_MOUSEDOWN 6L
-#undef OpenGL_OpenGLEvent_GLWINDOW_MOUSEUP
-#define OpenGL_OpenGLEvent_GLWINDOW_MOUSEUP 7L
-#else
-#include "OpenGL_OpenGLWidget.h"
-#endif
 
 
-/* This returns a methodID for the given class, method name and method
-   signature. */
-static jmethodID getMethodID(JNIEnv *env, jclass class,
-			     const char *methodName,
-			     const char *methodSignature,
-			     const char *errorMessage)
-{
-  jmethodID methodID;
-
-  methodID = (*env)->GetMethodID(env, class, 
-				 methodName, methodSignature);
-  if (methodID == 0) {
-    handleError(env, "OpenGL/OpenGLNativeException", errorMessage);
-    return NULL;
-  }
-  return methodID;
-}
 
 
 
@@ -319,42 +284,6 @@ static jobject newKeyEvent(JNIEnv *env, jobject widget,
 }
 
 
-/* This constructs an OpenGLEvent with the specified eventID. We
-   return NULL if there were any problems in creating the object, and
-   the object otherwise. */
-static jobject newOpenGLEvent(JNIEnv *env, jobject widget, int eventID)
-{
-  jclass    openGLEventClass;  /* The OpenGLEvent class reference. */
-  jobject   openGLEvent;       /* The event object we construct. */
-  jmethodID eventConstructor;  /* The event constructor we call. */
-
-  openGLEventClass = (*env)->FindClass(env, "OpenGL/OpenGLEvent");
-  if (openGLEventClass == 0) {
-    handleError(env, "OpenGL/OpenGLNativeException",
-		"Unable to get OpenGL/OpenGLEvent class");
-    return NULL;
-  }  
-
-  eventConstructor =
-    (*env)->GetMethodID(env, openGLEventClass, "<init>", 
-			"(Ljava/lang/Object;I)V");
-  if (eventConstructor == 0) {
-    handleError(env, "OpenGL/OpenGLNativeException",
-		"Unable to get init method for OpenGLEvent class");
-    return NULL;
-  }
-
-  openGLEvent = (*env)->NewObject(env, openGLEventClass, eventConstructor,
-				  widget, eventID);
-  if (openGLEvent == 0) {
-    handleError(env, "OpenGL/OpenGLNativeException",
-		"Unable to get new OpenGLEvent object");
-    return NULL;
-  }
-  return openGLEvent;
-}
-
-
 
 /*
   This hands off the given event.
@@ -373,49 +302,12 @@ static int handOff(JNIEnv *env,
 
   handleEvent =
     (*env)->GetMethodID(env, widgetClass, "handleEvent",
-			"(LOpenGL/OpenGLEvent;)Z");
+			"(Ljava/awt/AWTEvent;)Z");
   if (handleEvent == 0)
     return JNI_FALSE;
 
 
   (*env)->CallObjectMethod(env, widget, handleEvent, event);
-  return JNI_TRUE;
-}
-
-
-
-/* This creates an event of eventID type and then calls widget's
-   handleEvent method.  If JNI_TRUE is returned then things went well;
-   JNI_FALSE is returned if we ran into a problem. */
-
-int handOffEvent(JNIEnv *env,
-		 jobject widget,
-		 int eventID)
-{
-  jclass    widgetClass;       /* The class of our widget jobject. */
-  jmethodID handleEvent;       /* The event handler we call. */
-  jobject   openGLEvent;       /* The new event object we create. */
-
-  log(env, "In handOffEvent\n");
-
-  openGLEvent = newOpenGLEvent(env, widget, eventID);
-  if (openGLEvent == NULL)
-    return JNI_FALSE;
-
-  widgetClass = (*env)->GetObjectClass(env, widget);
-  if (widgetClass == NULL)
-    return JNI_FALSE;
-
-  handleEvent =
-    (*env)->GetMethodID(env, widgetClass, "handleEvent",
-			"(LOpenGL/OpenGLEvent;)Z");
-  if (handleEvent == 0)
-    return JNI_FALSE;
-
-
-  (*env)->CallObjectMethod(env, widget, handleEvent, openGLEvent);
-  log(env, "Exiting handOffEvent\n");
-
   return JNI_TRUE;
 }
 
