@@ -23,10 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 extern void setupWidgetLocks();
 
 extern 
-int WINAPI dll_entry (HANDLE h, DWORD reason, void *ptr);
+int WINAPI DllMain (HANDLE h, DWORD reason, void *ptr);
 
 
-int WINAPI dll_entry (HANDLE ignored1, 
+int WINAPI DllMain (HANDLE ignored1, 
 		      DWORD reason,
 		      void *ignore2)
 {

@@ -23,7 +23,7 @@ INSTALL       = cp
 NATIVEHEADERS = OpenGL_OpenGLWidget.h \
 		OpenGL_GLUQuadric.h OpenGL_GLUNurbs.h \
 	        OpenGL_GLUTriangulator.h OpenGL_OpenGLContext.h \
-                OpenGL_OpenGLVertexPointer.h
+                OpenGL_OpenGLVertexPointer.h OpenGL_OpenGLCanvas.h
 
 # The entry point for our DLL.
 DLLENTRYPOINT = _DllMain@12
