@@ -1,0 +1,234 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>TEST README</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\HTML.DOT">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<P>This directory contains tests (mostly taken from various C OpenGL examples) I've used to make sure that my OpenGL bindings are working properly. Currently I don't have anything like complete coverage, but I do have tests for the areas I'm worried about.</P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=9 WIDTH=794>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<DL>
+<DD>Concurrence.java <A HREF="images/Concurrence.jpg"><IMG SRC="images/Concurrence.jpg" BORDER=0 WIDTH=215 HEIGHT=208></A></DD>
+</DL></TD>
+<TD WIDTH="67%" VALIGN="TOP">
+<DL>
+<DD>Tests the binding's ability to render in multiple canvases concurrently. You should see two windows, each one like the image on the left. The red sphere will grow and shrink with time. You can exit the demo by closing the window labeled "Thread-1". The geometry is displayed with the <A HREF="#GeometryViewer">GeometryViewer</A>, so you can move through it with the keyboard and mouse.</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<DL>
+<DD>FeedbackTest.java <A HREF="images/Feedback.jpg"><IMG SRC="images/Feedback.jpg" BORDER=0 WIDTH=216 HEIGHT=216></A></DD>
+</DL></TD>
+<TD WIDTH="67%" VALIGN="TOP">
+<DL>
+<DD>Makes sure that feedback mode actually works. It should produce a window containing a line and a dot, and the following output:</DD>
+</DL><DIR>
+<DIR>
+
+<PRE>GL_LINE_RESET_TOKEN
+ 117.6001 111.8999 0.0 1.0 1.0 1.0 1.0
+ 196.0 223.7998 0.0 1.0 1.0 1.0 1.0
+GL_LINE_TOKEN
+ 196.0 223.7998 0.0 1.0 1.0 1.0 1.0
+ 274.3999 149.2002 0.0 1.0 1.0 1.0 1.0
+GL_PASS_THROUGH_TOKEN
+1.0
+GL_PASS_THROUGH_TOKEN
+2.0
+GL_POINT_TOKEN
+ 196.0 186.5 0.0 1.0 1.0 1.0 1.0
+42</PRE></DIR>
+</DIR>
+</TD>
+</TR>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<DL>
+<DD>PlainCube.java <A HREF="images/PlainCube.jpg"><IMG SRC="images/PlainCube.jpg" BORDER=0 WIDTH=218 HEIGHT=207></A></DD>
+</DL></TD>
+<TD WIDTH="67%" VALIGN="TOP">
+<DL>
+<DD>Draws a simple lighted plain cube with an axis. The geometry is rendered with a <A HREF="#GeometryViewer">GeometryViewer</A>, so you can move through it with the keyboard and mouse. </DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<DL>
+<DD>NurbsSurface.java <A HREF="images/NurbsSurface.jpg"><IMG SRC="images/NurbsSurface.jpg" BORDER=0 WIDTH=218 HEIGHT=207></A></DD>
+</DL></TD>
+<TD WIDTH="67%" VALIGN="TOP">
+<DL>
+<DD>This produces a lighted hill with the GLU nurbs functions. The hill is rendered with a <A HREF="#GeometryViewer">GeometryViewer</A>, so you can move through it with the keyboard and mouse.</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<DL>
+<DD>OpenGLCanvas.java <A HREF="images/OpenGLCanvas.jpg"><IMG SRC="images/OpenGLCanvas.jpg" BORDER=0 WIDTH=218 HEIGHT=85></A></DD>
+</DL></TD>
+<TD WIDTH="67%" VALIGN="TOP">
+<DL>
+<DD>Demonstrates the ability to embed an OpenGLCanvas in a window with other AWT components. The embedded window is an instance of the Stretch component from Stretch.java.</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<DL>
+<DD>QuadricError.java<A HREF="images/QuadricError.gif"><IMG SRC="images/QuadricError.gif" BORDER=0 WIDTH=215 HEIGHT=205></A></DD>
+</DL></TD>
+<TD WIDTH="67%" VALIGN="TOP">
+<DL>
+<DD>This tests the callback facilities of the GLUQuadric class, and by extension, the callback facilities of the GLUNurbs and GLUTesselator class as well. This is the output it should generate:</DD>
+</DL><DIR>
+<DIR>
+
+<PRE>Quadric error: 100900</PRE></DIR>
+</DIR>
+</TD>
+</TR>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<DL>
+<DD>TexturedCube.java <A HREF="images/TexturedCube.jpg"><IMG SRC="images/TexturedCube.jpg" BORDER=0 WIDTH=215 HEIGHT=205></A></DD>
+</DL></TD>
+<TD WIDTH="67%" VALIGN="TOP">
+<DL>
+<DD>Draws a plain cube, only this time with the OpenGL logo textured mapped to three of the cube's sides. The cube is rendered with a <A HREF="#GeometryViewer">GeometryViewer</A>, so you can move through it with the keyboard and mouse.</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<DL>
+<DD>VertexPointer.java <A HREF="images/VertexPointer.jpg"><IMG SRC="images/VertexPointer.jpg" BORDER=0 WIDTH=218 HEIGHT=207></A></DD>
+</DL></TD>
+<TD WIDTH="67%" VALIGN="TOP">
+<DL>
+<DD>Uses the vertex pointer routines to draw an unlighted cube with different colors on each face. The cube is rendered with a <A HREF="#GeometryViewer">GeometryViewer</A>, so you can move through it with the keyboard and mouse.</DD>
+</DL></TD>
+</TR>
+</TABLE>
+
+<DL>
+<DD>&nbsp;</DD>
+</DL>
+<P><A NAME="GeometryViewer"></A>Most of the demos use the GeometryViewer, which allows you to navigate through the rendered geometry. Dragging the mouse will drag your view along with it, and the keys are set up as follows:</P>
+<P ALIGN="CENTER"><CENTER><TABLE BORDER CELLSPACING=1 WIDTH=798>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>A </DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>move forward</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>Z </DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>move backward</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>. </DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>rotate around the Z axis</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>/ </DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>rotate around the Z axis</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>Q</DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>do an orbit view (rotate around a point in front of you).</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>E</DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>do an orbit view, in the opposite direction.</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>I</DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>display information about the OpenGL library being used.</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>W</DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>write out an uncompressed TGA image of the screen to the file ScreenDump.tga.</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>Up arrow </DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>rotate up</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>Down arrow </DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>rotate down</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>Left arrow </DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>rotate to the left</DD>
+</DL></TD>
+</TR>
+<TR><TD WIDTH="19%" VALIGN="TOP">
+<DL>
+<DD>Right arrow </DD>
+</DL></TD>
+<TD WIDTH="81%" VALIGN="TOP">
+<DL>
+<DD>rotate to the right</DD>
+</DL></TD>
+</TR>
+</TABLE>
+</CENTER></P>
+
+<P ALIGN="CENTER">If you want to run the tests, and have the Java Run Time Environment installed, you need to use a command line something like this:</P>
+<CODE><P>&#9;jre -cp .;.. className</P>
+</CODE><P>The command with just Java installed (in C:\jdk1.1.4 for this example) is a little bit more complicated, because you have to append the base Java libraries to the command path too:</P><DIR>
+<DIR>
+
+<CODE><P>java -classpath .;..;C:\jdk1.1.4\lib\classes.zip %1</P></DIR>
+</DIR>
+
+</CODE><P><HR></P>
+<I><P>Last Changed January 25th, 1999.</P></I></BODY>
+</HTML>
