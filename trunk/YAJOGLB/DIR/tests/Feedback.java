@@ -1,10 +1,10 @@
 /*
  * Feedback test
  *
- * $Id: Feedback.java,v 1.1 1998/11/01 03:02:13 razeh Exp $
+ * $Id: Feedback.java,v 1.2 2001/06/10 19:13:51 razeh Exp $
  *
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 import java.io.*;
