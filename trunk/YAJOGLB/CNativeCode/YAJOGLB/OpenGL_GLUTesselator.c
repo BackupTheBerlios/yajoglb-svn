@@ -39,7 +39,6 @@
  */
 
 #include "SystemIncludes.h"
-#include <GL/glu.h>
 
 #include "cygnusFixes.h"
 #include "Memory.h"

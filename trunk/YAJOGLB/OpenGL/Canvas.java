@@ -141,6 +141,12 @@ abstract public class Canvas extends java.awt.Canvas {
       nativePaint();
   }
 
+  public void update(Graphics g)
+  {
+	  // don't let the Canvas clear the background
+	  this.paint(g);
+  }
+  
   protected native void nativeGlInit();
   public native void nativePaint();
   

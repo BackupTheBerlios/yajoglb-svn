@@ -34,8 +34,6 @@
 
 /* With the Cygnus tools you need to include the GL stuff first. */
 #include "SystemIncludes.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
 
 #include "cygnusFixes.h"
 #include "OpenGL_GLU.h"

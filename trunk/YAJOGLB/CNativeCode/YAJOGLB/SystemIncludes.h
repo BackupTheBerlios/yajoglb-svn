@@ -24,7 +24,14 @@
 #endif
 
 /* We might need to redefine the quadrics, tesselators and nurbs. */
-#include <GL/glu.h>
+#ifdef __APPLE__
+ #include <OpenGL/GLU.h>
+ #include <JavaVM/jawt.h>
+ #define _GLUfuncptr GLvoid (*)()
+#else
+ #include <GL/glu.h> // does glu.h include glu.h?
+ #include <GL/gl.h>
+#endif
 #ifndef GLU_VERSION_1_2
 typedef struct GLUquadricObj GLUquadric;
 typedef struct GLUtriangulatorObj GLUtesselator;

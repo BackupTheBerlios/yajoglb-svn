@@ -34,7 +34,7 @@
 
 
 #include "SystemIncludes.h"
-#include <GL/glu.h>
+
 #include "cygnusFixes.h"
 #include "OpenGL_GLUNurbs.h"
 #include "JNIInterface.h"

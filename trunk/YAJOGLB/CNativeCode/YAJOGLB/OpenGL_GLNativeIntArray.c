@@ -32,7 +32,6 @@
  */
 
 #include "SystemIncludes.h"
-#include <GL/gl.h>
 
 #include "cygnusFixes.h"
 #include "ErrorHandling.h"

@@ -37,7 +37,6 @@
 /* With the Cygnus tools you need to include the GL stuff first. */
 #include "SystemIncludes.h"
 #include <string.h>
-#include <GL/gl.h>
 
 #include "cygnusFixes.h"
 #include "JNIInterface.h"
