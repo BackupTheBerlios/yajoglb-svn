@@ -1,8 +1,8 @@
 /*
  *
- * OpenGLUConstants
+ * GLUConstants
  *
- * $Id: GLUConstants.java,v 1.4 1998/11/01 02:17:03 razeh Exp $
+ * $Id: GLUConstants.java,v 1.5 1998/11/01 02:17:17 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
