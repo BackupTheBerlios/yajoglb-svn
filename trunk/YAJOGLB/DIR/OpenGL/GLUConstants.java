@@ -1,3 +1,11 @@
+/*
+ *
+ * OpenGLUConstants
+ *
+ * Copyright 1997
+ * Robert Allan Zeh (razeh@balr.com)
+ */
+
 package OpenGL;
 
 /** OpenGLUConstants 
@@ -7,6 +15,8 @@ package OpenGL;
  * definitions because of conflicts with some of the GL constants.
  *
  * @author Robert Allan Zeh (razeh@balr.com) 
+ *
+ * @version 0.1
  */
 
 public interface OpenGLUConstants {
