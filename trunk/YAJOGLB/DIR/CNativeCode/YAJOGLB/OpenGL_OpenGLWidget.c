@@ -1,6 +1,8 @@
 /*
  * OpenGL_OpenGLWidget.c
  *
+ * $Id: OpenGL_OpenGLWidget.c,v 1.2 1997/11/16 02:52:40 razeh Exp $
+ *
  * This module implements the NT portion of the main event loop for
  * our OpenGLWidget.
  *
@@ -20,8 +22,7 @@
 #include "DCDictionary.h"
 #include "ErrorHandling.h"
 #include "memory.h"
-
-void (*idleFunc)(HDC hDC);
+#include "JNIInterface.h"
 
 CRITICAL_SECTION WidgetCriticalSection;
 /* This is called to setup all of our locking methods. */
@@ -43,7 +44,7 @@ static void releaseWidgetLock()
 }
 
 
-HPALETTE hPalette  = NULL;
+static HPALETTE hPalette  = NULL;
 
 /* Get the OpenGL context for widget into the current thread. */
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_getOpenGLContextIntoMyThread
@@ -56,20 +57,22 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_getOpenGLContextIntoMyThread
     HDC   currentDC = getDCForWidget(env, widget);
 
     if (getDCForWidget(env, widget) == NULL) {
-      MessageBox(WindowFromDC(currentDC), "BadDC", "Error",
-		 MB_ICONERROR | MB_OK);
+      handleError(env, "OpenGL/OpenGLNativeException",
+		  "BadDC");
+      return;
     }
 
     if (getGLRCForWidget(env, widget) == NULL) {
-      MessageBox(WindowFromDC(currentDC), "BadGLRC", "Error",
-		 MB_ICONERROR | MB_OK);
+      handleError(env, "OpenGL/OpenGLNativeException",
+		  "BadGLRC");
+      return;
     }
     
     currentGLRC = wglCreateContext(currentDC);
     if (currentGLRC == NULL) {
-      MessageBox(WindowFromDC(currentDC), 
-		 "CreateGLContext returns NULL", "Error",
-		 MB_ICONERROR | MB_OK);
+      handleError(env, "OpenGL/OpenGLNativeException",
+		  "wglCreateContext returns NULL");
+      return;
     }
     
     if (wglCopyContext(getGLRCForWidget(env, widget), currentGLRC, 
@@ -95,8 +98,19 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_getOpenGLContextIntoMyThread
 
 
 void
-setupPixelFormat(HDC hDC)
+setupPixelFormat(JNIEnv *env, jobject capabilities, HDC hDC)
 {
+  int colorDepth = 0, alphaDepth = 0, depthBuffer = 0, stencilBuffer = 0;
+
+  lookupIntField(env, capabilities, 
+		 "colorDepth", &colorDepth);
+  lookupIntField(env, capabilities, 
+		 "alphaDepth", &alphaDepth);
+  lookupIntField(env, capabilities, 
+		 "depthBuffer", &depthBuffer);
+  lookupIntField(env, capabilities,
+		 "stencilBuffer", &stencilBuffer);
+  {
     PIXELFORMATDESCRIPTOR pfd = {
         sizeof(PIXELFORMATDESCRIPTOR),  /* size */
         1,                              /* version */
@@ -104,31 +118,36 @@ setupPixelFormat(HDC hDC)
         PFD_DRAW_TO_WINDOW |
         PFD_DOUBLEBUFFER,               /* support double-buffering */
         PFD_TYPE_RGBA,                  /* color type */
-        16,                             /* prefered color depth */
+        colorDepth,                     /* prefered color depth */
         0, 0, 0, 0, 0, 0,               /* color bits (ignored) */
-        0,                              /* no alpha buffer */
-        0,                              /* alpha bits (ignored) */
+        alphaDepth != 0,                /* alpha buffer */
+        alphaDepth,                     /* alpha bits (ignored) */
         0,                              /* no accumulation buffer */
         0, 0, 0, 0,                     /* accum bits (ignored) */
-        16,                             /* depth buffer */
-        0,                              /* no stencil buffer */
+        depthBuffer,                    /* bits per pixel --- depth buffer */
+        stencilBuffer,                  /* bits per pixel --- stencil buffer */
         0,                              /* no auxiliary buffers */
         PFD_MAIN_PLANE,                 /* main layer */
         0,                              /* reserved */
         0, 0, 0,                        /* no layer, visible, damage masks */
     };
+
     int pixelFormat;
+
 
     pixelFormat = ChoosePixelFormat(hDC, &pfd);
     if (pixelFormat == 0) {
-        MessageBox(WindowFromDC(hDC), "ChoosePixelFormat failed.", "Error",
-                MB_ICONERROR | MB_OK);
+      handleError(env, "OpenGL/OpenGLNativeException",
+		  "ChoosePixelFormat failed");
+      return;
     }
 
     if (SetPixelFormat(hDC, pixelFormat, &pfd) != TRUE) {
-        MessageBox(WindowFromDC(hDC), "SetPixelFormat failed.", "Error",
-                MB_ICONERROR | MB_OK);
+      handleError(env, "OpenGL/OpenGLNativeException",
+		  "SetPixelFormat failed");
+      return;
     }
+  }
 }
 
 
@@ -183,44 +202,65 @@ setupPalette(HDC hDC)
 }
 
 
-
+/* Set things up for OpenGL rendering in hWnd. */
 static void handleWindowCreation(HWND hWnd) 
 {
-  /* Set things up for OpenGL rendering */
-  HDC     currentDC;
-  HGLRC   currentGLRC;
-  JNIEnv  *widgetEnvironment;
-  jobject widget;
-  
-  currentDC = GetDC(hWnd);
-  setupPixelFormat(currentDC);
-  setupPalette(currentDC);
-  currentGLRC = wglCreateContext(currentDC);
-  
-  if (currentGLRC == NULL) {
-    MessageBox(hWnd, "Unable to create GL context", 
-	       "Error", MB_ICONERROR | MB_OK);
-  }
-  
-  if (wglMakeCurrent(currentDC, currentGLRC) == FALSE) {
-    MessageBox(hWnd, "Unable to make GL context current.",  "Error", 
-	       MB_ICONERROR | MB_OK);
-  }
+  HDC       currentDC;
+  HGLRC     currentGLRC;
+  JNIEnv   *widgetEnvironment;
+  jobject   widget, capabilities;
   
   widgetEnvironment = environmentForWindow(hWnd);
   widget            = widgetForWindow(hWnd);
 
-  log(widgetEnvironment, "In window creation\n");
   if (widgetEnvironment == NULL) {
     MessageBox(hWnd, "Unable to get widget environment",  "Error", 
 	       MB_ICONERROR | MB_OK);
+    return;
   }
 
   if (widget == NULL) {
-    MessageBox(hWnd, "Unable to get widget",  "Error", 
-	       MB_ICONERROR | MB_OK);
+    handleError(widgetEnvironment, "OpenGL/OpenGLNativeException",
+		"Unable to get widget");
+    return;
   }
 
+  /* Get the capabilities object out of our widget. */
+  {
+    jclass widgetClass;
+    jmethodID capabilitiesMethodID;
+    widgetClass = 
+      (*widgetEnvironment)->GetObjectClass(widgetEnvironment, widget);
+
+    capabilitiesMethodID = 
+      getMethodID(widgetEnvironment, widgetClass,
+		"capabilities", "()LOpenGL/OpenGLCapabilities;",
+		"Unable to get capabilities() method");
+    if (capabilitiesMethodID) {
+      capabilities = 
+	(*widgetEnvironment)->CallObjectMethod(widgetEnvironment, 
+					       widget, capabilitiesMethodID);
+    }
+  }
+
+  currentDC = GetDC(hWnd);
+  setupPixelFormat(widgetEnvironment, capabilities, currentDC);
+  setupPalette(currentDC);
+  currentGLRC = wglCreateContext(currentDC);
+  
+  if (currentGLRC == NULL) {
+    handleError(widgetEnvironment, "OpenGL/OpenGLNativeException",
+		"Unable to get current GLRC");
+    return;
+  }
+  
+  if (wglMakeCurrent(currentDC, currentGLRC) == FALSE) {
+    handleError(widgetEnvironment, "OpenGL/OpenGLNativeException",
+		"Unable to make GL context current");
+    return;
+  }
+  
+  log(widgetEnvironment, "In window creation\n");
   setDCForWidget(widgetEnvironment, widget, currentDC);
   setGLRCForWidget(widgetEnvironment, widget, currentGLRC);
   
@@ -338,9 +378,23 @@ WndProc(
 	  (widget != NULL)) {
 	handOffWindowExposed(widgetEnvironment, widget);
       } else {
-	MessageBox(hWnd, "Unable to handoff paint event.",  "Error", 
-		   MB_ICONERROR | MB_OK);
-       
+	if (widgetEnvironment == NULL)
+	  MessageBox(hWnd, "no widget environment.",  "Error", 
+		     MB_ICONERROR | MB_OK);
+
+	if (widget == NULL)
+	  MessageBox(hWnd, "no widget.",  "Error", 
+		     MB_ICONERROR | MB_OK);
+
+	if (wglGetCurrentContext() == NULL)
+	  MessageBox(hWnd, "no GL context.",  "Error", 
+		     MB_ICONERROR | MB_OK);
+
+
+	  MessageBox(hWnd, "Unable to handoff paint event.",  "Error", 
+		     MB_ICONERROR | MB_OK);
+
+
       }
      
       EndPaint(hWnd, &ps);
@@ -430,6 +484,41 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_swapBuffers
 
 
 
+/* This should be called to register our window class with windows.
+   If things work out fine return 0; when there are problems we return
+   1. */
+static int registerWindowClass(JNIEnv *env,
+			       WNDCLASS wndClass, const char *className,
+			       HANDLE hCurrentInst)
+{
+  static int callCount   = 0;
+
+  if (callCount == 0) {
+    /* register window class */
+    wndClass.style         = CS_HREDRAW | CS_VREDRAW;
+    wndClass.lpfnWndProc   = WndProc;
+    wndClass.cbClsExtra    = 0;
+    wndClass.cbWndExtra    = 0;
+    wndClass.hInstance     = hCurrentInst;
+    wndClass.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
+    wndClass.hCursor       = LoadCursor(NULL, IDC_ARROW);
+    wndClass.hbrBackground = NULL; // redraw our own background;
+    wndClass.lpszMenuName  = NULL;
+    wndClass.lpszClassName = className;
+  
+    if(!RegisterClass(&wndClass)) {
+      handleError(env, "OpenGL/OpenGLWidgetOpenFailedException",
+		  "Unable to register our window class");
+      return 1;
+    }
+    callCount++;
+  }
+  return 0;
+}
+
+
+
+/* This native method handles opening up our widget. */
 JNIEXPORT jboolean 
 Java_OpenGL_OpenGLWidget_openOpenGLWidget(JNIEnv *env, jobject obj,
 					  jint x, jint y, 
@@ -438,22 +527,23 @@ Java_OpenGL_OpenGLWidget_openOpenGLWidget(JNIEnv *env, jobject obj,
 {
     WNDCLASS wndClass;
     HWND hWnd;
-    HINSTANCE hCurrentInst = NULL;
+    HINSTANCE hCurrentInst = GetModuleHandle(NULL);
     int nCmdShow           = 1;
 
     int winX     = x,   winY      = y;
     int winWidth = width, winHeight = height;
     
-    const char *className      = "OpenGLWidget";
     const char *windowName     = "";
+    const char *className      = "OpenGLWidget";
     
     jboolean copy              = JNI_TRUE;
-
-    log(env, "HAPPY HAPPY JOY JOY\n");
+    jobject  widget;
 
     /* Make sure that only one thread is trying to create a window at
        a time. */
     getWidgetLock();
+
+    log(env, "Attempting to create widget\n");
 
     windowName = (*env)->GetStringUTFChars(env, titleUTFString, &copy);
     if (windowName == NULL) {
@@ -463,18 +553,11 @@ Java_OpenGL_OpenGLWidget_openOpenGLWidget(JNIEnv *env, jobject obj,
       return JNI_FALSE;
     }
 
-    /* register window class */
-    wndClass.style         = CS_HREDRAW | CS_VREDRAW;
-    wndClass.lpfnWndProc   = WndProc;
-    wndClass.cbClsExtra    = 0;
-    wndClass.cbWndExtra    = 0;
-    wndClass.hInstance     = hCurrentInst;
-    wndClass.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
-    wndClass.hCursor       = LoadCursor(NULL, IDC_ARROW);
-    wndClass.hbrBackground = GetStockObject(BLACK_BRUSH);
-    wndClass.lpszMenuName  = NULL;
-    wndClass.lpszClassName = className;
-    RegisterClass(&wndClass);
+    /* Register our window class. */
+    if (registerWindowClass(env, wndClass, className, hCurrentInst)) {
+      releaseWidgetLock();
+      return JNI_FALSE;
+    }
 
     /* create window */
     hWnd = CreateWindow(
@@ -483,14 +566,9 @@ Java_OpenGL_OpenGLWidget_openOpenGLWidget(JNIEnv *env, jobject obj,
         winX, winY, winWidth, winHeight,
         NULL, NULL, hCurrentInst, NULL);
     
-    setWidgetForWindow(hWnd, env, obj);
-    setEnvironmentForWindow(hWnd, env, obj);
-    log(env, "the widget is");
-    logHex(env, obj);
-    log(env, "\n");
-
-    if (windowForWidget(env, obj) != hWnd)
-      log(env, "uhoh --- no match\n");
+    widget = (*env)->NewGlobalRef(env, obj);
+    setWidgetForWindow(hWnd, env, widget);
+    setEnvironmentForWindow(hWnd, env, widget);
 
     handleWindowCreation(hWnd);
 
@@ -515,20 +593,11 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_eventLoop
 
     log(env, "Starting event loop\n");
     /* process messages */
-    /* execute idle function while no messages to process */
-
-    while(1) {
-      while (idleFunc &&
-	     PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE) == FALSE) {
-	(*idleFunc)(getDCForWidget(env, obj));
-      }
-      if (GetMessage(&msg, NULL, 0, 0) != TRUE) {
-	break;
-      }
-      TranslateMessage(&msg);
-      DispatchMessage(&msg);
+    while (GetMessage(&msg, NULL, 0, 0) == TRUE) {
+	TranslateMessage(&msg);
+	DispatchMessage(&msg);
     }
-
+    
     log(env, "Exiting event loop\n");
 }
 
@@ -542,7 +611,6 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_setNativeTitle
   jboolean    copy   = JNI_TRUE;
   HWND        window = NULL;
 
-  log(env, "starting setTitle\n");
   title = (*env)->GetStringUTFChars(env, jtitle, &copy);
   if (title == NULL) {
     handleError(env, "OpenGL/OpenGLNativeException",
@@ -551,18 +619,9 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLWidget_setNativeTitle
   }
 
   window = windowForWidget(env, widget);
-  log(env, title);
-  log(env, "the widget is");
-  logHex(env, widget);
-  log(env, "\n");
   if (window != NULL) {
-    log(env, "setting window text\n");
     SetWindowText(window, title);
-  } else
-    {
-      log(env, "null window\n");
-    }
-  log(env, "exiting settitle\n");
+  }
 }
 
 
