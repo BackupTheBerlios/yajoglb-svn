@@ -1,22 +1,17 @@
-/* init.cc for WIN32.
+/*
+ * init.c
+ *
+ * $Id: win32Init.c,v 1.4 1999/01/04 02:01:37 razeh Exp $
+ *
+ * This module handles the DLL attachment and detachment.
+ *
+ * Copyright 1998
+ * Robert Allan Zeh (razeh@balr.com)
+ */
 
-   Copyright 1996 Cygnus Solutions
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
-
+#include "cygnusFixes.h"
 #include <windows.h> 
+#include "win32EnvDictionary.h"
 
 extern 
 int WINAPI DllMain (HANDLE h, DWORD reason, void *ptr);
@@ -29,14 +24,18 @@ int WINAPI DllMain (HANDLE ignored1,
   switch (reason) 
     {
     case DLL_PROCESS_ATTACH:
-      break;
+		envDictionaryProcessSetup();
+	    break;
     case DLL_PROCESS_DETACH:
-      break;
+		envDictionaryProcessShutdown();
+	    break;
     case DLL_THREAD_ATTACH:
-      break;
+		envDictionaryThreadSetup();
+        break;
     case DLL_THREAD_DETACH:
-      break;
-    }
+		envDictionaryThreadShutdown();
+        break;
+  }
   return 1;
 }
 
