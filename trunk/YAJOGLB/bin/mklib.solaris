@@ -1,5 +1,7 @@
 #!/bin/sh
 
+EXTRALIBS = "-L/home/miso/razeh/Mesa-3.0/lib -lGL -lGLU"
+
 # Make a Solaris shared library
 # contributed by Arno Hahma (arno@nitro.pp.utu.fi)
 
@@ -47,7 +49,7 @@ echo "Building shared object $LIBRARY.so.$VERSION and the archive library $LIBRA
 rm -f ${LIBRARY}.a ${LIBRARY}.so.${VERSION}
 ar ruv ${LIBRARY}.a ${OBJECTS}
 
-ld -G -o ${LIBRARY}.so.${VERSION} ${OBJECTS} -L/home/miso/razeh/Mesa-3.0/lib -lGL -lGLU
+ld -G -o ${LIBRARY}.so.${VERSION} ${OBJECTS} ${EXTRALIBS}
 
 cp ${LIBRARY}.a ${LIBRARY}.so.${VERSION} ../lib
 cd ../lib

@@ -1,0 +1,27 @@
+INSTALLATION INSTRUCTIONS
+-------------------------
+
+Linux and Solaris
+-----------------
+
+You will have to make a few edits so that the Makefiles can find your
+Java installation.  If you are using Linux edit config-linux.mk, and
+make sure that JNI_GENERIC_HEADERS and JNI_SPECIFIC_HEADERS point to
+the appropriate location on your file systems.  These variables are
+used so that the native library can find the jawt.h and jawt_md.h
+header files.  If you are using Solaris edit config-solaris.mk
+instead.
+
+If you are using Linux you will also need to edit the mklib.linux and
+mklib.solaris scripts.  In each case, modify the EXTRALIBS variable to
+include the directory where the jawt library can be found.
+
+
+Windows
+-------
+To Do.
+
+
+MacOS X
+-------
+To Do.

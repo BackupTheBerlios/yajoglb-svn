@@ -26,7 +26,6 @@ CSRCS += CNativeCode/YAJOGLB/CallbackObject.c			\
 	 CNativeCode/YAJOGLB/ErrorHandling.c			\
 	 CNativeCode/YAJOGLB/JNIInterface.c			\
          CNativeCode/YAJOGLB/OpenGL_GLVertexPointer.c		\
-	 CNativeCode/YAJOGLB/OpenGL_CallbackObject.c		\
          CNativeCode/YAJOGLB/OpenGL_Canvas.c			\
 	 CNativeCode/YAJOGLB/OpenGL_GL.c			\
 	 CNativeCode/YAJOGLB/OpenGL_GLFeedbackBuffer.c		\
@@ -42,5 +41,6 @@ CSRCS += CNativeCode/YAJOGLB/CallbackObject.c			\
 	 CNativeCode/YAJOGLB/linuxDPYDictionary.c		\
          CNativeCode/YAJOGLB/linuxMemory.c			\
          CNativeCode/YAJOGLB/linuxSystemError.c			\
-         CNativeCode/YAJOGLB/linux_OpenGL_GL.c
+         CNativeCode/YAJOGLB/linux_OpenGL_GL.c                  \
+         CNativeCode/YAJOGLB/EnvDictionary.c
 

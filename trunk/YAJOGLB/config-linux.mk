@@ -9,9 +9,9 @@ DIR_SEPARATOR       = "/"
 # How to break out class paths.
 CLASSPATH_SEPARATOR = ":"
 # Where all of the JNI headers live.
-JNI_GENERIC_HEADERS  = -I/usr/lib/j2sdk1.3/include
+JNI_GENERIC_HEADERS  = -I/home/razeh/j2sdk1.4.2_05/include
 # Where the JNI headers for this platform live.
-JNI_SPECIFIC_HEADERS = -I/usr/lib/j2sdk1.3/include/linux
+JNI_SPECIFIC_HEADERS = -I/home/razeh/j2sdk1.4.2_05/include/linux
 # Where the OpenGL headers live.
 GL_INCLUDES = 
 # The script we use to generate makefiles

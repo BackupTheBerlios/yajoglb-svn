@@ -1,7 +1,6 @@
 #!/bin/sh
 
-EXTRALIBS="-lGL -lGLU -lX11 -lXext -L/usr/lib/j2re1.3/lib/i386 -ljawt"
-#EXTRALIBS="-lMesaGL -lMesaGLU"
+EXTRALIBS="-lGL -lGLU -lX11 -lXext -L/home/razeh/j2sdk1.4.2_05/jre/lib/i386 -ljawt"
 
 # Make a Linux ELF shared library
 
