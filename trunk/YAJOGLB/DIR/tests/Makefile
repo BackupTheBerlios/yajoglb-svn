@@ -11,17 +11,17 @@ COMPILE.java  = $(JAVAC) $(JFLAGS)
 %.class: %.java
 	$(COMPILE.java) $<
 
-JAVA_SRC        = VertexPointerTest.java Stretch.java NurbsSurface.java \
+JAVA_SRC        = VertexPointer.java Stretch.java NurbsSurface.java \
 		  GeometryViewer.java GeometryObject.java PlainCube.java \
-		  Vec.java OpenGLCanvasTest2.java Concurrence.java \
+		  Vec.java OpenGLCanvasTest.java Concurrence.java \
 		  ExitableFrame.java MatrixModifiers.java Sphere.java \
-		  FeedbackTest.java
+		  Feedback.java Axis.java TexturedCube.java
 
-JAVA_CLASSES    = VertexPointerTest.class Stretch.class NurbsSurface.class \
+JAVA_CLASSES    = VertexPointer.class Stretch.class NurbsSurface.class \
 		  GeometryViewer.class GeometryObject.class PlainCube.class \
-		  Vec.class OpenGLCanvasTest2.class Concurrence.class \
+		  Vec.class OpenGLCanvasTest.class Concurrence.class \
 		  ExitableFrame.class MatrixModifiers.class Sphere.class \
-		  FeedbackTest.class
+		  Feedback.class Axis.class TexturedCube.class
 
 all : $(JAVA_CLASSES)
 
