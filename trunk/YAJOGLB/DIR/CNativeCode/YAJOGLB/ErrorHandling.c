@@ -17,7 +17,8 @@
 /* This is the method that gets called when something goes wrong with
    our interface to the java virtual machine. */
 void handleError(JNIEnv *env, 
-		 const char *exceptionClass, const char *errorMessage)
+                 const char *exceptionClass, 
+				 const char *errorMessage)
 {
   jthrowable exc;
   jclass     newExceptionClass;
@@ -36,6 +37,14 @@ void handleError(JNIEnv *env,
   if ((*env)->ThrowNew(env, newExceptionClass, errorMessage) < 0) {
     (*env)->FatalError(env, "Unable to throw exception");
   }
+}
+
+
+
+/* This should be called when we run out of memory. */
+void handleOutOfMemoryError(JNIEnv *env, const char *errorMessage)
+{
+	handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION, errorMessage);
 }
 
 
