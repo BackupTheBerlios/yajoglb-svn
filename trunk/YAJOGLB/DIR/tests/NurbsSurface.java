@@ -1,6 +1,8 @@
 /*
  * NurbsSurface class
  *
+ * $Id: NurbsSurface.java,v 1.2 1998/03/29 23:28:29 razeh Exp $
+ *
  * Copyright 1998
  *
  * Robert Allan Zeh (razeh@balr.com)
@@ -16,8 +18,9 @@ import java.awt.event.*;
  *  symmetrical hill.  
  */
 
-class NurbsSurface extends OpenGLWidget {
+public class NurbsSurface extends OpenGLWidget {
   GLU glu = new GLU();
+  GL  gl  = new GL();
 
   public NurbsSurface() throws OpenGLWidgetOpenFailedException {
     addMouseListener(this);
@@ -65,16 +68,16 @@ class NurbsSurface extends OpenGLWidget {
     float mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     float mat_shininess[] = { 100.0f };
 
-    clearColor (0.0f, 0.0f, 0.0f, 0.0f);
-    material(FRONT, DIFFUSE, mat_diffuse);
-    material(FRONT, SPECULAR, mat_specular);
-    material(FRONT, SHININESS, mat_shininess);
+    gl.clearColor (0.0f, 0.0f, 0.0f, 0.0f);
+    gl.material(FRONT, DIFFUSE, mat_diffuse);
+    gl.material(FRONT, SPECULAR, mat_specular);
+    gl.material(FRONT, SHININESS, mat_shininess);
 
-    enable(LIGHTING);
-    enable(LIGHT0);
-    enable(DEPTH_TEST);
-    enable(AUTO_NORMAL);
-    enable(NORMALIZE);
+    gl.enable(LIGHTING);
+    gl.enable(LIGHT0);
+    gl.enable(DEPTH_TEST);
+    gl.enable(AUTO_NORMAL);
+    gl.enable(NORMALIZE);
 
     initSurface();
 
@@ -96,11 +99,11 @@ class NurbsSurface extends OpenGLWidget {
 	  flatControlPoints[flatCounter++] = controlPoints[i][j][k];
     
 
-    clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+    gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
 
-    pushMatrix();
-    rotate(330.0f, 1.f,0.f,0.f);
-    scale(0.5f, 0.5f, 0.5f);
+    gl.pushMatrix();
+    gl.rotate(330.0f, 1.f,0.f,0.f);
+    gl.scale(0.5f, 0.5f, 0.5f);
     
     theNurb.gluBeginSurface();
     theNurb.gluNurbsSurface(knots, knots,
@@ -109,35 +112,35 @@ class NurbsSurface extends OpenGLWidget {
     theNurb.gluEndSurface();
     
     if (showPoints == true) {
-      pointSize(5.0f);
-      disable(LIGHTING);
-      color(1.0f, 1.0f, 0.0f);
-      begin(POINTS);
+      gl.pointSize(5.0f);
+      gl.disable(LIGHTING);
+      gl.color(1.0f, 1.0f, 0.0f);
+      gl.begin(POINTS);
       for (i = 0; i < 4; i++) {
 	for (j = 0; j < 4; j++) {
-	  vertex(controlPoints[i][j][0], 
-		 controlPoints[i][j][1], controlPoints[i][j][2]);
+	  gl.vertex(controlPoints[i][j][0], 
+		    controlPoints[i][j][1], controlPoints[i][j][2]);
 	}
       }
-      end();
-      enable(LIGHTING);
+      gl.end();
+      gl.enable(LIGHTING);
     }
-    popMatrix();
-    flush();
+    gl.popMatrix();
+    gl.flush();
     swapBuffers();
   }
 
   public void componentResized(ComponentEvent e) {
     super.componentResized(e);
 
-    viewport(0, 0, getSize().width, getSize().height);
-    matrixMode(PROJECTION);
-    loadIdentity();
+    gl.viewport(0, 0, getSize().width, getSize().height);
+    gl.matrixMode(PROJECTION);
+    gl.loadIdentity();
     
     glu.gluPerspective (45.0f, (float)getSize().width/(float)getSize().height, 
 			3.0f, 8.0f);
-    matrixMode(MODELVIEW);
-    loadIdentity();
-    translate (0.0f, 0.0f, -5.0f);
+    gl.matrixMode(MODELVIEW);
+    gl.loadIdentity();
+    gl.translate (0.0f, 0.0f, -5.0f);
   }
 }
