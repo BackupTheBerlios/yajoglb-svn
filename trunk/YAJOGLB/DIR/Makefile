@@ -12,7 +12,7 @@ CHEATINGMOTIFDIR = sun/awt/motif
 TESTDIR          = tests
 SUFFIXES        += .class .java
 COMPILE.java     = $(JAVAC) $(JFLAGS) 
-PACKAGENAME      = YAJOGLB-0.3.1
+PACKAGENAME      = YAJOGLB-0.4
 
 %.class: %.java
 	$(COMPILE.java) $<
