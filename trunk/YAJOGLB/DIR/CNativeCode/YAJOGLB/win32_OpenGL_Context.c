@@ -1,7 +1,7 @@
 /*
  * OpenGL_OpenGLContext.c
  *
- * $Id: win32_OpenGL_Context.c,v 1.1 1998/11/01 21:42:58 razeh Exp $
+ * $Id: win32_OpenGL_Context.c,v 1.2 1998/11/04 00:34:13 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -12,7 +12,6 @@
 
 #include "cygnusFixes.h"
 #include "OpenGL_OpenGLContext.h"
-#include "DCDictionary.h"
 #include "win32DCDictionary.h"
 #include "SystemError.h"
 #include "memory.h"
@@ -46,50 +45,6 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLContext_nativeReleaseCurrentContext
 		/* Something really bad must have happened. */
 		throwContextException(env);
 	}
-}
-
-
-
-/*
- * Class:     OpenGL_OpenGLContext
- * Method:    nativeMakeCurrent
- * Signature: (ILOpenGL/OpenGLWidget;)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLContext_makeCurrent
-  (JNIEnv *env, jobject contextObject, jint context, jobject widget)
-{
-    HDC dc = NULL;
-
-	if (context != 0) {
-		dc = getDCForWidget(env, widget);
-	}
-	if (FALSE == wglMakeCurrent(dc, (HGLRC*) context)) {
-		/* Something went wrong, and we need to throw an exception. */
-		throwContextException(env);
-	}
-}
-
-
-/*
- * Class:     OpenGL_OpenGLContext
- * Method:    createContext
- * Signature: (LOpenGL/OpenGLWidget;I)I
- */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLContext_createContext
-  (JNIEnv *env, jobject contextObject, jobject widget, jint otherContext)
-{
-	HDC   dc      = getDCForWidget(env, widget);
-	HGLRC context = wglCreateContext(dc);
-	if (NULL == context) {
-		/* Something went wrong, and we need to throw an exception. */
-		throwContextException(env);
-	}
-
-	if (otherContext != 0) {
-		if (FALSE == wglShareLists((HGLRC) otherContext, context))
-			throwContextException(env);
-	}
-	return (int) context;
 }
 
 
