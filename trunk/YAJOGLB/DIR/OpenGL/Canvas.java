@@ -25,7 +25,7 @@
 /*
  * Canvas class
  *
- * $Id: Canvas.java,v 1.7 2001/07/06 23:42:57 razeh Exp $
+ * $Id: Canvas.java,v 1.8 2001/11/10 20:33:48 razeh Exp $
  *
  */
 
@@ -112,28 +112,37 @@ abstract public class Canvas extends java.awt.Canvas {
     ;
   }
 
-  /** The method that subclasses should override for rendering.  It is 
-   invoked by <code>paint(Graphics g)</code>. */
-  abstract public void paint();
+  /** <P>The method that subclasses should override for rendering.  It is
+      invoked by <code>paint(Graphics g)</code>.  If you are going to
+      be rendering from multiple frames you should make this a
+      synchronized method, because the <code>nativePaint</code> method
+      aquires some non-recursive locks on the canvas.
+      </P>
+      You should not invoke this method directly.  Instead, you 
+      should call <code>nativePaint</code>, which will grab all sorts
+      of locks within the windowing system.
+      <P>
+  */
+  abstract protected void paint();
 
-  /** This is overriden to handle our canvas setup, and calling
+  /** <P>This is overriden to handle our canvas setup, and calling
       glInit() and paint(). This is final to prevent any subclasses
-      from mucking things up! <P> We do not call our super method,
+      from mucking things up! </P><P> We do not call our super method,
       because doing so leaves our display set to the foreground color
-      after redisplays under X.  */
+      after redisplays under X. </P> */
   final public void paint(Graphics g) {
       // If we have not been setup, set ourself up.
       if (false == canvasHasBeenSetup) {
 	  init();
-	  glInit();
+	  nativeGlInit();
 	  // Make sure the setup only happens once.
 	  canvasHasBeenSetup = true;
       }
-      paint();
+      nativePaint();
   }
 
-  protected native void lockCanvas();
-  protected native void unlockCanvas();
+  protected native void nativeGlInit();
+  public native void nativePaint();
   
   /** This contains the native call needed to actually swap our display
       buffer. */
@@ -145,6 +154,12 @@ abstract public class Canvas extends java.awt.Canvas {
   public void swapBuffers() {
     nativeSwapBuffers();
   }
+  
+  public native Object lockedMethod(java.lang.reflect.Method method, 
+				    Object object, Object arguments[]);
+  public native Object lockedMethod(String methodName,
+				    Object object, Object arguments[]);
+
   
   /** Returns the class to use for data access. */
   static private native String dataAccessClass();
