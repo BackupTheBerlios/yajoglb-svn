@@ -150,7 +150,7 @@ are subclassed from it.</TD> </TR> <TR><TD WIDTH="21%" VALIGN="TOP">
 Canvas's native code can get to native window details.</TD> </TR>
 </TABLE>
 
-<H2>How to build it</H2> 
+<a NAME=building></a><H2>How to build it</H2> 
 
 <p>It is easy to build the distribution under Linux.  First, make sure
 that you have GNU gcc (for the native library), a Java software
@@ -171,14 +171,15 @@ cygwin is installed for the make command that Visual C++ is installed
 for the C compiler.  The Java software development kit also needs to
 be installed, so that you can generate native header files and compile
 the java code.  Then, in the top level directory type <code>make -k
-NATIVEHEADERS</code>.  You will see a large number of errors, which
-you can safely ignore, because you are only using the make to generate
-the native header files.  Once the native header files have been
-generated you can build the native library with Visual C++ (the
-project files are included, but you will probably need to change some
-of the include directories).  The library will be placed in the
-Release or Debug directory, depending on what you ask Visual C++ to
-compile.
+NATIVEHEADERS</code>.  You will see a large number of errors for the
+native code, which you can safely ignore, because you are only using
+the make to generate the native header files.  Once the native header
+files have been generated you can build the native library with Visual
+C++ (the project files are included, but you will probably need to
+change some of the include directories).  The library will be placed
+in the Release or Debug directory, depending on what you ask Visual
+C++ to compile.  Their is a target in the Makefile named allJava that
+will build all of the Java source.
 
 <H2>Getting Started</H2>
 <P>This section describes how to write the simplest possible OpenGL
@@ -301,6 +302,12 @@ class GeometryViewer {
 }
 </PRE>
 
+<H3>To do</H3>
+<ul>
+<li>Fix the Java builds in the Makefile --- it is not taking advantage of the fact that javac will automatically rebuild dependencies.
+<li>Add a subclass for GeometryViewer that gracefully handles animations.
+<li>Replace the current platform dependent thread and environment methods with the JNI methods that were added to support getting to a JVM from a thread.
+</ul>
 
 <HR>
 <ADDRESS>Back to Robert Zeh's <A HREF="http://home.earthlink.net/~rzeh">home page</A>.<BR>
