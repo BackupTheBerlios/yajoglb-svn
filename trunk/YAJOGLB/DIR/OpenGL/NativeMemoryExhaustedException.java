@@ -1,31 +1,53 @@
+/*
+  Thrown we native methods run out of memory.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
+
 /* 
- * OpenGLNativeMemoryExhaustedException class
+ * NativeMemoryExhaustedException class
  *
- * $Id: NativeMemoryExhaustedException.java,v 1.3 1999/04/29 01:17:14 razeh Exp $ 
- * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * $Id: NativeMemoryExhaustedException.java,v 1.4 2002/04/14 18:18:07 razeh Exp $ 
  */
 
 package OpenGL;
 
 /** Thrown when we exhaust our native memory.
  *
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
- * @version 0.3
+ * @version 0.4
  */
 
-public class OpenGLNativeMemoryExhaustedException extends OpenGLNativeException {
-  /** Constructs an <code> OpenGLNativeMemoryExhaustedException
+public class NativeMemoryExhaustedException extends NativeException {
+  /** Constructs an <code> NativeMemoryExhaustedException
       </code> with no message. */
-  OpenGLNativeMemoryExhaustedException() {
+  NativeMemoryExhaustedException() {
     super();
   }
 
-  /** Constructs an <code> OpenGLNativeMemoryExhaustedException
+  /** Constructs an <code> NativeMemoryExhaustedException
    </code> with the specified detail message.  
    @param message message the detail message.*/
-  OpenGLNativeMemoryExhaustedException(String message) {
+  NativeMemoryExhaustedException(String message) {
     super(message);
   }
 }
