@@ -15,5 +15,5 @@ $(NATIVECODEDIR)/OpenGL_%.h: $(PACKAGEDIR)/%.class
 OBJS := $(CSRCS:.c=.o)
 
 %.d: %.c
-	bin$(DIR_SEPARATOR)/depend.py $(CFLAGS) $< > $@
+	bin$(DIR_SEPARATOR)depend.py $(CFLAGS) $< > $@
 
