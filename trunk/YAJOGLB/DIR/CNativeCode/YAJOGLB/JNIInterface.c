@@ -1,7 +1,7 @@
 /*
  * JNIInterface.c
  *
- * $Id: JNIInterface.c,v 1.3 1998/12/23 00:39:32 razeh Exp $
+ * $Id: JNIInterface.c,v 1.4 1999/01/04 02:03:18 razeh Exp $
  *
  * This module handles convience routines for dealing with the Java
  * Native Interface.
@@ -131,6 +131,24 @@ jclass getClass(JNIEnv *env,
 }
 
 
+/* This returns a methodID for the given class, method name and method 
+   signature.  It will return NULL after calling handleError() if
+   something went wrong, and the methodID if things worked out properly. */
+jmethodID getStaticMethodID(JNIEnv *env, jclass class,
+							const char *methodName,
+							const char *methodSignature,
+							const char *errorMessage)
+{
+	jmethodID methodID = NULL;
+
+	methodID = (*env)->GetStaticMethodID(env, class, methodName, methodSignature);
+	if (NULL == methodID) {
+		handleError(env, OPENGL_NATIVE_EXCEPTION, errorMessage);
+	}
+
+	return methodID;
+}
+
 
 /* This returns a methodID for the given class, method name and method
    signature.  It will return NULL after calling handleError() if
@@ -140,11 +158,11 @@ jmethodID getMethodID(JNIEnv *env, jclass class,
 		      const char *methodSignature,
 		      const char *errorMessage)
 {
-  jmethodID methodID;
+  jmethodID methodID = NULL;
 
   methodID = (*env)->GetMethodID(env, class, 
 				 methodName, methodSignature);
-  if (methodID == 0) {
+  if (NULL == methodID) {
     handleError(env, OPENGL_NATIVE_EXCEPTION, errorMessage);
     methodID = NULL;
   }
@@ -169,10 +187,10 @@ static checkArrayResults _checkArray(JNIEnv *env, jobject jarray, const char *cl
 /*  This checks to see if the supplied object is of the given class name. 
     We return one of three possible values: isInstanceOf, isNotInstanceOf, and error. */
 {
-	jclass arrayClass;
+	jclass arrayClass = NULL;
 
 	arrayClass = (*env)->FindClass(env, className);
-	if (arrayClass == NULL) {
+	if (NULL == arrayClass) {
 		return error;
 	} else {
 		if ((*env)->IsInstanceOf(env, jarray, arrayClass)) {

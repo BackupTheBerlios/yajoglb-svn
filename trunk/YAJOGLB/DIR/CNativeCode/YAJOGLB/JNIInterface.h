@@ -1,7 +1,7 @@
 /*
  * JNIInterface.h 
  *
- * $Id: JNIInterface.h,v 1.5 1998/12/23 00:43:05 razeh Exp $
+ * $Id: JNIInterface.h,v 1.6 1999/01/04 02:05:48 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -22,15 +22,20 @@ jclass getClass(JNIEnv *env,
 		const char *className,      /* The class to lookup. */
 		const char *errorString);   /* The error to print. */
 
+jmethodID getStaticMethodID(JNIEnv *env, jclass class,
+							const char *methodName,
+							const char *methodSignature,
+							const char *errorMessage);
+
 jmethodID getMethodID(JNIEnv *env, jclass class,
-		      const char *methodName,
-		      const char *methodSignature,
-		      const char *errorMessage);
+					  const char *methodName,
+					  const char *methodSignature,
+		              const char *errorMessage);
 
 jmethodID getMethodIDForObject(JNIEnv* env, jobject object,
-			  const char *methodName,
-			  const char *methodSignature,
-			  const char *errorMessage);
+							   const char *methodName,
+							   const char *methodSignature,
+							   const char *errorMessage);
 
 typedef struct _arrayElements {
 	void *arrayElements;
