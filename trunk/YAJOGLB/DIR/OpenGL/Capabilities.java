@@ -1,7 +1,7 @@
 /*
  * OpenGLCapabilities
  *
- * $Id: Capabilities.java,v 1.2 1998/09/10 01:00:51 razeh Exp $
+ * $Id: Capabilities.java,v 1.3 1998/10/04 23:41:47 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -170,5 +170,33 @@ public class OpenGLCapabilities {
    @return An OpenGLCapabilities with 16 bits of color, a 16 bit depth buffer, double buffer and RGBA color. */
   static OpenGLCapabilities defaultCapabilities() {
     return new OpenGLCapabilities(16, 0, 0, 16, 0, RGBA, true);
+  }
+
+  /** Creates a string describing the OpenGLCapabilities object.
+      @return A string describing the OpenGLCapabilities object.
+  */
+  public String toString() {
+    String description;
+
+    description  = "Color depth = " + colorDepth();
+    description += "\nAlpha depth = " + alphaDepth();
+    description += "\nAccumulation buffer depth = " + accumulationDepth();
+    description += "\nDepth buffer depth = " + depthBuffer();
+    description += "\nStencil buffer depth = " + stencilBuffer();
+    description += "\nColor type = ";
+    if (colorType == RGBA) {
+      description += "RGBA";
+    }
+    if (colorType == ColorIndex) {
+      description += "index";
+    }
+    description += "\nDouble buffering is ";
+    if (isDoubleBufferEnabled) {
+      description += "Enabled";
+    } else {
+      description += "Disable";
+    }
+
+    return description;
   }
 }
