@@ -1,5 +1,5 @@
 /*
-  Provides references to items on the C memory heap.
+  Provides access to OpenGL tesselators.
  
   Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
   7346 Lake Street #3W
@@ -25,7 +25,7 @@
 /*
  * OpenGL_OpenGLTesselator.c
  *
- * $Id: OpenGL_GLUTesselator.c,v 1.9 2002/04/14 18:26:46 razeh Exp $
+ * $Id: OpenGL_GLUTesselator.c,v 1.10 2004/02/07 00:50:53 razeh Exp $
  *
  * This implements some of the native methods that are needed to
  * support tesselators.  The primary problem with tesselators is the
@@ -345,10 +345,12 @@ static void CALLBACK vertexData(vertexDataContainer  *vertexDataContainer,
     jobject   vertexData  = vertexDataContainer->vertexData;
     jmethodID methodID    = NULL;
 
-    methodID = getMethodIDForObject(env, jtesselator, "vertex", "(Ljava/lang/Object;Ljava/lang/Object;)V",
+    methodID = getMethodIDForObject(env, jtesselator, "vertex", 
+				    "(Ljava/lang/Object;Ljava/lang/Object;)V",
 				    "Unable to locate the vertex method.");
     if (NULL != methodID) {
-      (*env)->CallVoidMethod(env, jtesselator, methodID, vertexData, polygonData);
+      (*env)->CallVoidMethod(env, jtesselator, methodID, vertexData, 
+			     polygonData);
     }
     (*env)->DeleteLocalRef(env, jtesselator); jtesselator = 0;
   } 
@@ -357,8 +359,10 @@ static void CALLBACK vertexData(vertexDataContainer  *vertexDataContainer,
 
 
 
-static void CALLBACK combineData(GLdouble coords[3], vertexDataContainer *vertexData[4],
-                                 GLfloat weight[4],  vertexDataContainer **outData,
+static void CALLBACK combineData(GLdouble coords[3], 
+				 vertexDataContainer *vertexData[4],
+                                 GLfloat weight[4],  
+				 vertexDataContainer **outData,
                                  polygonDataContainer *polygonDataContainer)
 {
   // Our caller will not halt if we hit an exception, and we do not 
@@ -401,18 +405,22 @@ static void CALLBACK combineData(GLdouble coords[3], vertexDataContainer *vertex
     
     // Invoke the native method.
     if (NULL != methodID) {
-      combinedData = (*env)->CallObjectMethod(env, jtesselator, methodID,
-					      coords[0], coords[1], coords[2],
-					      vertexData0, vertexData1, vertexData2, vertexData3,
-					      weight[0], weight[1], weight[2], weight[3],
-					      polygonDataContainer->polygonData);
+      combinedData = 
+	(*env)->CallObjectMethod(env, jtesselator, methodID,
+				 coords[0], coords[1], coords[2],
+				 vertexData0, vertexData1, 
+				 vertexData2, vertexData3,
+				 weight[0], weight[1], weight[2], 
+				 weight[3],
+				 polygonDataContainer->polygonData);
       
       // Create a new vertex container for combinedData iff
       // our Java method did not return null.
       if (combinedData != NULL) {
 	vertexDataContainer *newContainer = NULL;
 	
-	newContainer = newVertexDataContainer(env, tessContainer, combinedData, NULL);
+	newContainer = newVertexDataContainer(env, tessContainer,
+					      combinedData, NULL);
 	if (NULL != newContainer) {
 	  *outData = newContainer;
 	}
@@ -424,7 +432,8 @@ static void CALLBACK combineData(GLdouble coords[3], vertexDataContainer *vertex
 
 
 /* Implements the edge flag callback. */
-static void CALLBACK edgeFlagData(GLboolean flag, polygonDataContainer *polygonDataContainer)
+static void CALLBACK edgeFlagData(GLboolean flag, 
+				  polygonDataContainer *polygonDataContainer)
 {
   // Our caller will not halt if we hit an exception, and we do not 
   // want to do anything if an exception has been thrown.
@@ -436,7 +445,8 @@ static void CALLBACK edgeFlagData(GLboolean flag, polygonDataContainer *polygonD
     jobject   polygonData = polygonDataContainer->polygonData;
     jmethodID methodID    = NULL;
 
-    methodID = getMethodIDForObject(env, jtesselator, "edgeFlag", "(ZLjava/lang/Object;)V",
+    methodID = getMethodIDForObject(env, jtesselator, "edgeFlag", 
+				    "(ZLjava/lang/Object;)V",
 				    "Unable to locate the edgeFlag method.");
     if (NULL != methodID) {
       (*env)->CallVoidMethod(env, jtesselator, methodID, flag, polygonData);
@@ -463,11 +473,16 @@ JNIEXPORT jlong JNICALL Java_OpenGL_GLUTesselator_newTess
   newTesselator = gluNewTess();
   if (NULL != newTesselator) {
 #ifdef GLU_VERSION_1_2
-    gluTessCallback(newTesselator, GLU_TESS_ERROR_DATA, errorData);
-    gluTessCallback(newTesselator, GLU_TESS_BEGIN_DATA, beginData);
-    gluTessCallback(newTesselator, GLU_TESS_END_DATA, endData);
-    gluTessCallback(newTesselator, GLU_TESS_VERTEX_DATA, vertexData);
-    gluTessCallback(newTesselator, GLU_TESS_COMBINE_DATA, combineData);
+    gluTessCallback(newTesselator, GLU_TESS_ERROR_DATA, 
+		    (_GLUfuncptr) errorData);
+    gluTessCallback(newTesselator, GLU_TESS_BEGIN_DATA, 
+		    (_GLUfuncptr) beginData);
+    gluTessCallback(newTesselator, GLU_TESS_END_DATA, 
+		    (_GLUfuncptr) endData);
+    gluTessCallback(newTesselator, GLU_TESS_VERTEX_DATA, 
+		    (_GLUfuncptr) vertexData);
+    gluTessCallback(newTesselator, GLU_TESS_COMBINE_DATA, 
+		    (_GLUfuncptr) combineData);
     /* We do not add in the edge flag callback, because it
        modifies the behaviour of the tesselator and we allow
        the user to control that. */
@@ -532,11 +547,12 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_beginPolygon
   polygonDataContainer *polygonDataContainer = NULL;
 	
 #ifdef DEBUG
-  printf("beginPolygon %d %p %p\n", (int)tess, container, container->tesselator);
+  printf("beginPolygon %d %p %p\n", (int)tess, container, 
+	 container->tesselator);
 #endif
-  //polygonDataContainer = newPolygonDataContainer(env, container, polygonData);
+  polygonDataContainer = newPolygonDataContainer(env, container, polygonData);
   if (NULL != polygonDataContainer) {
-    //gluTessBeginPolygon(container->tesselator, polygonDataContainer);
+    gluTessBeginPolygon(container->tesselator, polygonDataContainer);
   }
   printf("!beginPolygon %I64d %p %p\n", tess, container, container->tesselator);
 #else
@@ -577,9 +593,9 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_endPolygon
   printf("gluTessEndPolygon %d\n", (int)tess);
   fflush(stdout);
 #endif
-  //gluTessEndPolygon(container->tesselator);
-  //cleanupVertexDataList(env, container);
-  //cleanupPolygonDataContainer(env, container);
+  gluTessEndPolygon(container->tesselator);
+  cleanupVertexDataList(env, container);
+  cleanupPolygonDataContainer(env, container);
 #else
   handleError(env, OPENGL_UNSUPPORTED_METHOD_EXCEPTION,
 	      "endPolygon is not supported by the native OpenGL implementation, which has a tesselator version prior to 1.2");
@@ -617,7 +633,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_contourVertex
   GLdouble            *location            = NULL;
 
 #ifdef DEBUG
-  //printf("contourVertex\n");
+  printf("contourVertex\n");
 #endif
 
   // Map our Java location array into a C heap array.
@@ -635,7 +651,8 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_contourVertex
   // vertex container so that it will stick around for the
   // tesselator calls made out of gluTessEndPolygon().
   if (NULL != vertexDataContainer) {
-    gluTessVertex(tessContainer->tesselator, vertexDataContainer->vertexLocation, 
+    gluTessVertex(tessContainer->tesselator, 
+		  vertexDataContainer->vertexLocation, 
 		  vertexDataContainer);
   }
 
@@ -695,7 +712,8 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_enableEdgeFlag
   printf("enableEdgeFlag\n");
 #endif
 
-  gluTessCallback(container->tesselator, GLU_TESS_EDGE_FLAG_DATA, edgeFlagData);
+  gluTessCallback(container->tesselator, GLU_TESS_EDGE_FLAG_DATA, 
+		  (_GLUfuncptr) edgeFlagData);
 #endif
 }
 
