@@ -1,7 +1,7 @@
 /* 
  * Geometry viewer class
  *
- * $Id: GeometryViewer.java,v 1.4 2001/06/10 19:14:28 razeh Exp $
+ * $Id: GeometryViewer.java,v 1.5 2001/07/04 02:18:01 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -17,13 +17,14 @@ import OpenGL.*;
 
 /** A simple framework for drawing geometry that the user can navigate
  through with the mouse and keyboard.  Only depth testing is enabled
- by default, so lighting has to be handled by the objects (which sr performance purposes, but this is supposed to be just a simple
+ by default, so lighting has to be handled by the objects (which sr
+ performance purposes, but this is supposed to be just a simple
  demo...). */
 
-class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionListener, KeyListener, ComponentListener, GLConstants, GLUConstants {
+class GeometryViewer extends OpenGL.Canvas implements MouseListener, MouseMotionListener, KeyListener, ComponentListener, GLConstants, GLUConstants {
   float[] eyePoint, forwardDirection, sidewaysDirection, 
-        upDirection;
-
+    upDirection;
+    
   /* We use these for changing the view direction with the mouse. */
   float [] startingForwardDirection, startingSidewaysDirection,
     startingUpDirection;
@@ -32,7 +33,7 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
 
   GLU glu = new GLU();
   GL  gl  = new GL();
-  OpenGLContext context;
+  Context context = null;
   Vector renderedObjects = new Vector();
 
   public void addElement(GeometryObject object) {
@@ -80,34 +81,35 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
   public GeometryViewer() {
     addListeners();
     setupViewingParameters();
-    
   }
 
   /** Enable depth testing, and position our viewer. */
-  synchronized public void glInit() {
-    context = new OpenGLContext(this);
-
-    aquireContext();
-
-    gl.enable(DEPTH_TEST);
-
-    /* position viewer */
-    gl.matrixMode(MODELVIEW);
-    gl.translate(0.0f, 0.0f, 0.5f);   
-
-    /* set viewing projection */
-    gl.matrixMode(PROJECTION);
-    gl.frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.5f, 12.0f);
-
-    for (Enumeration e = renderedObjects.elements() ; 
-	 e.hasMoreElements() ;) {
-      GeometryObject g = (GeometryObject)e.nextElement();
-      g.glInit(this, gl, glu);
-    }
-
-    gl.matrixMode(MODELVIEW);
-    releaseContext();
-
+  public void glInit() {
+    try {
+      context = new Context(this);
+      
+      aquireContext();
+      
+      gl.enable(DEPTH_TEST);
+      
+      /* position viewer */
+      gl.matrixMode(MODELVIEW);
+      gl.translate(0.0f, 0.0f, 0.5f);   
+      
+      /* set viewing projection */
+      gl.matrixMode(PROJECTION);
+      gl.frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.5f, 12.0f);
+      
+      for (Enumeration e = renderedObjects.elements() ; 
+	   e.hasMoreElements() ;) {
+	GeometryObject g = (GeometryObject)e.nextElement();
+	g.glInit(this, gl, glu);
+      }
+      
+      gl.matrixMode(MODELVIEW);
+      } finally {
+	releaseContext();
+      }
   }
 
   private void orbitView(float angle) {
@@ -274,7 +276,7 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
       int   deltaX = (e.getX() - startingX);
       int   deltaY = (startingY - e.getY());
       float rotationAngleHorizontal = deltaX / 4.0f, 
-	    rotationAngleVertical   = deltaY / 4.0f;
+	rotationAngleVertical   = deltaY / 4.0f;
 
       forwardDirection = 
 	MatrixModifiers.rotate_point(startingForwardDirection, 
@@ -310,9 +312,10 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
   }
 
   /** Make context the current OpenGL context.  If we fail we just print
-    out the exception and continue on. */
+      out the exception and continue on. */
   protected void aquireContext() {
     try {
+      lockCanvas();
       context.lock();
       context.makeCurrent(this);
     } catch (java.lang.Throwable exception) {
@@ -325,6 +328,7 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
 
   protected void releaseContext() {
     context.unlock();
+    unlockCanvas();
   }
 
   /** When the window is resized we change our viewport to match the
@@ -340,38 +344,48 @@ class GeometryViewer extends OpenGLCanvas implements MouseListener, MouseMotionL
     }
   }
 
+  java.util.Date startDate = null;
+  float paintCount = 0;
   public void paint() {
-    /* Sometimes we get mouse events before our glInit() call, which
-       means that our context will not have been setup yet. */
-    super.paint();
-
     if (context != null) {
-      aquireContext();
+      try {
+	if (startDate == null) {
+	  startDate = new java.util.Date();
+	}
+	paintCount++;
+	aquireContext();
 
-      gl.pushMatrix();
-      gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
-      glu.gluLookAt(eyePoint[0], eyePoint[1], eyePoint[2],
-		    eyePoint[0] + forwardDirection[0],
-		    eyePoint[1] + forwardDirection[1],
-		    eyePoint[2] + forwardDirection[2],
-		    upDirection[0], upDirection[1], upDirection[2]);
+	gl.pushMatrix();
+	gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
+	glu.gluLookAt(eyePoint[0], eyePoint[1], eyePoint[2],
+		      eyePoint[0] + forwardDirection[0],
+		      eyePoint[1] + forwardDirection[1],
+		      eyePoint[2] + forwardDirection[2],
+		      upDirection[0], upDirection[1], upDirection[2]);
       
-      for (Enumeration e = renderedObjects.elements() ; 
-	   e.hasMoreElements() ;) {
-	GeometryObject g = (GeometryObject)e.nextElement();
-	g.paint(this, gl, glu);
+	for (Enumeration e = renderedObjects.elements() ; 
+	     e.hasMoreElements() ;) {
+	  GeometryObject g = (GeometryObject)e.nextElement();
+	  g.paint(this, gl, glu);
+	}
+	gl.popMatrix();
+	swapBuffers();
+	java.util.Date endDate = new java.util.Date();
+	if ((paintCount % 100) == 0) {
+	  System.out.println("frames / second = " +
+			     paintCount /
+			     ((endDate.getTime() - startDate.getTime())/1000.0));
+	  
+	}
+	/* Check for any OpenGL errors. */      
+	int errorNumber = gl.getError();
+	if (errorNumber  != NO_ERROR) {
+	  System.out.println("error = " + errorNumber);
+	  System.out.println("error description = " + glu.gluErrorString(errorNumber));
+	}
+      } finally {
+	releaseContext();
       }
-      gl.popMatrix();
-      swapBuffers();
-
-      /* Check for any OpenGL errors. */      
-      int errorNumber = gl.getError();
-      if (errorNumber  != NO_ERROR) {
-	System.out.println("error = " + errorNumber);
-	System.out.println("error description = " + glu.gluErrorString(errorNumber));
-      }
-      releaseContext();
-
     }
   }
 
