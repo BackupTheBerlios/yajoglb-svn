@@ -1,10 +1,10 @@
 /*
- * OpenGLCapabilitiesAccessors.h
+ * CapabilitiesAccessors.h
  * 
- * $Id: CapabilitiesAccessors.h,v 1.1 1999/02/13 19:29:04 razeh Exp $
+ * $Id: CapabilitiesAccessors.h,v 1.2 2001/08/11 02:14:22 razeh Exp $
  *
  * Copyright 1999
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 #include <jni.h>

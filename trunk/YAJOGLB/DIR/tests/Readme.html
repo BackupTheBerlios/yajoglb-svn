@@ -1,26 +1,28 @@
 <HTML>
 <HEAD>
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
-<META NAME="Generator" CONTENT="Microsoft Word 97">
 <TITLE>TEST README</TITLE>
-<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\HTML.DOT">
 </HEAD>
-<BODY LINK="#0000ff" VLINK="#800080">
+<BODY>
 
-<P>This directory contains tests (mostly taken from various C OpenGL examples) I've used to make sure that my OpenGL bindings are working properly. Currently I don't have anything like complete coverage, but I do have tests for the areas I'm worried about.</P>
-<TABLE BORDER CELLSPACING=1 CELLPADDING=9 WIDTH=794>
+<P>This directory contains tests (mostly taken from various C OpenGL
+examples) I've used to make sure that my OpenGL bindings are working
+properly. Currently I don't have anything close to a complete test
+suite, but I do have tests for the areas I'm worried about.</P>
+<TABLE BORDER>
+
 <TR><TD WIDTH="33%" VALIGN="TOP">
 <DL>
-<DD>Concurrence.java <A HREF="images/Concurrence.jpg"><IMG SRC="images/Concurrence.jpg" BORDER=0 WIDTH=215 HEIGHT=208></A></DD>
+<DD><P>Concurrence.java</P><A HREF="images/Concurrence.jpg"><IMG SRC="images/Concurrence.jpg" BORDER=0 WIDTH=246 HEIGHT=246</A></DD>
 </DL></TD>
 <TD WIDTH="67%" VALIGN="TOP">
 <DL>
-<DD>Tests the binding's ability to render in multiple canvases concurrently. You should see two windows, each one like the image on the left. The red sphere will grow and shrink with time. You can exit the demo by closing the window labeled "Thread-1". The geometry is displayed with the <A HREF="#GeometryViewer">GeometryViewer</A>, so you can move through it with the keyboard and mouse.</DD>
+<DD>Tests the binding's ability to render in multiple canvases concurrently. You should see two windows, each one like the image on the left. The red sphere will grow and shrink with time, and the axis will rotate. You can exit the demo by closing the window labeled "Thread-1". The geometry is displayed with the <A HREF="#GeometryViewer">GeometryViewer</A>, so you can move through it with the keyboard and mouse.</DD>
 </DL></TD>
 </TR>
+
 <TR><TD WIDTH="33%" VALIGN="TOP">
 <DL>
-<DD>FeedbackTest.java <A HREF="images/Feedback.jpg"><IMG SRC="images/Feedback.jpg" BORDER=0 WIDTH=216 HEIGHT=216></A></DD>
+<DD><P>FeedbackTest.java</P><A HREF="images/Feedback.jpg"><IMG SRC="images/Feedback.jpg" BORDER=0 WIDTH=246 HEIGHT=246></A></DD>
 </DL></TD>
 <TD WIDTH="67%" VALIGN="TOP">
 <DL>
@@ -46,16 +48,44 @@ GL_POINT_TOKEN
 </TR>
 <TR><TD WIDTH="33%" VALIGN="TOP">
 <DL>
-<DD>PlainCube.java <A HREF="images/PlainCube.jpg"><IMG SRC="images/PlainCube.jpg" BORDER=0 WIDTH=218 HEIGHT=207></A></DD>
+<DD><P>PlainCube.java</P><A HREF="images/PlainCube.jpg"><IMG SRC="images/PlainCube.jpg" BORDER=0 WIDTH=246 HEIGHT=246></A></DD>
 </DL></TD>
 <TD WIDTH="67%" VALIGN="TOP">
 <DL>
-<DD>Draws a simple lighted plain cube with an axis. The geometry is rendered with a <A HREF="#GeometryViewer">GeometryViewer</A>, so you can move through it with the keyboard and mouse. </DD>
+<DD>Draws a simple lighted plain cube with a marked axis. The geometry is rendered with a <A HREF="#GeometryViewer">GeometryViewer</A>, so you can move through it with the keyboard and mouse. </DD>
 </DL></TD>
 </TR>
 <TR><TD WIDTH="33%" VALIGN="TOP">
 <DL>
-<DD>NurbsSurface.java <A HREF="images/NurbsSurface.jpg"><IMG SRC="images/NurbsSurface.jpg" BORDER=0 WIDTH=218 HEIGHT=207></A></DD>
+<DD>NurbsCallback.java</DD>
+</DL></TD>
+<TD WIDTH="67%" VALIGN="TOP">
+<DL>
+<DD>Tests the nurbs callback functions. It doesn't actually draw anything (although it does pop up an empty window) but instead generates a huge amount of output that describes the picture rendered in NurbsSurface.java:</DD>
+</DL><DIR>
+<DIR>
+
+<PRE>Begin(8)
+normal(0.17479114,-0.20703068,0.96259356)
+vertex(2.8461537,-2.8695652,-2.971309)
+normal(0.3285337,-0.18994243,0.92519593)
+vertex(2.8461537,-2.7391305,-2.9438932)
+normal(0.15648149,-0.38155743,0.91100353)
+vertex(2.6923077,-2.8695652,-2.944128)
+normal(0.29775253,-0.35438827,0.88642675)
+vertex(2.6923077,-2.7391305,-2.8907397)
+normal(0.13688117,-0.5166386,0.8451912)
+vertex(2.5384617,-2.8695652,-2.9184573)
+...</PRE></DIR>
+
+<DL>
+<DD>This example will not work under Linux, because Mesa does not implement the nurbs callback functions.</DD>
+</DL></DIR>
+</TD>
+</TR>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<DL>
+<DD><P>NurbsSurface.java</P> <A HREF="images/NurbsSurface.jpg"><IMG SRC="images/NurbsSurface.jpg" BORDER=0 WIDTH=246 HEIGHT=246></A></DD>
 </DL></TD>
 <TD WIDTH="67%" VALIGN="TOP">
 <DL>
@@ -64,7 +94,7 @@ GL_POINT_TOKEN
 </TR>
 <TR><TD WIDTH="33%" VALIGN="TOP">
 <DL>
-<DD>OpenGLCanvas.java <A HREF="images/OpenGLCanvas.jpg"><IMG SRC="images/OpenGLCanvas.jpg" BORDER=0 WIDTH=218 HEIGHT=85></A></DD>
+<DD><P>OpenGLCanvas.java</P> <A HREF="images/OpenGLCanvas.jpg"><IMG SRC="images/OpenGLCanvas.jpg" BORDER=0 WIDTH=218 HEIGHT=85></A></DD>
 </DL></TD>
 <TD WIDTH="67%" VALIGN="TOP">
 <DL>
@@ -73,7 +103,7 @@ GL_POINT_TOKEN
 </TR>
 <TR><TD WIDTH="33%" VALIGN="TOP">
 <DL>
-<DD>QuadricError.java<A HREF="images/QuadricError.gif"><IMG SRC="images/QuadricError.gif" BORDER=0 WIDTH=215 HEIGHT=205></A></DD>
+<DD><P>QuadricError.java</P><A HREF="images/QuadricError.gif"><IMG SRC="images/QuadricError.gif" BORDER=0 WIDTH=246 HEIGHT=246></A></DD>
 </DL></TD>
 <TD WIDTH="67%" VALIGN="TOP">
 <DL>
@@ -87,7 +117,7 @@ GL_POINT_TOKEN
 </TR>
 <TR><TD WIDTH="33%" VALIGN="TOP">
 <DL>
-<DD>TexturedCube.java <A HREF="images/TexturedCube.jpg"><IMG SRC="images/TexturedCube.jpg" BORDER=0 WIDTH=215 HEIGHT=205></A></DD>
+<DD><P>TexturedCube.java</P> <A HREF="images/TexturedCube.jpg"><IMG SRC="images/TexturedCube.jpg" BORDER=0 WIDTH=246 HEIGHT=246></A></DD>
 </DL></TD>
 <TD WIDTH="67%" VALIGN="TOP">
 <DL>
@@ -96,7 +126,7 @@ GL_POINT_TOKEN
 </TR>
 <TR><TD WIDTH="33%" VALIGN="TOP">
 <DL>
-<DD>VertexPointer.java <A HREF="images/VertexPointer.jpg"><IMG SRC="images/VertexPointer.jpg" BORDER=0 WIDTH=218 HEIGHT=207></A></DD>
+<DD><P>VertexPointer.java</P> <A HREF="images/VertexPointer.jpg"><IMG SRC="images/VertexPointer.jpg" BORDER=0 WIDTH=246 HEIGHT=246></A></DD>
 </DL></TD>
 <TD WIDTH="67%" VALIGN="TOP">
 <DL>
@@ -105,11 +135,10 @@ GL_POINT_TOKEN
 </TR>
 </TABLE>
 
-<DL>
-<DD>&nbsp;</DD>
+<DL><DD>&nbsp;</DD>
 </DL>
 <P><A NAME="GeometryViewer"></A>Most of the demos use the GeometryViewer, which allows you to navigate through the rendered geometry. Dragging the mouse will drag your view along with it, and the keys are set up as follows:</P>
-<P ALIGN="CENTER"><CENTER><TABLE BORDER CELLSPACING=1 WIDTH=798>
+<P ALIGN="CENTER"><CENTER><TABLE BORDER CELLSPACING=1>
 <TR><TD WIDTH="19%" VALIGN="TOP">
 <DL>
 <DD>A </DD>
@@ -179,7 +208,7 @@ GL_POINT_TOKEN
 </DL></TD>
 <TD WIDTH="81%" VALIGN="TOP">
 <DL>
-<DD>write out an uncompressed TGA image of the screen to the file ScreenDump.tga.</DD>
+<DD>write out an uncompressed TGA image of the screen to the supplied filename.</DD>
 </DL></TD>
 </TR>
 <TR><TD WIDTH="19%" VALIGN="TOP">
@@ -221,14 +250,23 @@ GL_POINT_TOKEN
 </TABLE>
 </CENTER></P>
 
-<P ALIGN="CENTER">If you want to run the tests, and have the Java Run Time Environment installed, you need to use a command line something like this:</P>
-<CODE><P>&#9;jre -cp .;.. className</P>
-</CODE><P>The command with just Java installed (in C:\jdk1.1.4 for this example) is a little bit more complicated, because you have to append the base Java libraries to the command path too:</P><DIR>
+<P>If you want to run the tests, and have the Java Run Time Environment installed, you need to use a command line something like this:</P><DIR>
 <DIR>
 
-<CODE><P>java -classpath .;..;C:\jdk1.1.4\lib\classes.zip %1</P></DIR>
+<CODE><P>jre -cp .;.. PlainCube</P></DIR>
 </DIR>
 
-</CODE><P><HR></P>
-<I><P>Last Changed January 25th, 1999.</P></I></BODY>
+</CODE><P>The command with old versions of Java installed (in C:\jdk1.1.4 for this example) is a little bit more complicated, because you have to append the base Java libraries to the command path too:</P><DIR>
+<DIR>
+
+<CODE><P>java -classpath .;..;C:\jdk1.1.4\lib\classes.zip TexturedCube</P></DIR>
+</DIR>
+
+</CODE>
+
+<P> If you have a later version of Java installed (in C:\jdk1.3 for this example) it's as easy as the jre example:</P><DIR>
+<CODE><P>java -cp .;.. Concurrence</P></DIR>
+
+<P><HR></P>
+<I><P>Last Changed June 10th, 2001.</P></I></BODY>
 </HTML>
