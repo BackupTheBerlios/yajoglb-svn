@@ -1,0 +1,1814 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 39;
+	objects = {
+		00E6828EFEC88D1A11DB9C8B = {
+			buildSettings = {
+			};
+			buildStyles = (
+				130F8B95001BDF0A11CA292A,
+				130F8B96001BDF0A11CA292A,
+			);
+			hasScannedForEncodings = 1;
+			isa = PBXProject;
+			mainGroup = 00E6828FFEC88D1A11DB9C8B;
+			productRefGroup = 0120612AFEC8923411DB9C8B;
+			projectDirPath = "";
+			targets = (
+				6A9FA557024694440CC91562,
+				6A9FA55B024695C00CC91562,
+				6A9FA570024696E90CC91562,
+			);
+		};
+		00E6828FFEC88D1A11DB9C8B = {
+			children = (
+				0432618706CA1E410085DF23,
+				0432618406CA1E0E0085DF23,
+				0432618106CA1DF80085DF23,
+				04A6A8C406C9F0B200373E67,
+				04A6A8C306C9F0A600373E67,
+				04A6A8A406C9F01C00373E67,
+				0120612AFEC8923411DB9C8B,
+			);
+			isa = PBXGroup;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+//000
+//001
+//002
+//003
+//004
+//010
+//011
+//012
+//013
+//014
+		0120612AFEC8923411DB9C8B = {
+			children = (
+				6A9FA571024696E90CC91562,
+				0432607C06CA170F0085DF23,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+//010
+//011
+//012
+//013
+//014
+//040
+//041
+//042
+//043
+//044
+		042872B006C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CallbackObject.h;
+			path = ../CNativeCode/YAJOGLB/CallbackObject.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872B106C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = win32DCDictionary.h;
+			path = ../CNativeCode/YAJOGLB/win32DCDictionary.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872B206C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = win32DCDictionary.c;
+			path = ../CNativeCode/YAJOGLB/win32DCDictionary.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872B306C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = win32_OpenGL_GL.c;
+			path = ../CNativeCode/YAJOGLB/win32_OpenGL_GL.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872B406C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = win32_OpenGL_Context.c;
+			path = ../CNativeCode/YAJOGLB/win32_OpenGL_Context.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872B506C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = win32_OpenGL_Canvas.c;
+			path = ../CNativeCode/YAJOGLB/win32_OpenGL_Canvas.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872B606C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SystemIncludes.h;
+			path = ../CNativeCode/YAJOGLB/SystemIncludes.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872B706C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SystemError.h;
+			path = ../CNativeCode/YAJOGLB/SystemError.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872B806C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = CapabilitiesAccessors.h;
+			path = ../CNativeCode/YAJOGLB/CapabilitiesAccessors.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872B906C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = CapabilitiesAccessors.c;
+			path = ../CNativeCode/YAJOGLB/CapabilitiesAccessors.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872BA06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_GLFeedbackBuffer.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLFeedbackBuffer.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872BB06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = CallbackObject.c;
+			path = ../CNativeCode/YAJOGLB/CallbackObject.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872BC06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_GLNativeIntArray.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLNativeIntArray.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872BD06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_GLVertexPointer.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLVertexPointer.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872BE06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = win32SystemError.c;
+			path = ../CNativeCode/YAJOGLB/win32SystemError.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872BF06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = win32Memory.c;
+			path = ../CNativeCode/YAJOGLB/win32Memory.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872C006C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = win32Init.c;
+			path = ../CNativeCode/YAJOGLB/win32Init.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872C306C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_GLSelectionBuffer.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLSelectionBuffer.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872C406C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_GLNativeIntArray.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLNativeIntArray.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872C506C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_GLNativeFloatArray.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLNativeFloatArray.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872C606C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_GLFeedbackBuffer.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLFeedbackBuffer.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872C706C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_GL.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GL.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872C806C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_Canvas.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_Canvas.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872C906C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_CallbackObject.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_CallbackObject.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872CA06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = Memory.h;
+			path = ../CNativeCode/YAJOGLB/Memory.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872CB06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = linuxSystemError.c;
+			path = ../CNativeCode/YAJOGLB/linuxSystemError.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872CC06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = linuxMemory.c;
+			path = ../CNativeCode/YAJOGLB/linuxMemory.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872CE06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = linuxDPYDictionary.h;
+			path = ../CNativeCode/YAJOGLB/linuxDPYDictionary.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872CF06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = linuxDPYDictionary.c;
+			path = ../CNativeCode/YAJOGLB/linuxDPYDictionary.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872D006C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = linux_OpenGL_GL.c;
+			path = ../CNativeCode/YAJOGLB/linux_OpenGL_GL.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872D106C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = linux_OpenGL_Context.c;
+			path = ../CNativeCode/YAJOGLB/linux_OpenGL_Context.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872D206C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = linux_OpenGL_Canvas.c;
+			path = ../CNativeCode/YAJOGLB/linux_OpenGL_Canvas.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872D306C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = JNIInterface.h;
+			path = ../CNativeCode/YAJOGLB/JNIInterface.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872D406C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = JNIInterface.c;
+			path = ../CNativeCode/YAJOGLB/JNIInterface.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872D506C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = ErrorHandling.h;
+			path = ../CNativeCode/YAJOGLB/ErrorHandling.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872D606C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = ErrorHandling.c;
+			path = ../CNativeCode/YAJOGLB/ErrorHandling.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872D706C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = EnvDictionary.h;
+			path = ../CNativeCode/YAJOGLB/EnvDictionary.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872D806C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = cygnusFixes.h;
+			path = ../CNativeCode/YAJOGLB/cygnusFixes.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872D906C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_GL.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GL.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872DA06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_GLVertexPointer.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLVertexPointer.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872DB06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_GLUTesselator.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLUTesselator.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872DC06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_GLUQuadric.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLUQuadric.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872DD06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_GLUNurbs.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLUNurbs.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872DE06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = OpenGL_GLU.c;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLU.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872DF06C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_GLNativeFloatArray.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLNativeFloatArray.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872E006C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_GLUNurbs.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLUNurbs.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872E106C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_CallbackObject.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_CallbackObject.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872E206C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_GLU.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLU.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872E306C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_GLSelectionBuffer.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLSelectionBuffer.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872E406C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_GLUTesselator.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLUTesselator.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872E506C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_Canvas.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_Canvas.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872E606C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_Context.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_Context.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872E706C9F38C0064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = OpenGL_GLUQuadric.h;
+			path = ../CNativeCode/YAJOGLB/OpenGL_GLUQuadric.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872E806C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = Canvas.java;
+			path = ../OpenGL/Canvas.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872E906C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = Context.java;
+			path = ../OpenGL/Context.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872EA06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = CHeapItem.java;
+			path = ../OpenGL/CHeapItem.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872EB06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = CallbackObject.java;
+			path = ../OpenGL/CallbackObject.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872EC06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = Capabilities.java;
+			path = ../OpenGL/Capabilities.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872ED06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = CanvasSetupFailedException.java;
+			path = ../OpenGL/CanvasSetupFailedException.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872EE06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLUQuadric.java;
+			path = ../OpenGL/GLUQuadric.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872EF06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLUNurbs.java;
+			path = ../OpenGL/GLUNurbs.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872F006C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLUConstants.java;
+			path = ../OpenGL/GLUConstants.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872F106C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLU.java;
+			path = ../OpenGL/GLU.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872F206C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLSelectionBuffer.java;
+			path = ../OpenGL/GLSelectionBuffer.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872F306C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLNativeIntArray.java;
+			path = ../OpenGL/GLNativeIntArray.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872F406C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLNativeFloatArray.java;
+			path = ../OpenGL/GLNativeFloatArray.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872F506C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLNativeArray.java;
+			path = ../OpenGL/GLNativeArray.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872F606C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLFeedbackBuffer.java;
+			path = ../OpenGL/GLFeedbackBuffer.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872F706C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLConstants.java;
+			path = ../OpenGL/GLConstants.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872F806C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GL.java;
+			path = ../OpenGL/GL.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872F906C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = ContextException.java;
+			path = ../OpenGL/ContextException.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872FA06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = UnsupportedMethodException.java;
+			path = ../OpenGL/UnsupportedMethodException.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872FB06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = TGAFile.java;
+			path = ../OpenGL/TGAFile.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872FC06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = TextureHelp.java;
+			path = ../OpenGL/TextureHelp.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872FD06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = OpenGLpDataAccess.java;
+			path = ../OpenGL/OpenGLpDataAccess.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872FE06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = NativePackageLoader.java;
+			path = ../OpenGL/NativePackageLoader.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		042872FF06C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = NativeMemoryExhaustedException.java;
+			path = ../OpenGL/NativeMemoryExhaustedException.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		0428730006C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = NativeException.java;
+			path = ../OpenGL/NativeException.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		0428730106C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLVertexPointer.java;
+			path = ../OpenGL/GLVertexPointer.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		0428730206C9F3C40064D34C = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.java;
+			name = GLUTesselator.java;
+			path = ../OpenGL/GLUTesselator.java;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		0428730306C9F3C40064D34C = {
+			fileRef = 042872E806C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730406C9F3C40064D34C = {
+			fileRef = 042872E906C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730506C9F3C40064D34C = {
+			fileRef = 042872EA06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730606C9F3C40064D34C = {
+			fileRef = 042872EB06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730706C9F3C40064D34C = {
+			fileRef = 042872EC06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730806C9F3C40064D34C = {
+			fileRef = 042872ED06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730906C9F3C40064D34C = {
+			fileRef = 042872EE06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730A06C9F3C40064D34C = {
+			fileRef = 042872EF06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730B06C9F3C40064D34C = {
+			fileRef = 042872F006C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730C06C9F3C40064D34C = {
+			fileRef = 042872F106C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730D06C9F3C40064D34C = {
+			fileRef = 042872F206C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730E06C9F3C40064D34C = {
+			fileRef = 042872F306C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428730F06C9F3C40064D34C = {
+			fileRef = 042872F406C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731006C9F3C40064D34C = {
+			fileRef = 042872F506C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731106C9F3C40064D34C = {
+			fileRef = 042872F606C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731206C9F3C40064D34C = {
+			fileRef = 042872F706C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731306C9F3C40064D34C = {
+			fileRef = 042872F806C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731406C9F3C40064D34C = {
+			fileRef = 042872F906C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731506C9F3C40064D34C = {
+			fileRef = 042872FA06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731606C9F3C40064D34C = {
+			fileRef = 042872FB06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731706C9F3C40064D34C = {
+			fileRef = 042872FC06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731806C9F3C40064D34C = {
+			fileRef = 042872FD06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731906C9F3C40064D34C = {
+			fileRef = 042872FE06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731A06C9F3C40064D34C = {
+			fileRef = 042872FF06C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731B06C9F3C40064D34C = {
+			fileRef = 0428730006C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731C06C9F3C40064D34C = {
+			fileRef = 0428730106C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0428731D06C9F3C40064D34C = {
+			fileRef = 0428730206C9F3C40064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432607C06CA170F0085DF23 = {
+			explicitFileType = "compiled.mach-o.dylib";
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = YAJOGLB.jar;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0432608706CA18020085DF23 = {
+			fileRef = 042872BB06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432608806CA18020085DF23 = {
+			fileRef = 042872B906C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432608906CA18020085DF23 = {
+			fileRef = 042872D606C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432608A06CA18020085DF23 = {
+			fileRef = 042872D406C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609006CA18020085DF23 = {
+			fileRef = 042872CC06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609106CA18020085DF23 = {
+			fileRef = 042872CB06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609206CA18020085DF23 = {
+			fileRef = 042872C906C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609306CA18020085DF23 = {
+			fileRef = 042872C806C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609406CA18020085DF23 = {
+			fileRef = 042872C706C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609506CA18020085DF23 = {
+			fileRef = 042872C606C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609606CA18020085DF23 = {
+			fileRef = 042872C506C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609706CA18020085DF23 = {
+			fileRef = 042872C406C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609806CA18020085DF23 = {
+			fileRef = 042872C306C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609906CA18020085DF23 = {
+			fileRef = 042872DE06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609A06CA18020085DF23 = {
+			fileRef = 042872DD06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609B06CA18020085DF23 = {
+			fileRef = 042872DC06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609C06CA18020085DF23 = {
+			fileRef = 042872DB06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432609D06CA18020085DF23 = {
+			fileRef = 042872DA06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260A606CA18100085DF23 = {
+			fileRef = 042872B006C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260A706CA18100085DF23 = {
+			fileRef = 042872B806C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260A806CA18100085DF23 = {
+			fileRef = 042872D806C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260A906CA18100085DF23 = {
+			fileRef = 042872D706C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260AA06CA18100085DF23 = {
+			fileRef = 042872D506C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260AB06CA18100085DF23 = {
+			fileRef = 042872D306C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260AD06CA18100085DF23 = {
+			fileRef = 042872CA06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260AE06CA18100085DF23 = {
+			fileRef = 042872E106C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260AF06CA18100085DF23 = {
+			fileRef = 042872E506C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260B006CA18100085DF23 = {
+			fileRef = 042872E606C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260B106CA18100085DF23 = {
+			fileRef = 042872D906C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260B206CA18100085DF23 = {
+			fileRef = 042872BA06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260B306CA18100085DF23 = {
+			fileRef = 042872DF06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260B406CA18100085DF23 = {
+			fileRef = 042872BC06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260B506CA18100085DF23 = {
+			fileRef = 042872E306C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260B606CA18100085DF23 = {
+			fileRef = 042872E206C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260B706CA18100085DF23 = {
+			fileRef = 042872E006C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260B806CA18100085DF23 = {
+			fileRef = 042872E706C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260B906CA18100085DF23 = {
+			fileRef = 042872E406C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260BA06CA18100085DF23 = {
+			fileRef = 042872BD06C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260BB06CA18100085DF23 = {
+			fileRef = 042872B706C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043260BC06CA18100085DF23 = {
+			fileRef = 042872B606C9F38C0064D34C;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432618106CA1DF80085DF23 = {
+			children = (
+				042872D206C9F38C0064D34C,
+				042872D106C9F38C0064D34C,
+				042872D006C9F38C0064D34C,
+				042872CF06C9F38C0064D34C,
+				042872CE06C9F38C0064D34C,
+				042872CC06C9F38C0064D34C,
+				042872CB06C9F38C0064D34C,
+			);
+			isa = PBXGroup;
+			name = linux;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		0432618406CA1E0E0085DF23 = {
+			children = (
+				042872B506C9F38C0064D34C,
+				042872B406C9F38C0064D34C,
+				042872B306C9F38C0064D34C,
+				042872B206C9F38C0064D34C,
+				042872B106C9F38C0064D34C,
+				042872C006C9F38C0064D34C,
+				042872BF06C9F38C0064D34C,
+				042872BE06C9F38C0064D34C,
+			);
+			isa = PBXGroup;
+			name = win32;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		0432618706CA1E410085DF23 = {
+			children = (
+				043263DF06CA433C0085DF23,
+				043263E006CA433C0085DF23,
+				043261EE06CA282D0085DF23,
+				043261EF06CA282D0085DF23,
+				043261AE06CA24850085DF23,
+			);
+			isa = PBXGroup;
+			name = MacOSX;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		043261AE06CA24850085DF23 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = macosx_OpenGL_GL.m;
+			path = ../CNativeCode/YAJOGLB/macosx_OpenGL_GL.m;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		043261AF06CA24850085DF23 = {
+			fileRef = 043261AE06CA24850085DF23;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043261EE06CA282D0085DF23 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = macosx_OpenGL_Canvas.m;
+			path = ../CNativeCode/YAJOGLB/macosx_OpenGL_Canvas.m;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		043261EF06CA282D0085DF23 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = macosx_OpenGL_Context.m;
+			path = ../CNativeCode/YAJOGLB/macosx_OpenGL_Context.m;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		043261F006CA282D0085DF23 = {
+			fileRef = 043261EE06CA282D0085DF23;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043261F106CA282D0085DF23 = {
+			fileRef = 043261EF06CA282D0085DF23;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043262D106CA36CA0085DF23 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = ApplicationServices.framework;
+			path = /System/Library/Frameworks/ApplicationServices.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		043262D206CA36CA0085DF23 = {
+			fileRef = 043262D106CA36CA0085DF23;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		043263DF06CA433C0085DF23 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = macosx_CanvasInfo.m;
+			path = ../CNativeCode/YAJOGLB/macosx_CanvasInfo.m;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		043263E006CA433C0085DF23 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = macosx_CanvasInfo.h;
+			path = ../CNativeCode/YAJOGLB/macosx_CanvasInfo.h;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		0432644306CA470D0085DF23 = {
+			fileRef = 043263DF06CA433C0085DF23;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0432644B06CA47410085DF23 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = AppKit.framework;
+			path = /System/Library/Frameworks/AppKit.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		0432644C06CA47410085DF23 = {
+			fileRef = 0432644B06CA47410085DF23;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0442195E06CD03C100B20DC9 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/YAJOGLB.jar",
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+				../CNativeCode/YAJOGLB/OpenGL_Canvas.h,
+				../CNativeCode/YAJOGLB/OpenGL_Context.h,
+				../CNativeCode/YAJOGLB/OpenGL_GLUQuadric.h,
+				../CNativeCode/YAJOGLB/OpenGL_GLUNurbs.h,
+				../CNativeCode/YAJOGLB/OpenGL_GLUTesselator.h,
+				../CNativeCode/YAJOGLB/OpenGL_GLU.h,
+				../CNativeCode/YAJOGLB/OpenGL_GL.h,
+				../CNativeCode/YAJOGLB/OpenGL_GLVertexPointer.h,
+				../CNativeCode/YAJOGLB/OpenGL_GLFeedbackBuffer.h,
+				../CNativeCode/YAJOGLB/OpenGL_CallbackObject.h,
+				../CNativeCode/YAJOGLB/OpenGL_GLNativeFloatArray.h,
+				../CNativeCode/YAJOGLB/OpenGL_GLNativeintArray.h,
+				../CNativeCode/YAJOGLB/OpenGL_GLSelectionBuffer.h,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "javah -classpath \"${BUILT_PRODUCTS_DIR}/YAJOGLB.jar\" -force -d \"../CNativeCode/YAJOGLB\" OpenGL.GLUQuadric OpenGL.GLUNurbs OpenGL.Context OpenGL.GLUTesselator OpenGL.GLU OpenGL.GL OpenGL.GLVertexPointer OpenGL.Canvas OpenGL.GLFeedbackBuffer OpenGL.CallbackObject OpenGL.GLNativeFloatArray OpenGL.GLNativeIntArray OpenGL.GLSelectionBuffer\n";
+		};
+		04A6A8A406C9F01C00373E67 = {
+			children = (
+				04F589CE06CBA32A00A0038F,
+				0432644B06CA47410085DF23,
+				043262D106CA36CA0085DF23,
+				04A6A8AA06C9F03B00373E67,
+				6AE2200B0208CA9C0CC91562,
+			);
+			isa = PBXGroup;
+			name = Frameworks;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		04A6A8AA06C9F03B00373E67 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = OpenGL.framework;
+			path = /System/Library/Frameworks/OpenGL.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		04A6A8C206C9F09300373E67 = {
+			fileRef = 04A6A8AA06C9F03B00373E67;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		04A6A8C306C9F0A600373E67 = {
+			children = (
+				042872BB06C9F38C0064D34C,
+				042872B006C9F38C0064D34C,
+				042872B906C9F38C0064D34C,
+				042872B806C9F38C0064D34C,
+				042872D806C9F38C0064D34C,
+				04F588A706CB6A9C00A0038F,
+				042872D706C9F38C0064D34C,
+				042872D606C9F38C0064D34C,
+				042872D506C9F38C0064D34C,
+				042872D406C9F38C0064D34C,
+				042872D306C9F38C0064D34C,
+				042872CA06C9F38C0064D34C,
+				042872C906C9F38C0064D34C,
+				042872E106C9F38C0064D34C,
+				042872C806C9F38C0064D34C,
+				042872E506C9F38C0064D34C,
+				042872E606C9F38C0064D34C,
+				042872C706C9F38C0064D34C,
+				042872D906C9F38C0064D34C,
+				042872C606C9F38C0064D34C,
+				042872BA06C9F38C0064D34C,
+				042872C506C9F38C0064D34C,
+				042872DF06C9F38C0064D34C,
+				042872C406C9F38C0064D34C,
+				042872BC06C9F38C0064D34C,
+				042872C306C9F38C0064D34C,
+				042872E306C9F38C0064D34C,
+				042872DE06C9F38C0064D34C,
+				042872E206C9F38C0064D34C,
+				042872DD06C9F38C0064D34C,
+				042872E006C9F38C0064D34C,
+				042872DC06C9F38C0064D34C,
+				042872E706C9F38C0064D34C,
+				042872DB06C9F38C0064D34C,
+				042872E406C9F38C0064D34C,
+				042872DA06C9F38C0064D34C,
+				042872BD06C9F38C0064D34C,
+				042872B706C9F38C0064D34C,
+				042872B606C9F38C0064D34C,
+			);
+			isa = PBXGroup;
+			name = C;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		04A6A8C406C9F0B200373E67 = {
+			children = (
+				042872EB06C9F3C40064D34C,
+				042872E806C9F3C40064D34C,
+				042872ED06C9F3C40064D34C,
+				042872EC06C9F3C40064D34C,
+				042872EA06C9F3C40064D34C,
+				042872E906C9F3C40064D34C,
+				042872F906C9F3C40064D34C,
+				042872F806C9F3C40064D34C,
+				042872F706C9F3C40064D34C,
+				042872F606C9F3C40064D34C,
+				042872F506C9F3C40064D34C,
+				042872F406C9F3C40064D34C,
+				042872F306C9F3C40064D34C,
+				042872F206C9F3C40064D34C,
+				042872F106C9F3C40064D34C,
+				042872F006C9F3C40064D34C,
+				042872EF06C9F3C40064D34C,
+				042872EE06C9F3C40064D34C,
+				0428730206C9F3C40064D34C,
+				0428730106C9F3C40064D34C,
+				0428730006C9F3C40064D34C,
+				042872FF06C9F3C40064D34C,
+				042872FE06C9F3C40064D34C,
+				042872FD06C9F3C40064D34C,
+				042872FC06C9F3C40064D34C,
+				042872FB06C9F3C40064D34C,
+				042872FA06C9F3C40064D34C,
+			);
+			isa = PBXGroup;
+			name = Java;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		04F588A706CB6A9C00A0038F = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.c;
+			name = EnvDictionary.c;
+			path = ../CNativeCode/YAJOGLB/EnvDictionary.c;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		04F588A806CB6A9C00A0038F = {
+			fileRef = 04F588A706CB6A9C00A0038F;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		04F589CE06CBA32A00A0038F = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Foundation.framework;
+			path = /System/Library/Frameworks/Foundation.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		04F589CF06CBA32A00A0038F = {
+			fileRef = 04F589CE06CBA32A00A0038F;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+//040
+//041
+//042
+//043
+//044
+//130
+//131
+//132
+//133
+//134
+		130F8B95001BDF0A11CA292A = {
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ZERO_LINK = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		130F8B96001BDF0A11CA292A = {
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				ZERO_LINK = NO;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+//130
+//131
+//132
+//133
+//134
+//360
+//361
+//362
+//363
+//364
+		36ABB269061E0EED00C43093 = {
+			containerPortal = 00E6828EFEC88D1A11DB9C8B;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = 6A9FA570024696E90CC91562;
+			remoteInfo = JNILib;
+		};
+		36ABB26B061E0EED00C43093 = {
+			containerPortal = 00E6828EFEC88D1A11DB9C8B;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = 6A9FA55B024695C00CC91562;
+			remoteInfo = JNIWrapper;
+		};
+//360
+//361
+//362
+//363
+//364
+//6A0
+//6A1
+//6A2
+//6A3
+//6A4
+		6A9FA557024694440CC91562 = {
+			buildPhases = (
+			);
+			buildSettings = {
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = YAJOGLB;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+				6A9FA55D024695C10CC91562,
+				6A9FA5910246996C0CC91562,
+			);
+			isa = PBXAggregateTarget;
+			name = YAJOGLB;
+			productName = JNIApplication;
+		};
+		6A9FA558024695C00CC91562 = {
+			buildActionMask = 2147483647;
+			files = (
+				0428730306C9F3C40064D34C,
+				0428730406C9F3C40064D34C,
+				0428730506C9F3C40064D34C,
+				0428730606C9F3C40064D34C,
+				0428730706C9F3C40064D34C,
+				0428730806C9F3C40064D34C,
+				0428730906C9F3C40064D34C,
+				0428730A06C9F3C40064D34C,
+				0428730B06C9F3C40064D34C,
+				0428730C06C9F3C40064D34C,
+				0428730D06C9F3C40064D34C,
+				0428730E06C9F3C40064D34C,
+				0428730F06C9F3C40064D34C,
+				0428731006C9F3C40064D34C,
+				0428731106C9F3C40064D34C,
+				0428731206C9F3C40064D34C,
+				0428731306C9F3C40064D34C,
+				0428731406C9F3C40064D34C,
+				0428731506C9F3C40064D34C,
+				0428731606C9F3C40064D34C,
+				0428731706C9F3C40064D34C,
+				0428731806C9F3C40064D34C,
+				0428731906C9F3C40064D34C,
+				0428731A06C9F3C40064D34C,
+				0428731B06C9F3C40064D34C,
+				0428731C06C9F3C40064D34C,
+				0428731D06C9F3C40064D34C,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A9FA559024695C00CC91562 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXJavaArchiveBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A9FA55A024695C00CC91562 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A9FA55B024695C00CC91562 = {
+			buildPhases = (
+				6A9FA558024695C00CC91562,
+				6A9FA559024695C00CC91562,
+				6A9FA55A024695C00CC91562,
+				0442195E06CD03C100B20DC9,
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				INSTALL_PATH = /Library/Java/Extensions;
+				JAVA_ARCHIVE_COMPRESSION = YES;
+				JAVA_ARCHIVE_TYPE = JAR;
+				JAVA_COMPILER = /usr/bin/javac;
+				JAVA_SOURCE_SUBDIR = .;
+				LIBRARY_STYLE = STATIC;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOL_FLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = YAJOGLB;
+				PURE_JAVA = YES;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXLibraryTarget;
+			name = JNIJar;
+			productInstallPath = /Library/Java/Extensions;
+			productName = JNIWrapper;
+			productReference = 0432607C06CA170F0085DF23;
+		};
+		6A9FA55D024695C10CC91562 = {
+			isa = PBXTargetDependency;
+			target = 6A9FA55B024695C00CC91562;
+			targetProxy = 36ABB26B061E0EED00C43093;
+		};
+		6A9FA56C024696E90CC91562 = {
+			buildActionMask = 2147483647;
+			files = (
+				043260A606CA18100085DF23,
+				043260A706CA18100085DF23,
+				043260A806CA18100085DF23,
+				043260A906CA18100085DF23,
+				043260AA06CA18100085DF23,
+				043260AB06CA18100085DF23,
+				043260AD06CA18100085DF23,
+				043260AE06CA18100085DF23,
+				043260AF06CA18100085DF23,
+				043260B006CA18100085DF23,
+				043260B106CA18100085DF23,
+				043260B206CA18100085DF23,
+				043260B306CA18100085DF23,
+				043260B406CA18100085DF23,
+				043260B506CA18100085DF23,
+				043260B606CA18100085DF23,
+				043260B706CA18100085DF23,
+				043260B806CA18100085DF23,
+				043260B906CA18100085DF23,
+				043260BA06CA18100085DF23,
+				043260BB06CA18100085DF23,
+				043260BC06CA18100085DF23,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A9FA56D024696E90CC91562 = {
+			buildActionMask = 2147483647;
+			files = (
+				0432644306CA470D0085DF23,
+				0432608706CA18020085DF23,
+				0432608806CA18020085DF23,
+				0432608906CA18020085DF23,
+				0432608A06CA18020085DF23,
+				0432609006CA18020085DF23,
+				0432609106CA18020085DF23,
+				0432609206CA18020085DF23,
+				0432609306CA18020085DF23,
+				0432609406CA18020085DF23,
+				0432609506CA18020085DF23,
+				0432609606CA18020085DF23,
+				0432609706CA18020085DF23,
+				0432609806CA18020085DF23,
+				0432609906CA18020085DF23,
+				0432609A06CA18020085DF23,
+				0432609B06CA18020085DF23,
+				0432609C06CA18020085DF23,
+				0432609D06CA18020085DF23,
+				043261AF06CA24850085DF23,
+				043261F006CA282D0085DF23,
+				043261F106CA282D0085DF23,
+				04F588A806CB6A9C00A0038F,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A9FA56E024696E90CC91562 = {
+			buildActionMask = 2147483647;
+			files = (
+				04A6A8C206C9F09300373E67,
+				6A9FA587024697120CC91562,
+				043262D206CA36CA0085DF23,
+				0432644C06CA47410085DF23,
+				04F589CF06CBA32A00A0038F,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A9FA56F024696E90CC91562 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6A9FA570024696E90CC91562 = {
+			buildPhases = (
+				6A9FA56C024696E90CC91562,
+				6A9FA56D024696E90CC91562,
+				6A9FA56E024696E90CC91562,
+				6A9FA56F024696E90CC91562,
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				HEADER_SEARCH_PATHS = "\"${OBJROOT}/Headers\" \"$(SYSTEM_LIBRARY_DIR)/Frameworks/JavaVM.framework/Headers\"";
+				INSTALL_PATH = /Library/Java/Extensions;
+				LIBRARY_STYLE = DYNAMIC;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOL_FLAGS = "";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = libYAJOGLB.jnilib;
+				REZ_EXECUTABLE = YES;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+			};
+			dependencies = (
+			);
+			isa = PBXLibraryTarget;
+			name = JNILib;
+			productInstallPath = /Library/Java/Extensions;
+			productName = ExampleJNILib;
+			productReference = 6A9FA571024696E90CC91562;
+		};
+		6A9FA571024696E90CC91562 = {
+			explicitFileType = "compiled.mach-o.dylib";
+			isa = PBXFileReference;
+			path = libYAJOGLB.jnilib;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6A9FA587024697120CC91562 = {
+			fileRef = 6AE2200B0208CA9C0CC91562;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		6A9FA5910246996C0CC91562 = {
+			isa = PBXTargetDependency;
+			target = 6A9FA570024696E90CC91562;
+			targetProxy = 36ABB269061E0EED00C43093;
+		};
+		6AE2200B0208CA9C0CC91562 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = JavaVM.framework;
+			path = /System/Library/Frameworks/JavaVM.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+	};
+	rootObject = 00E6828EFEC88D1A11DB9C8B;
+}
