@@ -4,9 +4,12 @@
 
 #--identification------------------------------------------------------
 
-# $Id: mklib.linux,v 1.1 1999/02/13 18:50:36 razeh Exp $
+# $Id: mklib.linux,v 1.2 1999/05/03 01:01:17 razeh Exp $
 
 # $Log: mklib.linux,v $
+# Revision 1.2  1999/05/03 01:01:17  razeh
+# Added the thread libraries and Mesa libraries.
+#
 # Revision 1.1  1999/02/13 18:50:36  razeh
 # Initial revision
 #
@@ -45,7 +48,7 @@ ARNAME=`basename $LIBNAME .so`.a
 DIRNAME=`dirname $LIBRARY`
 
 gcc -shared -Wl,-soname,${LIBNAME}.${MAJOR} -o \
-    ${LIBRARY}.${VERSION} ${OBJECTS} -lGL -lGLU
+    ${LIBRARY}.${VERSION} ${OBJECTS} -L/usr/X11R6/lib -lpthread -lMesaGL -lMesaGLU
 (cd $DIRNAME; ln -s ${LIBNAME}.${VERSION} ${LIBNAME}.${MAJOR})
 
 ln -s ${LIBNAME}.${MAJOR} ${LIBRARY}
