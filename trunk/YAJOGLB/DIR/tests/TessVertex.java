@@ -1,10 +1,10 @@
 /*
  * Tess.java
  *
- * $Id: TessVertex.java,v 1.3 1999/01/27 00:02:07 razeh Exp $
+ * $Id: TessVertex.java,v 1.4 2001/06/10 19:16:57 razeh Exp $
  *
  * Taken from the C source inside the redbook examples in glut-3.6.
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 import OpenGL.*;

@@ -1,11 +1,11 @@
 /*
  * OpenGLCanvasTest class
  *
- * $Id: Stretch.java,v 1.5 1999/05/02 23:31:00 razeh Exp $
+ * $Id: Stretch.java,v 1.6 2001/06/10 19:16:45 razeh Exp $
  * 
  * Copyright 1998
  *
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 

@@ -1,10 +1,10 @@
 /*
  * Plain cube
  *
- * $Id: PlainCube.java,v 1.4 1999/05/02 23:32:52 razeh Exp $
+ * $Id: PlainCube.java,v 1.5 2001/06/10 19:15:39 razeh Exp $
  * 
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 import OpenGL.*;

@@ -1,10 +1,10 @@
 /*
  * Selection test
  *
- * $Id: Select.java,v 1.1 1999/01/27 00:02:07 razeh Exp $
+ * $Id: Select.java,v 1.2 2001/06/10 19:16:09 razeh Exp $
  *
  * Copyright 1999
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 

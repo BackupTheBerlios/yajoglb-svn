@@ -1,10 +1,10 @@
 /* 
  * Geometry viewer class
  *
- * $Id: GeometryViewer.java,v 1.3 1999/05/02 23:34:13 razeh Exp $
+ * $Id: GeometryViewer.java,v 1.4 2001/06/10 19:14:28 razeh Exp $
  *
  * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 import java.math.*;

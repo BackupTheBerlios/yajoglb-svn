@@ -1,11 +1,11 @@
 /*
  * NurbsCallback class
  *
- * $Id: NurbsCallback.java,v 1.4 1999/05/08 20:32:48 razeh Exp $
+ * $Id: NurbsCallback.java,v 1.5 2001/06/10 19:15:06 razeh Exp $
  *
  * Copyright 1998
  *
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  *
  * Used to test callbacks within NURBS.
  *

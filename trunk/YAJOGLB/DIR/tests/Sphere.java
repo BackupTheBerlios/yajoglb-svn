@@ -1,11 +1,11 @@
 /*
  * Sphere
  *
- * $Id: Sphere.java,v 1.3 1999/01/27 00:02:07 razeh Exp $
+ * $Id: Sphere.java,v 1.4 2001/06/10 19:16:35 razeh Exp $
  *
  * Copyright 1998
  *
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  *
  *
  */

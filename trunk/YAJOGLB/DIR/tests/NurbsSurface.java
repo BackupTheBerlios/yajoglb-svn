@@ -1,11 +1,11 @@
 /*
  * NurbsSurface class
  *
- * $Id: NurbsSurface.java,v 1.7 1999/05/08 20:32:48 razeh Exp $
+ * $Id: NurbsSurface.java,v 1.8 2001/06/10 19:15:21 razeh Exp $
  *
  * Copyright 1998
  *
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  *
  * Converted into Java from the SGI example.
  *

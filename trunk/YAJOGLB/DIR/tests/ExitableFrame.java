@@ -1,11 +1,11 @@
 /*
  * ExitableFrame class
  *
- * $Id: ExitableFrame.java,v 1.1 1998/03/30 02:15:56 razeh Exp $
+ * $Id: ExitableFrame.java,v 1.2 2001/06/10 19:13:34 razeh Exp $
  *
  * Copyright 1998
  *
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  *
  */
 
