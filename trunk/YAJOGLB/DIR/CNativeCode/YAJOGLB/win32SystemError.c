@@ -25,7 +25,7 @@
 /*
  * win32SystemError.c
  * 
- * $Id: win32SystemError.c,v 1.3 2001/07/06 23:40:05 razeh Exp $
+ * $Id: win32SystemError.c,v 1.4 2001/08/11 02:16:02 razeh Exp $
  * 
  * This implements our interface to our operating system's error 
  * reporting routines.  We return a character string that describes
@@ -67,4 +67,5 @@ char *systemErrorMessage()
 	// Free the buffer.
 	LocalFree(lpMsgBuf);
 	return errorMessage;
-} 
+}
+
