@@ -48,6 +48,7 @@ clean :
 	$(RM) -f $(JAVA_CLASSES) $(JAVA_CLASSES) *~ *.class *.jar
 	(cd $(PACKAGEDIR); $(MAKE) clean)
 	(cd $(NATIVECODEDIR); $(MAKE) clean)
+	(cd tests; $(MAKE) clean)
 	(cd OpenGLLibFixes; $(MAKE) clean)
 
 
