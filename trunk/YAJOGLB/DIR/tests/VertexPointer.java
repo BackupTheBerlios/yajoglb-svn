@@ -1,7 +1,7 @@
 /*
  * VertexPointerTest class
  *
- * $Id: VertexPointer.java,v 1.1 1998/10/12 16:17:44 razeh Exp $
+ * $Id: VertexPointer.java,v 1.2 1998/11/01 02:23:55 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -12,12 +12,12 @@ import java.awt.event.*;
 import OpenGL.*;
 
 
-public class VertexPointer implements GeometryObject, OpenGLConstants {
+public class VertexPointer implements GeometryObject, GLConstants {
 
-  OpenGLVertexPointer testVertex;
+  GLVertexPointer testVertex;
   
   public  VertexPointer() {
-    testVertex = new OpenGLVertexPointer();
+    testVertex = new GLVertexPointer();
 
     float vertexPoints[] = 
     {
