@@ -19,5 +19,6 @@ void fatalUnreportableError(const char *errorString);
 #define OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION "OpenGL/NativeMemoryExhaustedException"
 #define OPENGL_UNSUPPORTED_METHOD_EXCEPTION "OpenGL/UnsupportedMethodException"
 #define OPENGL_CANVAS_EXCEPTION "OpenGL/CanvasSetupFailedException"
+#define OPENGL_CONTEXT_EXCEPTION "OpenGL/ContextException"
 
 

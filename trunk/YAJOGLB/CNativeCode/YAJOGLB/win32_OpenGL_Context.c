@@ -32,16 +32,13 @@
  */
 
 #include "cygnusFixes.h"
+#include <jawt_md.h>
 #include "OpenGL_Context.h"
-#include "win32DCDictionary.h"
+#include "CanvasInfo.h"
 #include "SystemError.h"
 #include "memory.h"
 #include "ErrorHandling.h"
-
-/* Our context exception class. */
-#define OPENGL_CONTEXT_EXCEPTION "OpenGL/ContextException"
-
-
+#include "SystemIncludes.h"
 
 /* This throws an OpenGLContextException Java exception that uses the current
    system error as the error message. */
@@ -78,16 +75,21 @@ JNIEXPORT void JNICALL Java_OpenGL_Context_nativeReleaseCurrentContext
 JNIEXPORT void JNICALL Java_OpenGL_Context_makeCanvasCurrent
   (JNIEnv *env, jobject contextObject, jlong context, jobject canvas)
 {
-	if (context != 0) {
+	int error = 0;
+	if (!error && (context != 0)) {
 		CanvasInfo info = getCanvasInfo(env, canvas);
-		if (FALSE == wglMakeCurrent(info.hDC, (HGLRC) context)) {
-			/* Something went wrong, and we need to throw an exception. */
-			throwContextException(env);
-		}
-		freeCanvasInfo(env, info);
-	}	
-}
+		error = (info.dsi == NULL);
+		if (!error) {
+			JAWT_Win32DrawingSurfaceInfo* dsi_win = info.dsi->platformInfo;
 
+			if (FALSE == wglMakeCurrent(dsi_win->hdc, (HGLRC) context)) {
+				/* Something went wrong, and we need to throw an exception. */
+				throwContextException(env);
+			}	
+			freeCanvasInfo(env, info);
+		}	
+	}
+}
 
 
 /*
@@ -98,14 +100,21 @@ JNIEXPORT void JNICALL Java_OpenGL_Context_makeCanvasCurrent
 JNIEXPORT jlong JNICALL Java_OpenGL_Context_createCanvasContext
   (JNIEnv *env, jobject contextObject, jobject canvas, jlong otherContext)
 {
-	CanvasInfo info = getCanvasInfo(env, canvas);	
-	HGLRC context = wglCreateContext(info.hDC);
-	if (NULL == context) {
-		/* Something went wrong, and we need to throw an exception. */
-		throwContextException(env);
-	}
+	int        error = 0;
+	HGLRC      context = 0; 
+	CanvasInfo info = getCanvasInfo(env, canvas);
+	
+	error = (info.dsi == NULL);
 
-	if (otherContext != 0) {
+	if (!error) {
+		JAWT_Win32DrawingSurfaceInfo* dsi_win = (JAWT_Win32DrawingSurfaceInfo*)info.dsi->platformInfo;
+		context = wglCreateContext(dsi_win->hdc);
+		if (NULL == context) {
+			/* Something went wrong, and we need to throw an exception. */
+			throwContextException(env);
+		}
+	}
+	if (!error && otherContext != 0) {
 		if (FALSE == wglShareLists((HGLRC) otherContext, context))
 			throwContextException(env);
 	}

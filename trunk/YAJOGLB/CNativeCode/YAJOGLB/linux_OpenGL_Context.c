@@ -24,11 +24,6 @@
 #include "CanvasInfo.h"
 #include "CapabilitiesAccessors.h"
 
-/* Our context exception class. */
-#define OPENGL_CONTEXT_EXCEPTION "OpenGL/ContextException"
-
-
-
 ////////////////////////////////////////////////////////////////////////
 // Functions for our private use.
 ////////////////////////////////////////////////////////////////////////

@@ -22,7 +22,7 @@
 */
 
 /*
- * OpenGL_Canvas.c
+ * win32_OpenGL_Canvas.c
  *
  * $Id$
  *
@@ -31,6 +31,7 @@
  * from the canvas.
  */
 
+#include <jawt_md.h>
 #include "SystemIncludes.h"
 #include "cygnusFixes.h"
 #include "OpenGL_Canvas.h"
@@ -38,7 +39,7 @@
 #include "memory.h"
 #include "ErrorHandling.h"
 #include "JNIInterface.h"
-#include "win32DCDictionary.h"
+#include "CanvasInfo.h"
 #include "CapabilitiesAccessors.h"
 
 
@@ -233,9 +234,17 @@ JNIEXPORT jboolean JNICALL Java_OpenGL_Canvas_setupCanvas
   jobject  capabilities  = NULL;
   CanvasInfo info        = getCanvasInfo(env, canvas);
   jboolean returnCode    = JNI_TRUE;
+  int error              = 0;
+  JAWT_Win32DrawingSurfaceInfo* dsi_win = 0;
 
-  if (NULL != info.hDC) {
-		/* Get the capabilities object out of our widget. */
+  error = (info.dsi == NULL);
+
+  if (!error) {
+	dsi_win = (JAWT_Win32DrawingSurfaceInfo*)info.dsi->platformInfo;
+  }
+  
+  if (!error) {
+	/* Get the capabilities object out of our widget. */
     jclass canvasClass             = NULL;
     jmethodID capabilitiesMethodID = NULL;
     canvasClass = (*env)->GetObjectClass(env, canvas);
@@ -247,8 +256,8 @@ JNIEXPORT jboolean JNICALL Java_OpenGL_Canvas_setupCanvas
     if (capabilitiesMethodID) {
       capabilities = (*env)->CallObjectMethod(env, canvas, capabilitiesMethodID);
     }
-	setupPixelFormat(env, capabilities, info.hDC);
-	setupPalette(env, info.hDC);
+	setupPixelFormat(env, capabilities, dsi_win->hdc);
+	setupPalette(env, dsi_win->hdc);
   } else {
 	throwCanvasExceptionWithMessage(env, "Unable to obtain hDC for canvas.");
 	returnCode = JNI_FALSE;
@@ -264,6 +273,14 @@ JNIEXPORT void JNICALL Java_OpenGL_Canvas_nativeSwapBuffers
   (JNIEnv *env, jobject canvas)
 {
   CanvasInfo info = getCanvasInfo(env, canvas);
-  SwapBuffers(info.hDC);
+  int        error = 0;
+  JAWT_Win32DrawingSurfaceInfo* dsi_win = 0;
+
+  error = (info.dsi == NULL);
+
+  if (!error) {
+	  dsi_win = (JAWT_Win32DrawingSurfaceInfo*)info.dsi->platformInfo;
+	  SwapBuffers(dsi_win->hdc);
+  }
   freeCanvasInfo(env, info);
 }

@@ -99,6 +99,10 @@ SOURCE=.\CallbackObject.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\CanvasInfo.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\CapabilitiesAccessors.c
 # End Source File
 # Begin Source File
@@ -196,14 +200,6 @@ SOURCE=.\win32_OpenGL_Context.c
 # Begin Source File
 
 SOURCE=.\win32_OpenGL_GL.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\win32DCDictionary.c
-# End Source File
-# Begin Source File
-
-SOURCE=.\win32DCDictionary.h
 # End Source File
 # Begin Source File
 

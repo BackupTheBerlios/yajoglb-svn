@@ -22,6 +22,7 @@
 
 */
 
+#include <memory.h>
 #include "CanvasInfo.h"
 #include "ErrorHandling.h"
 
