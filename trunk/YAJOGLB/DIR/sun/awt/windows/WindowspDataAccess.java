@@ -7,6 +7,10 @@ import java.awt.Graphics;
 import java.awt.Canvas;
 import java.awt.peer.*;
 
+/**
+ * This class is used to access the raw window pointer and device
+ * context from a canvas object.  It will, of course, only function
+ * under windows. */
 public class WindowspDataAccess implements OpenGLpDataAccess
 {
   public int getInfo( Graphics g )
