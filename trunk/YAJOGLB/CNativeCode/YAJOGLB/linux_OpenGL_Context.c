@@ -15,12 +15,13 @@
 #include <X11/X.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
+#include <jawt_md.h>
 #include "OpenGL_Context.h"
 #include "SystemError.h"
 #include "JNIInterface.h"
 #include "Memory.h"
 #include "ErrorHandling.h"
-#include "linuxDPYDictionary.h"
+#include "CanvasInfo.h"
 #include "CapabilitiesAccessors.h"
 
 /* Our context exception class. */
@@ -186,15 +187,25 @@ JNIEXPORT void JNICALL Java_OpenGL_Context_makeCanvasCurrent
   CanvasInfo  info;
   GLXContext  context  = (GLXContext)(TO_POINTER(jcontext));
   int         error    = 0;
+  JAWT_X11DrawingSurfaceInfo *dsi_x11 = 0;
 
   if (!error && (context != 0)) {
     info = getCanvasInfo(env, canvas);
-    error = (NULL == info.display) || (None == info.drawable);
+    error = (info.dsi == NULL);
+  }
+  
+  if (!error) {
+    dsi_x11 = (JAWT_X11DrawingSurfaceInfo*)info.dsi->platformInfo;
+    error = 
+      (NULL == dsi_x11) ||
+      (NULL == dsi_x11->display) ||
+      (0 == dsi_x11->drawable);
   }
   
   if (!error) {
     fflush(stdout);
-    if (GL_FALSE == glXMakeCurrent(info.display, info.drawable, context)) {
+    if (GL_FALSE == glXMakeCurrent(dsi_x11->display, 
+				   dsi_x11->drawable, context)) {
       error = 1;
     }
     fflush(stdout);
@@ -220,6 +231,7 @@ JNIEXPORT jlong JNICALL Java_OpenGL_Context_createCanvasContext
   int          error        = 0;
   jobject      capabilities = NULL;
   const char  *errorMessage = NULL;
+  JAWT_X11DrawingSurfaceInfo *dsi_x11 = 0;
 
   /* Get our capabilities object. */
   if (0 == getCapabilities(env, canvas, &capabilities)) {
@@ -230,7 +242,14 @@ JNIEXPORT jlong JNICALL Java_OpenGL_Context_createCanvasContext
   /* Get the display variable. */
   if (!error) {
     info = getCanvasInfo(env, canvas);
-    if ((NULL == info.display) || (None == info.drawable)) {
+    error = (info.dsi == NULL);
+  }
+
+  if (!error) {
+    dsi_x11 = (JAWT_X11DrawingSurfaceInfo*)info.dsi->platformInfo;
+    if ((NULL == info.dsi->platformInfo) ||
+	(NULL == dsi_x11->display) ||
+	(0 == dsi_x11->drawable)) {
       error = 1;
       errorMessage = "Unable to get the X11 display for the canvas.";
     }
@@ -238,10 +257,11 @@ JNIEXPORT jlong JNICALL Java_OpenGL_Context_createCanvasContext
 
   /* Find the right visual. */
   if (!error) {
-    visualInfo = findVisual(info.display, env, capabilities);
+    visualInfo = findVisual(dsi_x11->display, env, capabilities);
     if (NULL == visualInfo) {
       error = 1;
-      errorMessage = "Unable to get a matching visual for the canvas's capabilities.";
+      errorMessage = 
+	"Unable to get a matching visual for the canvas's capabilities.";
     }
   }
 
@@ -249,7 +269,7 @@ JNIEXPORT jlong JNICALL Java_OpenGL_Context_createCanvasContext
      the shared context. */
   if (!error) {
     fflush(stdout);
-    context = glXCreateContext(info.display, visualInfo, 
+    context = glXCreateContext(dsi_x11->display, visualInfo, 
 			       (GLXContext)(TO_POINTER(otherContext)), GL_TRUE);
     if (NULL == context) {
       error = 1;

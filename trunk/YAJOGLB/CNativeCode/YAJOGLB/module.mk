@@ -15,7 +15,6 @@ DISTRIBUTED_FILES += CNativeCode/YAJOGLB/cygnusFixes.h \
                      CNativeCode/YAJOGLB/CallbackObject.h \
                      CNativeCode/YAJOGLB/SystemError.h \
                      CNativeCode/YAJOGLB/Memory.h \
-		     CNativeCode/YAJOGLB/linuxDPYDictionary.h \
                      CNativeCode/YAJOGLB/YAJOGLB.DSP \
                      CNativeCode/YAJOGLB/YAJOGLB.DSW \
                      CNativeCode/YAJOGLB/Debug/YAJOGLB.dll
@@ -38,9 +37,9 @@ CSRCS += CNativeCode/YAJOGLB/CallbackObject.c			\
          CNativeCode/YAJOGLB/OpenGL_GLUNurbs.c			\
 	 CNativeCode/YAJOGLB/linux_OpenGL_Canvas.c		\
          CNativeCode/YAJOGLB/linux_OpenGL_Context.c		\
-	 CNativeCode/YAJOGLB/linuxDPYDictionary.c		\
          CNativeCode/YAJOGLB/linuxMemory.c			\
          CNativeCode/YAJOGLB/linuxSystemError.c			\
          CNativeCode/YAJOGLB/linux_OpenGL_GL.c                  \
-         CNativeCode/YAJOGLB/EnvDictionary.c
+         CNativeCode/YAJOGLB/EnvDictionary.c                    \
+         CNativeCode/YAJOGLB/CanvasInfo.c                    
 

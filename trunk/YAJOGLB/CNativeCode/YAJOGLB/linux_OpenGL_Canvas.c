@@ -34,6 +34,7 @@
  * rendering.  
  */
 
+#include <jawt_md.h>
 #include "SystemIncludes.h"
 #include "cygnusFixes.h"
 #include <GL/glx.h>
@@ -43,7 +44,7 @@
 #include "memory.h"
 #include "ErrorHandling.h"
 #include "JNIInterface.h"
-#include "linuxDPYDictionary.h"
+#include "CanvasInfo.h"
 
 
 /* Our native hook for setting up this canvas. */
@@ -60,9 +61,14 @@ JNIEXPORT jboolean JNICALL Java_OpenGL_Canvas_setupCanvas
 JNIEXPORT void JNICALL Java_OpenGL_Canvas_nativeSwapBuffers
   (JNIEnv *env, jobject canvas)
 {
+
   CanvasInfo  info = getCanvasInfo(env, canvas);
-  if ((0 != info.display) && (0 != info.drawable)) {
-    glXSwapBuffers(info.display, info.drawable);
+  if (info.ds) {
+    JAWT_X11DrawingSurfaceInfo *dsi_x11 = 
+      (JAWT_X11DrawingSurfaceInfo*)info.dsi->platformInfo;
+    if ((0 != dsi_x11->display) && (0 != dsi_x11->drawable)) {
+      glXSwapBuffers(dsi_x11->display, dsi_x11->drawable);
+    }
   }
   freeCanvasInfo(env, info);
 }
