@@ -1,25 +1,36 @@
 /* 
  * Info panel class
  *
- * $Id: InfoPanel.java,v 1.1 1999/05/02 23:31:00 razeh Exp $
+ * $Id: InfoPanel.java,v 1.2 1999/05/08 19:17:53 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
  */
 
 import java.util.StringTokenizer;
+import java.awt.event.*;
 import java.awt.*;
 import OpenGL.*;
+import java.awt.Frame;
 
 /** A simple class that brings up a panel describing what it can about the
  * current OpenGL implementation.
  */
 class InfoPanel extends Frame implements GLConstants {
+
+
+  class WindowListener extends java.awt.event.WindowAdapter {
+    public void windowClosing(WindowEvent e) {
+      dispose();
+    }
+  }
+  
   public InfoPanel(GL gl) {
     super();
     Panel panel = new Panel();
     Panel extensionsPanel = new Panel();
-    
+
+    addWindowListener(new WindowListener());
     add(panel);
     add(extensionsPanel);
 
@@ -42,7 +53,7 @@ class InfoPanel extends Frame implements GLConstants {
     }
 
     setTitle("OpenGL driver information");
-    setSize(new Dimension(400, 400));
+    setSize(new Dimension(400, 300));
     setVisible(true);
   }
 }
