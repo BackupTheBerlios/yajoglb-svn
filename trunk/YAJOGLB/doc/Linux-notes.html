@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+<TITLE>YAJOGLB Linux Notes</TITLE>
+</HEAD>
+<BODY>
+<H2>YAJOGLB Linux Notes</H2>
+<P>
+This page describes some of the problems that I ran into getting the
+bindings to work under <A HREF="http://www.debian.org">Debian
+GNU/Linux 2.0</A>, with the <A
+HREF="http://www.blackdown.org">Blackdown 1.1.7-1a</A> Java port.  If
+you are using a later version of Debian or the Blackdown port you
+should have no problems.  My current work environment,
+which consists of Debian 2.2r2, JDK 1.3 and the NVIDIA OpenGL drivers,
+is problem free.
+</P>
+<P>
+You'll need to have <A HREF="http://mesa3d.sourceforge.net">Mesa</A>
+or some other OpenGL implementation installed on your system before
+you can even compile the bindings.  However, you have to be careful
+about how you compile Mesa if you want to write a multi-threaded Java
+application.  Since it's almost impossible to NOT write a
+multi-threaded Java application, you probably care, even if you think
+that you don't.  I recommend Mesa's linux-386-pthread-shared
+configuration.
+</P>
+<P>
+The Debian Mesa package doesn't appear to have been compiled with
+threads in mind.  That means you'll have to get and compile Mesa on
+your own, if you want things to work properly.  It is also important
+that you use the native threads package that comes with the Blackdown
+distribution.  I've ran into Mesa problems that were caused by mixing
+green threads with native threads.
+</P>
+<P>
+You can test things out with the Concurrence example inside the test
+directory.  It will try to open up two windows, and then try to
+perform some animations in both at the same time.
+</P>
+<P>
+Earlier versions of Mesa did not have the latest and greatest GLU
+functions (it now does).  Use of unsupported functions will result in
+an UnsupportedMethodException being thrown.
+
+<HR>
+<address>
+Back to Robert Zeh's <A HREF="http://home.earthlink.net/~rzeh"> home page</A>.<BR>
+Last Changed November 23, 2002.
+</address>
+</BODY>
+</HTML>
