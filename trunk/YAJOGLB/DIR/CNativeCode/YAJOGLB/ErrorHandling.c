@@ -90,18 +90,19 @@ void log(JNIEnv *env, const char *string)
 
 
 
-void logHex(JNIEnv *env, int h)
+void logHex(JNIEnv *env, unsigned int h)
 {
-  char outputBuffer[BUFFERLENGTH];
+  char outputBuffer[BUFFERLENGTH+1];
   int i;
 
-  for(i = 0; i < BUFFERLENGTH; i++)
+  for(i = 0; i < BUFFERLENGTH+1; i++)
     outputBuffer[i] ='\0';
 
-  for(i = 0; i < 8; i++) {
-    outputBuffer[7-i] =(((0xF << (i*4)) & h) >> (i*4))+ '0';
-    if (outputBuffer[7-i] > '9')
-      outputBuffer[7-i] = (((0xF << (i*4)) & h) >> (i*4)) + ('a' - ':') + '0';
+  for(i = 0; i < BUFFERLENGTH; i++) {
+    char thisDigit =(((0xF << (i*4)) & h) >> (i*4)) + '0';
+    if (thisDigit > '9')
+      thisDigit = (((0xF << (i*4)) & h) >> (i*4)) + ('a' - ':') + '0';
+    outputBuffer[BUFFERLENGTH-1-i] = thisDigit;
   }
   log(env, outputBuffer);
 }
