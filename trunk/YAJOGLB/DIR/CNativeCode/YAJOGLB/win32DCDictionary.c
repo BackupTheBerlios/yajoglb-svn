@@ -25,7 +25,7 @@
 /*
  * win32DCDictionary.c
  *
- * $Id: win32DCDictionary.c,v 1.4 2001/07/06 23:40:05 razeh Exp $
+ * $Id: win32DCDictionary.c,v 1.5 2001/08/11 02:15:03 razeh Exp $
  *
  * This implements the win32 functions that aquire the DC from an OpenGLCanvas object. 
  *
@@ -68,7 +68,7 @@ CanvasInfo getCanvasInfo(JNIEnv *env, jobject canvas)
 		awt.version = JAWT_VERSION_1_3;
 		result = JAWT_GetAWT(env, &awt);
 		if (result == JNI_FALSE) {
-			handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT_GetAWT.\n");
+			handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get JAWT_GetAWT.");
 			return info;
 		}
 		
@@ -78,7 +78,8 @@ CanvasInfo getCanvasInfo(JNIEnv *env, jobject canvas)
 			info.ds->Unlock(info.ds);
 			return info;
 		}
-		
+		lock = info
+		}
 		lock = info.ds->Lock(info.ds);
 		if (lock & JAWT_LOCK_ERROR) {
 			handleError(env, OPENGL_CANVAS_EXCEPTION, 
@@ -117,9 +118,4 @@ CanvasInfo getCanvasInfo(JNIEnv *env, jobject canvas)
 		}
 	}
 #endif
-	return info;
-}
-
-
-
 	r
