@@ -1,7 +1,7 @@
 /*
  * OpenGL_GL.c
  *
- * $Id: OpenGL_GL.c,v 1.2 1998/11/04 00:28:46 razeh Exp $
+ * $Id: OpenGL_GL.c,v 1.3 1998/12/23 00:41:05 razeh Exp $
  *
  * This implements the generic GL methods.
  *
@@ -158,8 +158,11 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_polygonStipple
   GLbyte *maskBytes;
 
   maskBytes = (*env)->GetByteArrayElements(env, mask, 0);
-  if (maskBytes == NULL)
+  if (NULL == maskBytes) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the polygon stipple array.");
     return;
+  }
   glPolygonStipple(maskBytes);
   (*env)->ReleaseByteArrayElements(env, mask, maskBytes, JNI_ABORT);
 }
@@ -174,11 +177,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_polygonStipple
 JNIEXPORT void JNICALL Java_OpenGL_GL_getPolygonStipple
   (JNIEnv *env, jobject obj, jbyteArray mask)
 {
-  GLbyte *maskBytes;
+  GLbyte *maskBytes = NULL;
 
   maskBytes = (*env)->GetByteArrayElements(env, mask, 0);
-  if (maskBytes == NULL)
+  if (NULL == maskBytes) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the polygon stipple array.");
     return;
+  }
   glGetPolygonStipple(maskBytes);
   (*env)->ReleaseByteArrayElements(env, mask, maskBytes, 0);
 }
@@ -212,11 +218,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_clipPlane
   GLdouble *equationDoubles;
   
   equationDoubles = (*env)->GetDoubleArrayElements(env, equation, 0);
-  if (equationDoubles == NULL)
+  if (NULL == equationDoubles) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the clip plane array.");
     return;
+  }
   glClipPlane(plane, equationDoubles);
-  (*env)->ReleaseDoubleArrayElements(env, equation, equationDoubles, 
-				     JNI_ABORT);
+  (*env)->ReleaseDoubleArrayElements(env, equation, equationDoubles, JNI_ABORT);
 }
 
 
@@ -232,8 +240,11 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getClipPlane
   GLdouble *equationDoubles;
   
   equationDoubles = (*env)->GetDoubleArrayElements(env, equation, 0);
-  if (equationDoubles == NULL)
+  if (NULL == equationDoubles) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the clip plane array.");
     return;
+  }
   glGetClipPlane(plane, equationDoubles);
   (*env)->ReleaseDoubleArrayElements(env, equation, equationDoubles, 0);
 }
@@ -293,12 +304,15 @@ JNIEXPORT jboolean JNICALL Java_OpenGL_GL_isEnabled
 JNIEXPORT void JNICALL Java_OpenGL_GL_get__I_3Z
   (JNIEnv *env, jobject obj, jint pname, jbooleanArray jparams)
 {
-  jboolean *params;
+  jboolean *params = NULL;
   params = (*env)->GetBooleanArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the boolean array.");
     return;
+  }
   glGetBooleanv(pname, params);
-  (*env)->ReleaseBooleanArrayElements(env, jparams, params,0);
+  (*env)->ReleaseBooleanArrayElements(env, jparams, params, 0);
 }
 
 
@@ -306,12 +320,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_get__I_3Z
 JNIEXPORT void JNICALL Java_OpenGL_GL_get__I_3D
   (JNIEnv *env, jobject obj, jint pname, jdoubleArray jparams)
 {
-  jdouble *params;
+  jdouble *params = NULL;
   params = (*env)->GetDoubleArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the double array.");
     return;
+  }
   glGetDoublev(pname, params);
-  (*env)->ReleaseDoubleArrayElements(env, jparams, params,0);
+  (*env)->ReleaseDoubleArrayElements(env, jparams, params, 0);
 }
 
 
@@ -319,10 +336,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_get__I_3D
 JNIEXPORT void JNICALL Java_OpenGL_GL_get__I_3F
   (JNIEnv *env, jobject obj, jint pname, jfloatArray jparams)
 {
-  GLfloat *params;
+  GLfloat *params = NULL;
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the float array.");
     return;
+  }
   glGetFloatv(pname, params);
   (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
 }
@@ -332,12 +352,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_get__I_3F
 JNIEXPORT void JNICALL Java_OpenGL_GL_get__I_3I
   (JNIEnv *env, jobject obj, jint pname, jintArray jparams)
 {
-  GLint *params;
+  GLint *params = NULL;
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the integer array.");
     return;
+  }
   glGetIntegerv(pname, params);
-  (*env)->ReleaseIntArrayElements(env, jparams, params,0);
+  (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
 }
 
 
@@ -570,11 +593,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_loadIdentity
 JNIEXPORT void JNICALL Java_OpenGL_GL_loadMatrixd
   (JNIEnv *env, jobject obj, jdoubleArray jm)
 {
-  jdouble *m;
+  jdouble *m = NULL;
 
   m = (*env)->GetDoubleArrayElements(env, jm, 0);
-  if (m == NULL)
+  if (NULL == m) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map matrix.");
     return;
+  }
+
   glLoadMatrixd(m);
   (*env)->ReleaseDoubleArrayElements(env, jm, m, 0);
 }
@@ -587,38 +614,49 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_loadMatrixd
 JNIEXPORT void JNICALL Java_OpenGL_GL_loadMatrixf
   (JNIEnv *env, jobject obj, jfloatArray jm)
 {
-  jfloat *m;
+  jfloat *m = NULL;
 
   m = (*env)->GetFloatArrayElements(env, jm, 0);
-  if (m == NULL)
+  if (NULL == m) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map matrix.");
     return;
+  }
+
   glLoadMatrixf(m);
-  (*env)->ReleaseFloatArrayElements(env, jm, m, 0);
+  (*env)->ReleaseFloatArrayElements(env, jm, m, JNI_ABORT);
 }
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GL_multMatrixd
   (JNIEnv *env, jobject object, jdoubleArray darr)
 {
-  jdouble *doubles;
+  GLdouble *doubles = NULL;
 
   doubles = (*env)->GetDoubleArrayElements(env, darr, 0);
-  if (doubles == NULL)
+  if (NULL == doubles) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map matrix.");
     return;
+  }
+
   glMultMatrixd(doubles);
-  (*env)->ReleaseDoubleArrayElements(env, darr, doubles, 0);
+  (*env)->ReleaseDoubleArrayElements(env, darr, doubles, JNI_ABORT);
 }
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GL_multMatrixf
   (JNIEnv *env, jobject object, jfloatArray farr)
 {
-  float *floats;
+  GLfloat *floats = NULL;
   floats = (*env)->GetFloatArrayElements(env, farr, 0);
-  if (floats == NULL)
+  if (NULL == floats) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map matrix.");
     return;
+  }
   glMultMatrixf(floats);
-  (*env)->ReleaseFloatArrayElements(env, farr, floats, 0);
+  (*env)->ReleaseFloatArrayElements(env, farr, floats, JNI_ABORT);
 }
 
 JNIEXPORT void JNICALL Java_OpenGL_GL_rotated
@@ -740,15 +778,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_callList
 JNIEXPORT void JNICALL Java_OpenGL_GL_callLists__II_3B
   (JNIEnv *env, jobject obj, jint n, jint type, jbyteArray jarray)
 {
-  GLbyte *array;
+  GLbyte *array = NULL;
   
   array = (*env)->GetByteArrayElements(env, jarray, 0);
-  if (array == NULL)
+  if (NULL == array) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the call lists.");
     return;
+  }
 
   glCallLists(n, type, array);
 
-  (*env)->ReleaseByteArrayElements(env, jarray, array, 0);
+  (*env)->ReleaseByteArrayElements(env, jarray, array, JNI_ABORT);
 }
 
 
@@ -761,15 +802,17 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_callLists__II_3B
 JNIEXPORT void JNICALL Java_OpenGL_GL_callLists__II_3S
   (JNIEnv *env, jobject obj, jint n, jint type, jshortArray jarray)
 {
-  GLshort *array;
+  GLshort *array = NULL;
   
   array = (*env)->GetShortArrayElements(env, jarray, 0);
-  if (array == NULL)
+  if (NULL == array) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the call lists.");
     return;
-
+  }
   glCallLists(n, type, array);
 
-  (*env)->ReleaseShortArrayElements(env, jarray, array, 0);
+  (*env)->ReleaseShortArrayElements(env, jarray, array, JNI_ABORT);
 }
 
 
@@ -782,15 +825,17 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_callLists__II_3S
 JNIEXPORT void JNICALL Java_OpenGL_GL_callLists__II_3F
   (JNIEnv *env, jobject obj, jint n, jint type, jfloatArray jarray)
 {
-  GLfloat *array;
+  GLfloat *array = NULL;
   
   array = (*env)->GetFloatArrayElements(env, jarray, 0);
-  if (array == NULL)
+  if (array == NULL) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the call lists.");
     return;
-
+  }
   glCallLists(n, type, array);
 
-  (*env)->ReleaseFloatArrayElements(env, jarray, array, 0);
+  (*env)->ReleaseFloatArrayElements(env, jarray, array, JNI_ABORT);
 }
 
 
@@ -1335,283 +1380,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_rects
   glRects(x1, y1, x2, y2);
 }
 
-/*
- * Vertex Arrays 
- */
-
-/*
- * Class:     OpenGL_GL
- * Method:    vertexPointer
- * Signature: (II[F)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_vertexPointer__II_3F
-  (JNIEnv *env, jobject obj, jint size, jint stride, jfloatArray jarray)
-{
-  jfloat *array;
-  array = (*env)->GetFloatArrayElements(env, jarray, 0);
-  if (array == NULL)
-    return;
-  glVertexPointer(size, GL_FLOAT, stride,array);
-  (*env)->ReleaseFloatArrayElements(env, jarray, array, 0);
-}
-
-/*
- * Class:     OpenGL_GL
- * Method:    vertexPointer
- * Signature: (II[D)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_vertexPointer__II_3D
-  (JNIEnv *, jobject, jint, jint, jdoubleArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    vertexPointer
- * Signature: (II[I)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_vertexPointer__II_3I
-  (JNIEnv *, jobject, jint, jint, jintArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    vertexPointer
- * Signature: (II[S)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_vertexPointer__II_3S
-  (JNIEnv *, jobject, jint, jint, jshortArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    normalPointer
- * Signature: (I[F)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_normalPointer__I_3F
-  (JNIEnv *, jobject, jint, jfloatArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    normalPointer
- * Signature: (I[D)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_normalPointer__I_3D
-  (JNIEnv *, jobject, jint, jdoubleArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    normalPointer
- * Signature: (I[I)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_normalPointer__I_3I
-  (JNIEnv *, jobject, jint, jintArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    normalPointer
- * Signature: (I[S)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_normalPointer__I_3S
-  (JNIEnv *, jobject, jint, jshortArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    colorPointer
- * Signature: (III[B)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_colorPointer__III_3B
-  (JNIEnv *, jobject, jint, jint, jint, jbyteArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    colorPointer
- * Signature: (III[S)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_colorPointer__III_3S
-  (JNIEnv *, jobject, jint, jint, jint, jshortArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    colorPointer
- * Signature: (III[I)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_colorPointer__III_3I
-  (JNIEnv *, jobject, jint, jint, jint, jintArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    colorPointer
- * Signature: (III[F)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_colorPointer__III_3F
-  (JNIEnv *, jobject, jint, jint, jint, jfloatArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    colorPointer
- * Signature: (III[D)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_colorPointer__III_3D
-  (JNIEnv *, jobject, jint, jint, jint, jdoubleArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    indexPointer
- * Signature: (I[B)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_indexPointer__I_3B
-  (JNIEnv *, jobject, jint, jbyteArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    indexPointer
- * Signature: (I[S)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_indexPointer__I_3S
-  (JNIEnv *, jobject, jint, jshortArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    indexPointer
- * Signature: (I[I)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_indexPointer__I_3I
-  (JNIEnv *, jobject, jint, jintArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    indexPointer
- * Signature: (I[F)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_indexPointer__I_3F
-  (JNIEnv *, jobject, jint, jfloatArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    indexPointer
- * Signature: (I[D)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_indexPointer__I_3D
-  (JNIEnv *, jobject, jint, jdoubleArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    texCoordPointer
- * Signature: (II[B)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_texCoordPointer__II_3B
-  (JNIEnv *, jobject, jint, jint, jbyteArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    texCoordPointer
- * Signature: (II[S)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_texCoordPointer__II_3S
-  (JNIEnv *, jobject, jint, jint, jshortArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    texCoordPointer
- * Signature: (II[I)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_texCoordPointer__II_3I
-  (JNIEnv *, jobject, jint, jint, jintArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    texCoordPointer
- * Signature: (II[F)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_texCoordPointer__II_3F
-  (JNIEnv *, jobject, jint, jint, jfloatArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    texCoordPointer
- * Signature: (II[D)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_texCoordPointer__II_3D
-  (JNIEnv *, jobject, jint, jint, jdoubleArray);
-
-/*
- * Class:     OpenGL_GL
- * Method:    edgeFlagPointer
- * Signature: (I[Z)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_edgeFlagPointer
-  (JNIEnv *, jobject, jint, jbooleanArray);
-/*
- * Class:     OpenGL_GL
- * Method:    vertexPointer
- * Signature: (III[Ljava/lang/Object;)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_vertexPointer
-  (JNIEnv *env, jobject obj, jint size, jint type, jint stride, 
-   jobjectArray ptr)
-{
-  ;
-}
-
-
-
-/*
- * Class:     OpenGL_GL
- * Method:    edgeFlagPointer
- * Signature: (I[Z)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_edgeFlagPointer
-  (JNIEnv *env, jobject obj, jint stride, jbooleanArray ptr)
-{
-
-}
-
-/*
- * Class:     OpenGL_GL
- * Method:    getPointerv
- * Signature: (I[[Ljava/lang/Object;)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_getPointerv
-  (JNIEnv *env, jobject obj, jint pname, jobjectArray params)
-{
-
-}
-
-/*
- * Class:     OpenGL_GL
- * Method:    arrayElement
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_arrayElement
-  (JNIEnv *env, jobject obj, jint i)
-{
-  glArrayElement(i);
-}
-
-
-
-JNIEXPORT void JNICALL Java_OpenGL_GL_drawArrays
-  (JNIEnv *env, jobject obj, jint mode, jint first, jint count)
-{
-  glDrawArrays(mode, first, count);
-}
-
-
-
-JNIEXPORT void JNICALL Java_OpenGL_GL_drawElements
-  (JNIEnv *env, jobject obj, jint mode, jint count, jint type, 
-   jobjectArray indices)
-{
-
-}
-
-/*
- * Class:     OpenGL_GL
- * Method:    interleavedArrays
- * Signature: (II[Ljava/lang/Object;)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GL_interleavedArrays
-  (JNIEnv *env, jobject obj, jint format, jint stride, jobjectArray pointer)
-{
-
-}
 
 
 /*
@@ -1655,13 +1423,16 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_lighti
 JNIEXPORT void JNICALL Java_OpenGL_GL_lightfv
   (JNIEnv *env, jobject obj, jint light, jint pname, jfloatArray jparams)
 {
-  jfloat *params;
+  jfloat *params = NULL;
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the lights.");
     return;
+  }
 
   glLightfv(light, pname, params);
-  (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseFloatArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 
@@ -1674,13 +1445,16 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_lightfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_lightiv
   (JNIEnv *env, jobject obj, jint light, jint param, jintArray jparams)
 {
-  jint *params;
+  jint *params = NULL;
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the lights.");
     return;
+  }
 
   glLightiv(light, param, params);
-  (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 /*
@@ -1691,10 +1465,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_lightiv
 JNIEXPORT void JNICALL Java_OpenGL_GL_getLightfv
   (JNIEnv *env, jobject obj, jint light, jint pname, jfloatArray jparams)
 {
-  jfloat *params;
+  jfloat *params = NULL;
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the lights.");
     return;
+  }
 
   glGetLightfv(light, pname, params);
   (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
@@ -1710,8 +1487,11 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getLightiv
 {
   jint *params;
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the lights.");
     return;
+  }
 
   glGetLightiv(light, pname, params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
@@ -1747,12 +1527,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_lightModeli
 JNIEXPORT void JNICALL Java_OpenGL_GL_lightModelfv
   (JNIEnv *env, jobject obj, jint pname, jfloatArray jparams)
 {
-  jfloat *params;
+  jfloat *params = NULL;
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the light model.");
     return;
+  }
   glLightModelfv(pname, params);
-  (*env)->ReleaseFloatArrayElements(env, jparams, params,0);
+  (*env)->ReleaseFloatArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 /*
@@ -1763,12 +1546,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_lightModelfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_lightModeliv
   (JNIEnv *env, jobject obj, jint pname, jintArray jparams)
 {
-  jint *params;
+  jint *params = NULL;
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the light model.");
     return;
+  }
   glLightModeliv(pname, params);
-  (*env)->ReleaseIntArrayElements(env, jparams, params,0);
+  (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 /*
@@ -1791,25 +1577,31 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_materiali
 JNIEXPORT void JNICALL Java_OpenGL_GL_materialiv
   (JNIEnv *env, jobject obj, jint face, jint pname, jintArray jparams)
 {
-  jint *params;
+  jint *params = NULL;
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the material.");
     return;
+  }
 
   glMaterialiv(face, pname, params);
-  (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 JNIEXPORT void JNICALL Java_OpenGL_GL_materialfv
   (JNIEnv *env, jobject obj, jint face, jint pname, jfloatArray jparams)
 {
-  jfloat *params;
+  jfloat *params = NULL;
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the material.");
     return;
+  }
 
   glMaterialfv(face, pname, params);
-  (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseFloatArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 /*
@@ -1820,11 +1612,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_materialfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_getMaterialfv
   (JNIEnv *env, jobject obj, jint face, jint pname, jfloatArray jparams)
 {
-  jfloat *params;
+  jfloat *params = NULL;
 
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the material.");
     return;
+  }
 
   glGetMaterialfv(face, pname, params);
 
@@ -1842,8 +1637,11 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getMaterialiv
   jint *params;
 
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the material.");
     return;
+  }
 
   glGetMaterialiv(face, pname, params);
 
@@ -1921,12 +1719,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_pixelTransferi
 JNIEXPORT void JNICALL Java_OpenGL_GL_pixelMapfv
   (JNIEnv *env, jobject obj, jint map, jint mapsize, jfloatArray jarray)
 {
-  GLfloat *array;
+  GLfloat *array = NULL;
   array = (*env)->GetFloatArrayElements(env, jarray, 0);
-  if (array == NULL)
-    return;
+  if (NULL == array) {
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the pixel map array.");
+	return;
+  }
   glPixelMapfv(map, mapsize, array);
-  (*env)->ReleaseFloatArrayElements(env, jarray, array, 0);
+  (*env)->ReleaseFloatArrayElements(env, jarray, array, JNI_ABORT);
 }
 
 /*
@@ -1937,12 +1738,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_pixelMapfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_pixelMapuiv
   (JNIEnv *env, jobject obj, jint map, jint mapsize, jintArray jvalues)
 {
-  GLint *values;
+  GLint *values = NULL;
   values = (*env)->GetIntArrayElements(env, jvalues, 0);
-  if (values == NULL)
-    return;
+  if (values == NULL) {
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the pixel map array.");
+	return;
+  }
   glPixelMapuiv(map, mapsize, values);
-  (*env)->ReleaseIntArrayElements(env, jvalues, values, 0);
+  (*env)->ReleaseIntArrayElements(env, jvalues, values, JNI_ABORT);
 }
 
 /*
@@ -1953,12 +1757,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_pixelMapuiv
 JNIEXPORT void JNICALL Java_OpenGL_GL_pixelMapusv
   (JNIEnv *env, jobject obj, jint map, jint mapsize, jshortArray jvalues)
 {
-  GLshort *values;
+  GLshort *values = NULL;
   values = (*env)->GetShortArrayElements(env, jvalues, 0);
-  if (values == NULL)
-    return;
+  if (values == NULL) {
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the pixel map array.");
+	return;
+  }
   glPixelMapusv(map, mapsize, values);
-  (*env)->ReleaseShortArrayElements(env, jvalues, values, 0);
+  (*env)->ReleaseShortArrayElements(env, jvalues, values, JNI_ABORT);
 }
 
 /*
@@ -1970,10 +1777,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getPixelMapfv
   (JNIEnv *env, jobject obj, jint map, jfloatArray jvalues)
 
 {
-  GLfloat *values;
+  GLfloat *values = NULL;
   values = (*env)->GetFloatArrayElements(env, jvalues, 0);
-  if (values == NULL)
-    return;
+  if (values == NULL) {
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the pixel map array.");
+	return;
+  }
   glGetPixelMapfv(map, values);
   (*env)->ReleaseFloatArrayElements(env, jvalues, values, 0);
 }
@@ -1986,10 +1796,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getPixelMapfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_getPixelMapuiv
   (JNIEnv *env, jobject obj, jint map, jintArray jvalues)
 {
-  GLint *values;
+  GLint *values = NULL;
   values = (*env)->GetIntArrayElements(env, jvalues, 0);
-  if (values == NULL)
-    return;
+  if (values == NULL) {
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the pixel map array.");
+	return;
+  }
   glGetPixelMapuiv(map, values);
   (*env)->ReleaseIntArrayElements(env, jvalues, values, 0);
 }
@@ -2004,8 +1817,11 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getPixelMapusv
 {
   GLshort *values;
   values = (*env)->GetShortArrayElements(env, jvalues, 0);
-  if (values == NULL)
-    return;
+  if (values == NULL) {
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the pixel map array.");
+	return;
+  }
   glGetPixelMapusv(map, values);
   (*env)->ReleaseShortArrayElements(env, jvalues, values, 0);
 }
@@ -2021,11 +1837,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_bitmap
    jfloat xorig, jfloat yorig, 
    jfloat xmove, jfloat ymove, jbyteArray jbitmap)
 {
-  GLbyte *bitmap;
+  GLbyte *bitmap = NULL;
 
   bitmap = (*env)->GetByteArrayElements(env, jbitmap, 0);
-  if (bitmap == NULL)
-    return;
+  if (NULL == bitmap) {
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the bit map array.");
+	return;
+  }
   glBitmap(width, height, xorig, yorig, xmove, ymove, bitmap);
 
   (*env)->ReleaseByteArrayElements(env, jbitmap, bitmap, 0);
@@ -2041,10 +1860,10 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
   (JNIEnv *env, jobject obj, 
    jint x, jint y, jint width, jint height, jint format, jint type)
 {
-  void   *buffer;
+  void   *buffer = NULL;
   int     pixelCountMultiplier = 4; /* Default to the maximum possible. */
-  int     pixelStorageSizeMultiplier;
-  int     bufferElementCount;
+  int     pixelStorageSizeMultiplier = 0;
+  int     bufferElementCount = 0;
   jobject result = NULL;
   
   /* Determine how many return values we will get for each pixel. */
@@ -2070,7 +1889,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
       pixelCountMultiplier = 2;
       break;
     default:
-      handleError(env, OPENGLNATIVEEXCEPTION,
+      handleError(env, OPENGL_NATIVE_EXCEPTION,
 		  "Unexpected format passed to readPixels");
       return NULL;
     }
@@ -2092,7 +1911,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
       pixelStorageSizeMultiplier = 4;
       break;
     default:
-      handleError(env, OPENGLNATIVEEXCEPTION,
+      handleError(env, OPENGL_NATIVE_EXCEPTION,
 		  "Unexpected type passed to readPixels");
       return NULL;
     }
@@ -2100,7 +1919,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
   bufferElementCount = width * height * pixelCountMultiplier;
   buffer = privateMalloc(bufferElementCount * pixelStorageSizeMultiplier);
   if (buffer == NULL) {
-    handleError(env, "OpenGL/OpenGLNativeMemoryExhaustedException",
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
 		"Unable to allocate temporary buffer in readPixels");
     return NULL;
   }
@@ -2113,7 +1932,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
     case GL_BYTE:
       result = (*env)->NewByteArray(env, bufferElementCount);
       if (result == NULL) {
-		handleError(env, OPENGLNATIVEEXCEPTION,
+		handleError(env, OPENGL_NATIVE_EXCEPTION,
 			    "Unable to allocate byte array in readPixels");
 		return NULL;
       }
@@ -2123,7 +1942,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
     case GL_SHORT:
       result = (*env)->NewShortArray(env, bufferElementCount);
       if (result == NULL) {
-		handleError(env, OPENGLNATIVEEXCEPTION,
+		handleError(env, OPENGL_NATIVE_EXCEPTION,
 			    "Unable to allocate short array in readPixels");
 		return NULL;
       }
@@ -2133,7 +1952,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
 	case GL_INT:
 		result = (*env)->NewIntArray(env, bufferElementCount);
 		if (result == NULL) {
-			handleError(env, OPENGLNATIVEEXCEPTION,
+			handleError(env, OPENGL_NATIVE_EXCEPTION,
 			"Unable to allocate int array in readPixels");
 			return NULL;
 		}
@@ -2142,7 +1961,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
     case GL_FLOAT:
 		result = (*env)->NewFloatArray(env, bufferElementCount);
 		if (result == NULL) {
-			handleError(env, OPENGLNATIVEEXCEPTION,
+			handleError(env, OPENGL_NATIVE_EXCEPTION,
 				"Unable to allocate float array in readPixels");
 			return NULL;
 		}
@@ -2166,15 +1985,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_drawPixels__IIII_3B
    jint format, jint type, 
    jbyteArray jpixels)
 {
-  GLbyte *pixels;
+  GLbyte *pixels = NULL;
   
   pixels = (*env)->GetByteArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the pixels array.");
+	return;
+  }
 
   glDrawPixels(width, height, format, type, pixels);
 
-  (*env)->ReleaseByteArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseByteArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
 /*
@@ -2188,15 +2010,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_drawPixels__IIII_3S
    jint format, jint type, 
    jshortArray jpixels)
 {
-  GLshort *pixels;
+  GLshort *pixels = NULL;
   
   pixels = (*env)->GetShortArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the pixels.");
     return;
+  }
 
   glDrawPixels(width, height, format, type, pixels);
 
-  (*env)->ReleaseShortArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseShortArrayElements(env, jpixels, pixels, JNI_ABORT);
 
 }
 
@@ -2211,15 +2036,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_drawPixels__IIII_3I
    jint format, jint type, 
    jintArray jpixels)
 {
-  GLint *pixels;
+  GLint *pixels = NULL;
   
   pixels = (*env)->GetIntArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the pixels.");
     return;
+  }
 
   glDrawPixels(width, height, format, type, pixels);
 
-  (*env)->ReleaseIntArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseIntArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
 /*
@@ -2233,15 +2061,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_drawPixels__IIII_3F
    jint format, jint type, 
    jfloatArray jpixels)
 {
-  GLfloat *pixels;
+  GLfloat *pixels = NULL;
   
   pixels = (*env)->GetFloatArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the pixels.");
     return;
+  }
 
   glDrawPixels(width, height, format, type, pixels);
 
-  (*env)->ReleaseFloatArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseFloatArrayElements(env, jpixels, pixels, JNI_ABORT);
 
 }
 
@@ -2349,15 +2180,17 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texGeni
 JNIEXPORT void JNICALL Java_OpenGL_GL_texGendv
   (JNIEnv *env, jobject obj, jint coord, jint pname, jdoubleArray jparams)
 {
-  GLdouble *params;
+  GLdouble *params = NULL;
 
   params = (*env)->GetDoubleArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
-
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
   glTexGendv(coord, pname, params);
 
-  (*env)->ReleaseDoubleArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseDoubleArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 /*
@@ -2368,15 +2201,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texGendv
 JNIEXPORT void JNICALL Java_OpenGL_GL_texGenfv
   (JNIEnv *env, jobject obj, jint coord, jint pname, jfloatArray jparams)
 {
-  GLfloat *params;
+  GLfloat *params = NULL;
 
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
 
   glTexGenfv(coord, pname, params);
 
-  (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseFloatArrayElements(env, jparams, params, JNI_ABORT);
 }
 /*
  * Class:     OpenGL_GL
@@ -2386,15 +2222,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texGenfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_texGeniv
   (JNIEnv *env, jobject obj, jint coord, jint pname, jintArray jparams)
 {
-  GLint *params;
+  GLint *params = NULL;
 
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
 
   glTexGeniv(coord, pname, params);
 
-  (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 /*
@@ -2406,16 +2245,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexGendv
   (JNIEnv *env, jobject obj, 
    jint coord, jint pname, jdoubleArray jparams)
 {
-  GLdouble *params;
+  GLdouble *params = NULL;
 
   params = (*env)->GetDoubleArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
 
   glGetTexGendv(coord, pname, params);
 
   (*env)->ReleaseDoubleArrayElements(env, jparams, params, 0);
-
 }
 
 /*
@@ -2424,7 +2265,21 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexGendv
  * Signature: (II[F)V
  */
 JNIEXPORT void JNICALL Java_OpenGL_GL_getTexGenfv
-  (JNIEnv *env, jobject obj, jint, jint, jfloatArray);
+  (JNIEnv *env, jobject obj, jint coord, jint pname, jfloatArray jparams)
+{
+  GLfloat *params = NULL;
+
+  params = (*env)->GetFloatArrayElements(env, jparams, 0);
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
+
+  glGetTexGenfv(coord, pname, params);
+
+  (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
+}
 
 /*
  * Class:     OpenGL_GL
@@ -2432,7 +2287,20 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexGenfv
  * Signature: (II[I)V
  */
 JNIEXPORT void JNICALL Java_OpenGL_GL_getTexGeniv
-  (JNIEnv *env, jobject obj, jint, jint, jintArray);
+  (JNIEnv *env, jobject obj, jint coord, jint pname, jintArray jparams)
+{
+  GLint *params = NULL;
+
+  params = (*env)->GetIntArrayElements(env, jparams, 0);
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
+  glGetTexGeniv(coord, pname, params);
+
+  (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
+}
 
 JNIEXPORT void JNICALL Java_OpenGL_GL_texEnvf
   (JNIEnv *env, jobject obj, jint target, jint pname, jfloat param)
@@ -2456,13 +2324,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texEnvfv
 {
   jfloat *params = NULL;
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
   glTexEnvfv(target, pname, params);
-  (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseFloatArrayElements(env, jparams, params, JNI_ABORT);
 }
-
-
 
 /*
  * Class:     OpenGL_GL
@@ -2475,10 +2344,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texEnviv
 	jint *params = NULL;
 
 	params = (*env)->GetIntArrayElements(env, jparams, 0);
-	if (params == NULL)
-		return;
+    if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+	}
 	glTexEnviv(target, pname, params);
-	(*env)->ReleaseIntArrayElements(env, jparams, params, 0);
+	(*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 /*
@@ -2491,10 +2363,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexEnvfv
 {
   jfloat *params = NULL;
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
   glGetTexEnvfv(target, pname, params);
-  (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseFloatArrayElements(env, jparams, params, JNI_ABORT);
 }
 /*
  * Class:     OpenGL_GL
@@ -2504,13 +2379,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexEnvfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_getTexEnviv
   (JNIEnv *env, jobject obj, jint target, jint pname, jintArray jparams)
 {
-  int *params;
+  GLint *params = NULL;
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
   glGetTexEnviv(target, pname, params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
-
 }
 
 JNIEXPORT void JNICALL Java_OpenGL_GL_texParameterf
@@ -2533,16 +2410,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texParameteri
 JNIEXPORT void JNICALL Java_OpenGL_GL_texParameterfv
   (JNIEnv *env, jobject obj, jint target, jint pname, jfloatArray jparams)
 {
-  jfloat *params;
+  GLfloat *params = NULL;
 
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
   
   glTexParameterfv(target, pname, params);
 
-  (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
-
+  (*env)->ReleaseFloatArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 /*
@@ -2553,16 +2432,19 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texParameterfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_texParameteriv
   (JNIEnv *env, jobject obj, jint target, jint pname, jintArray jparams)
 {
-  jint *params;
+  GLint *params = NULL;
   
   params = (*env)->GetIntArrayElements(env, jparams, 0);
   
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
   
   glTexParameteriv(target, pname, params);
 
-  (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 /*
@@ -2573,11 +2455,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texParameteriv
 JNIEXPORT void JNICALL Java_OpenGL_GL_getTexParameterfv
   (JNIEnv *env, jobject obj, jint target, jint pname, jfloatArray jparams)
 {
-  GLfloat *params;
+  GLfloat *params = NULL;
 
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
 
   glGetTexParameterfv(target, pname, params);
   (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
@@ -2592,11 +2477,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexParameterfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_getTexParameteriv
   (JNIEnv *env, jobject obj, jint target, jint pname, jintArray jparams)
 {
-  GLint *params;
+  GLint *params = NULL;
 
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
 
   glGetTexParameteriv(target, pname, params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
@@ -2613,11 +2501,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexLevelParameterfv
   (JNIEnv *env, jobject obj, jint target, jint level, jint pname, 
    jfloatArray jparams)
 {
-  GLfloat *params;
+  GLfloat *params = NULL;
 
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
 
   glGetTexLevelParameterfv(target, level, pname, params);
   (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
@@ -2634,14 +2525,17 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexLevelParameteriv
   (JNIEnv *env, jobject obj, jint target, jint level, jint pname, 
    jintArray jparams)
 {
-  GLint *params;
+  GLint *params = NULL;
 
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture parameters.");
+	  return;
+  }
 
   glGetTexLevelParameteriv(target, level, pname, params);
-  (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
+  (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 
@@ -2657,14 +2551,17 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage1D__IIIIIII_3B
    jint width, jint border, jint format, jint type, 
    jbyteArray jpixels)
 {
-  GLbyte *pixels;
+  GLbyte *pixels = NULL;
 
   pixels = (*env)->GetByteArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
   
   glTexImage1D(target, level, components, width, border, format, type, pixels);
-  (*env)->ReleaseByteArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseByteArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
 /*
@@ -2678,14 +2575,17 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage1D__IIIIIII_3S
    jint width, jint border, jint format, jint type, 
    jshortArray jpixels)
 {
-  GLshort *pixels;
+  GLshort *pixels = NULL;
 
   pixels = (*env)->GetShortArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
   
   glTexImage1D(target, level, components, width, border, format, type, pixels);
-  (*env)->ReleaseShortArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseShortArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
 
@@ -2700,14 +2600,17 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage1D__IIIIIII_3I
    jint width, jint border, jint format, jint type, 
    jintArray jpixels)
 {
-  GLint *pixels;
+  GLint *pixels = NULL;
 
   pixels = (*env)->GetIntArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
   
   glTexImage1D(target, level, components, width, border, format, type, pixels);
-  (*env)->ReleaseIntArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseIntArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
 
@@ -2722,14 +2625,17 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage1D__IIIIIII_3F
    jint width, jint border, jint format, jint type, 
    jfloatArray jpixels)
 {
-  GLfloat *pixels;
+  GLfloat *pixels = NULL;
 
   pixels = (*env)->GetFloatArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
   
   glTexImage1D(target, level, components, width, border, format, type, pixels);
-  (*env)->ReleaseFloatArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseFloatArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
 /*
@@ -2743,15 +2649,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage2D__IIIIIIII_3B
    jint width, jint height, jint border, 
    jint format, jint type, jbyteArray jpixels)
 {
-  GLbyte *pixels;
+  GLbyte *pixels = NULL;
 
   pixels = (*env)->GetByteArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
   
   glTexImage2D(target, level, components, width, height,
 	       border, format, type, pixels);
-  (*env)->ReleaseByteArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseByteArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
 /*
@@ -2765,15 +2674,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage2D__IIIIIIII_3S
    jint width, jint height, jint border, 
    jint format, jint type, jshortArray jpixels)
 {
-  GLshort *pixels;
+  GLshort *pixels = NULL;
 
   pixels = (*env)->GetShortArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
   
   glTexImage2D(target, level, components, width, height,
 	       border, format, type, pixels);
-  (*env)->ReleaseShortArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseShortArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
 /*
@@ -2787,15 +2699,18 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage2D__IIIIIIII_3I
    jint width, jint height, jint border, 
    jint format, jint type, jintArray jpixels)
 {
-  GLint *pixels;
+  GLint *pixels = NULL;
 
   pixels = (*env)->GetIntArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
   
   glTexImage2D(target, level, components, width, height,
 	       border, format, type, pixels);
-  (*env)->ReleaseIntArrayElements(env, jpixels, pixels, 0);
+  (*env)->ReleaseIntArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
 /*
@@ -2809,11 +2724,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage2D__IIIIIIII_3F
    jint width, jint height, jint border, 
    jint format, jint type, jfloatArray jpixels)
 {
-  GLfloat *pixels;
+  GLfloat *pixels = NULL;
 
   pixels = (*env)->GetFloatArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
   
   glTexImage2D(target, level, components, width, height,
 	       border, format, type, pixels);
@@ -2830,11 +2748,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexImage__IIII_3B
   (JNIEnv *env, jobject obj, jint target, jint level, 
    jint format, jint type, jbyteArray jpixels)
 {
-  GLbyte *pixels;
+  GLbyte *pixels = NULL;
 
   pixels = (*env)->GetByteArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
 
   glGetTexImage(target, level, format, type, pixels);
   (*env)->ReleaseByteArrayElements(env, jpixels, pixels, 0);
@@ -2849,11 +2770,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexImage__IIII_3S
   (JNIEnv *env, jobject obj, jint target, jint level, 
    jint format, jint type, jbyteArray jpixels)
 {
-  GLshort *pixels;
+  GLshort *pixels = NULL;
 
   pixels = (*env)->GetShortArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
 
   glGetTexImage(target, level, format, type, pixels);
   (*env)->ReleaseShortArrayElements(env, jpixels, pixels, 0);
@@ -2868,11 +2792,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexImage__IIII_3I
   (JNIEnv *env, jobject obj, jint target, jint level, 
    jint format, jint type, jintArray jpixels)
 {
-  GLint *pixels;
+  GLint *pixels = NULL;
 
   pixels = (*env)->GetIntArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
 
   glGetTexImage(target, level, format, type, pixels);
   (*env)->ReleaseIntArrayElements(env, jpixels, pixels, 0);
@@ -2891,8 +2818,11 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexImage__IIII_3F
   GLfloat *pixels;
 
   pixels = (*env)->GetFloatArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
-    return;
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture image.");
+	  return;
+  }
 
   glGetTexImage(target, level, format, type, pixels);
   (*env)->ReleaseFloatArrayElements(env, jpixels, pixels, 0);
@@ -2906,11 +2836,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexImage__IIII_3F
 JNIEXPORT void JNICALL Java_OpenGL_GL_genTextures
   (JNIEnv *env, jobject obj, jintArray jtextures)
 {
-  int *textures;
+  int *textures = NULL;
   int  n = (*env)->GetArrayLength(env, jtextures);
+
   textures = (*env)->GetIntArrayElements(env, jtextures, 0);
-  if (textures == NULL)
-    return;
+  if (NULL == textures) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the textures.");
+	  return;
+  }
   glGenTextures(n, textures);
   (*env)->ReleaseIntArrayElements(env, jtextures, textures, 0);
 }
@@ -2923,11 +2857,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_genTextures
 JNIEXPORT void JNICALL Java_OpenGL_GL_deleteTextures
   (JNIEnv *env, jobject obj, jintArray jtextures)
 {
-  int *textures;
+  int *textures = NULL;
   int n = (*env)->GetArrayLength(env, jtextures);
   textures = (*env)->GetIntArrayElements(env, jtextures, 0);
-  if (textures == NULL)
-    return;
+  if (NULL == textures) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the textures.");
+	  return;
+  }
   glDeleteTextures(n, textures);
   (*env)->ReleaseIntArrayElements(env, jtextures, textures, 0);
 }
@@ -2952,16 +2889,21 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_prioritizeTextures
   (JNIEnv *env, jobject obj, jintArray textures, 
    jfloatArray priorities)
 {
-  jfloat *jpriorities;
-  jint   *jtextures;
-  jint   texturesLength;
+  jfloat *jpriorities = NULL;
+  jint   *jtextures = NULL;
+  jint   texturesLength = 0;
 
   jpriorities = (*env)->GetFloatArrayElements(env, priorities, 0);
-  if (jpriorities == NULL)
+  if (jpriorities == NULL) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the priorities.");
     return;
+  }
   jtextures = (*env)->GetIntArrayElements(env, textures, 0);
   if (jtextures == NULL) {
     (*env)->ReleaseFloatArrayElements(env, priorities, jpriorities, 0);
+	handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the textures.");
     return;
   }
   texturesLength = (*env)->GetArrayLength(env, textures);
@@ -2978,17 +2920,22 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_prioritizeTextures
 JNIEXPORT jboolean JNICALL Java_OpenGL_GL_areTexturesResident
   (JNIEnv *env, jobject obj, jintArray jtextures, jbooleanArray jresidences)
 {
-  int *textures;
-  jboolean *residences;
+  int *textures = NULL;
+  jboolean *residences = NULL;
   jboolean result;
   int texturesLength = (*env)->GetArrayLength(env, jtextures);
   textures = (*env)->GetIntArrayElements(env, jtextures, 0);
-  if (textures == NULL)
+  if (textures == NULL) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the textures.");
     return FALSE;
+  }
   residences = (*env)->GetBooleanArrayElements(env, jresidences, 0);
   if (residences == NULL) {
     (*env)->ReleaseIntArrayElements(env, jtextures, textures, 0);
-    return FALSE;
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the residences.");
+	return FALSE;
   }
 
   result = glAreTexturesResident(texturesLength, textures, residences);
@@ -3026,12 +2973,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texSubImage2D__IIIIIIII_3B
    jint format, jint type, 
    jbyteArray jpixels)
 {
-  GLbyte *pixels;
+  GLbyte *pixels = NULL;
 
   pixels = (*env)->GetByteArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture pixels.");
     return;
-
+  }
   glTexSubImage2D(target, level, xoffset, yoffset, width, height,
 		  format, type, pixels);
   (*env)->ReleaseByteArrayElements(env, jpixels, pixels, 0);
@@ -3053,8 +3002,11 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texSubImage2D__IIIIIIII_3S
   GLshort *pixels;
 
   pixels = (*env)->GetShortArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture pixels.");
     return;
+  }
 
   glTexSubImage2D(target, level, xoffset, yoffset, width, height,
 		  format, type, pixels);
@@ -3077,8 +3029,11 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texSubImage2D__IIIIIIII_3I
   GLint *pixels;
 
   pixels = (*env)->GetIntArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture pixels.");
     return;
+  }
 
   glTexSubImage2D(target, level, xoffset, yoffset, width, height,
 		  format, type, pixels);
@@ -3101,8 +3056,11 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texSubImage2D__IIIIIIII_3F
   GLfloat *pixels;
 
   pixels = (*env)->GetFloatArrayElements(env, jpixels, 0);
-  if (pixels == NULL)
+  if (NULL == pixels) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the texture pixels.");
     return;
+  }
 
   glTexSubImage2D(target, level, xoffset, yoffset, width, height,
 		  format, type, pixels);
@@ -3183,15 +3141,19 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_copyTexSubImage2D
  */
 JNIEXPORT void JNICALL Java_OpenGL_GL_map1d
   (JNIEnv *env, jobject obj, jint target, 
-   jdouble u1, jdouble u2, jint stride, jint order, jdoubleArray points)
+   jdouble u1, jdouble u2, jint stride, jint order, jdoubleArray jpoints)
 {
-  GLdouble *doublePoints;
+  GLdouble *points = NULL;
 
-  doublePoints = (*env)->GetDoubleArrayElements(env, points, 0);
-  if (doublePoints == NULL)
-    return;
-  glMap1d(target, u1, u2, stride, order, doublePoints);
-  (*env)->ReleaseDoubleArrayElements(env, points, doublePoints, 0);
+  points = (*env)->GetDoubleArrayElements(env, jpoints, 0);
+  if (NULL == points) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the map.");
+	  return;
+  }
+
+  glMap1d(target, u1, u2, stride, order, points);
+  (*env)->ReleaseDoubleArrayElements(env, jpoints, points, 0);
 }
 
 /*
@@ -3204,11 +3166,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_map1f
    jint target, jfloat u1, jfloat u2, jint stride, jint order, 
    jfloatArray jpoints)
 {
-  GLfloat *points;
+  GLfloat *points = NULL;
 
   points = (*env)->GetFloatArrayElements(env, jpoints, 0);
-  if (points == NULL)
-    return;
+  if (NULL == points) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the map.");
+	  return;
+  }
   glMap1f(target, u1, u2, stride, order, points);
   (*env)->ReleaseFloatArrayElements(env, jpoints, points, 0);
 }
@@ -3225,11 +3190,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_map2d
    jint ustride, jint uorder, 
    jdouble v1, jdouble v2, jint vstride, jint vorder, jdoubleArray jpoints)
 {
-  GLdouble *points;
+  GLdouble *points = NULL;
   
   points = (*env)->GetDoubleArrayElements(env, jpoints, 0);
-  if (points == NULL)
-    return;
+  if (NULL == points) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the map.");
+	  return;
+  }
   
   glMap2d(target, u1, u2, ustride, uorder, v1, v2, vstride, vorder, points);
   (*env)->ReleaseDoubleArrayElements(env, jpoints, points, 0);
@@ -3247,7 +3215,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_map2f
    jfloat v1, jfloat v2, jint vstride, jint vorder, 
    jfloatArray jpoints)
 {
-  GLfloat *points;
+  GLfloat *points = NULL;
   
   points = (*env)->GetFloatArrayElements(env, jpoints, 0);
   if (points == NULL)
@@ -3268,11 +3236,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getMapdv
   (JNIEnv *env, jobject obj, 
    jint target, jint query, jdoubleArray jv)
 {
-  GLdouble *v;
+  GLdouble *v = NULL;
 
   v = (*env)->GetDoubleArrayElements(env, jv, 0);
-  if (v == NULL)
-    return;
+  if (NULL == v) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the map.");
+	  return;
+  }
   
   glGetMapdv(target, query, v);
   (*env)->ReleaseDoubleArrayElements(env, jv, v, 0);
@@ -3287,11 +3258,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getMapfv
   (JNIEnv *env, jobject obj, 
    jint target, jint query, jfloatArray jv)
 {
-  GLfloat *v;
+  GLfloat *v = NULL;
 
   v = (*env)->GetFloatArrayElements(env, jv, 0);
-  if (v == NULL)
-    return;
+  if (NULL == v) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the map.");
+	  return;
+  }
   
   glGetMapfv(target, query, v);
   (*env)->ReleaseFloatArrayElements(env, jv, v, 0);
@@ -3306,11 +3280,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getMapiv
   (JNIEnv *env, jobject obj, 
    jint target, jint query, jintArray jv)
 {
-  GLint *v;
+  GLint *v = NULL;
 
   v = (*env)->GetIntArrayElements(env, jv, 0);
-  if (v == NULL)
-    return;
+  if (NULL == v) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the map.");
+	  return;
+  }
   
   glGetMapiv(target, query, v);
   (*env)->ReleaseIntArrayElements(env, jv, v, 0);
@@ -3415,8 +3392,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_mapGrid2f
    jint un, jfloat u1, jfloat u2, 
    jint vn, jfloat v1, jfloat v2)
 {
-  glMapGrid2f(un, u1, u2, 
-	      vn, v1, v2);
+  glMapGrid2f(un, u1, u2, vn, v1, v2);
 }
 
 
@@ -3495,10 +3471,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_fogi
 JNIEXPORT void JNICALL Java_OpenGL_GL_fogfv
   (JNIEnv *env, jobject obj, jint param, jfloatArray jparams)
 {
-  jfloat *params;
+  jfloat *params = NULL;
   params = (*env)->GetFloatArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the for parameters.");
+	  return;
+  }
 
   glFogfv(param, params);
   (*env)->ReleaseFloatArrayElements(env, jparams, params, 0);
@@ -3509,10 +3488,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_fogfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_fogiv
   (JNIEnv *env, jobject obj, jint param, jintArray jparams)
 {
-  jint *params;
+  jint *params = NULL;
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the for parameters.");
+	  return;
+  }
 
   glFogiv(param, params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
@@ -3549,11 +3531,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_passThrough
 JNIEXPORT void JNICALL Java_OpenGL_GL_selectBuffer
   (JNIEnv *env, jobject obj, jintArray buffer)
 {
-  jint *params;
-  jsize size;
+  jint *params = NULL;
+  jsize size = 0;
   params = (*env)->GetIntArrayElements(env, buffer, 0);
-  if (params == NULL)
-    return;
+  if (NULL == params) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the selection buffer.");
+	  return;
+  }
 
   size = (*env)->GetArrayLength(env, buffer);
 
