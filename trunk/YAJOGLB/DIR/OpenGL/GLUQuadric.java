@@ -1,7 +1,7 @@
 /*
  * GLUQuadric
  *
- * $Id: GLUQuadric.java,v 1.2 1998/09/10 00:57:01 razeh Exp $
+ * $Id: GLUQuadric.java,v 1.3 1999/01/27 00:00:11 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -11,101 +11,153 @@ package OpenGL;
 import java.util.Hashtable;
 
 /**
- * This is the Java standin for the GLU quadric object. 
+ * This is the Java stand-in for the GLU Quadric object, with an extra
+ * twist.  The extra twist is that instead of supplying an error
+ * callback you extend the class and override the <code>error</code>
+ * method.
  *
  * @author Robert Allan Zeh (razeh@balr.com)
  *
- * @version 0.1
+ * @version 0.1 
  */
 
-public class GLUQuadric extends CHeapItem {
+public class GLUQuadric extends CallbackObject {
+  
+  static private Hashtable activeQuadrics = new Hashtable();
+  /** This returns a hash table that is used to store the current
+      quadric for each thread, so that our native methods can
+      determine the current quadric in the error callback. */
+  static protected Hashtable getActiveCallbackDictionary() {
+    return activeQuadrics;
+  }
   
   /** Override to return the result of calling
-      gluNewQudric(). */
-  protected int obtainCHeapItem(Hashtable optionalArguments) {
-    return gluNewQuadric();
+      <code>NewQudric</code>. */
+  final int obtainCHeapItem(Hashtable optionalArguments) {
+    return newQuadric();
   }
 
   /** Get a new quadric object. */
-  private native int gluNewQuadric();
+  private native int newQuadric();
 
-  /** Remove the quadric we are a standin for. */
-  private native void gluDeleteQuadric(int quadric);
+  /** Remove the quadric we are a stand-in for. */
+  private native void deleteQuadric(int quadric);
 
-  /** Overriden to call gluDeleteQuadric(). */
-  protected void freeCHeapItem(int heapItem) {
-    gluDeleteQuadric(heapItem);
+  /** Overridden to call gluDeleteQuadric(). */
+  final void freeCHeapItem(int heapItem) {
+    deleteQuadric(heapItem);
   }
 
-  private native void gluQuadricDrawStyle(int GLUQuadric,
-					  int drawStyle);
+  private native void quadricDrawStyle(int GLUQuadric,
+				       int drawStyle);
 
-  public void gluQuadricDrawStyle(int drawStyle) {
-    gluQuadricDrawStyle(heapPointer(), drawStyle);
+  public void quadricDrawStyle(int drawStyle) {
+    setActiveCallbackObject();
+    try {
+      quadricDrawStyle(heapPointer(), drawStyle);
+    } finally {
+      unsetActiveCallbackObject();
+    }
   }
 
-  private native void gluQuadricOrientation(int GLUQuadric,
-					   int orientation);
-  public void gluQuadricOrientation(int orientation) {
-    gluQuadricOrientation(heapPointer(), orientation);
+  private native void quadricOrientation(int GLUQuadric,
+					 int orientation);
+  public void quadricOrientation(int orientation) {
+    setActiveCallbackObject();
+    try {
+      quadricOrientation(heapPointer(), orientation);
+    } finally {
+      unsetActiveCallbackObject();
+    }
   }
 
-  private native void gluQuadricNormals(int GLUQuadric, int normals);
-  public void gluQuadricNormals(int normals) {
-    gluQuadricNormals(heapPointer(), normals);
+  private native void quadricNormals(int GLUQuadric, int normals);
+  public void quadricNormals(int normals) {
+    setActiveCallbackObject();
+    try {
+      quadricNormals(heapPointer(), normals);
+    } finally {
+      unsetActiveCallbackObject();
+    }
   }
 
-  private native void gluQuadricTexture(int quadObject,
-				       boolean textureCoords);
-  public void gluQuadricTexture(boolean textureCoords) {
-    gluQuadricTexture(heapPointer(), textureCoords);
+  private native void quadricTexture(int quadObject,
+				     boolean textureCoords);
+  public void quadricTexture(boolean textureCoords) {
+    setActiveCallbackObject();
+    try {
+      quadricTexture(heapPointer(), textureCoords);
+    } finally {
+      unsetActiveCallbackObject();
+    }
   }
 
-  /*public native void gluQuadricCallback(GLUQuadric qobj,
-					int which, void (*fn)());*/
-
-  public native void gluCylinder(int GLUQuadric,
-				 double baseRadius,
-				 double topRadius,
-				 double height,
-				 int slices, int stacks);
-  public void gluCylinder(double baseRadius,
-			  double topRadius,
-			  double height,
-			  int slices, int stacks) {
-    gluCylinder(heapPointer(),
-		baseRadius, topRadius, height, slices, stacks);
+  public native void cylinder(int GLUQuadric,
+			      double baseRadius,
+			      double topRadius,
+			      double height,
+			      int slices, int stacks);
+  public void cylinder(double baseRadius,
+		       double topRadius,
+		       double height,
+		       int slices, int stacks) {
+    setActiveCallbackObject();
+    try {
+      cylinder(heapPointer(),
+	       baseRadius, topRadius, height, slices, stacks);
+    } finally {
+      unsetActiveCallbackObject();
+    }
   }
 
-  public native void gluSphere(int GLUQuadric,
-			       double radius, int slices, int stacks);
-  public void gluSphere(double radius, int slices, int stacks) {
-    gluSphere(heapPointer(), radius, slices, stacks);
+  public native void sphere(int GLUQuadric,
+			    double radius, int slices, int stacks);
+  public void sphere(double radius, int slices, int stacks) {
+    setActiveCallbackObject();
+    try {
+      sphere(heapPointer(), radius, slices, stacks);
+    } finally {
+      unsetActiveCallbackObject();
+    }
   }
   
 
-  private native void gluDisk(int GLUQuadric,
-			      double innerRadius, double outerRadius,
-			      int slices, int loops);
+  private native void disk(int GLUQuadric,
+			   double innerRadius, double outerRadius,
+			   int slices, int loops);
 
 
-  public void gluDisk(double innerRadius, double outerRadius,
-		      int slices, int loops) {
-    gluDisk(heapPointer(), innerRadius, outerRadius, 
-	    slices, loops);
+  public void disk(double innerRadius, double outerRadius,
+		   int slices, int loops) {
+    setActiveCallbackObject();
+    try {
+      disk(heapPointer(), innerRadius, outerRadius, 
+	   slices, loops);
+    } finally {
+      unsetActiveCallbackObject();
+    }
   }
 
 
-  private native void gluPartialDisk(int GLUQuadric, double innerRadius,
-				    double outerRadius, int slices, int loops,
-				    double startAngle, double sweepAngle);
+  private native void partialDisk(int GLUQuadric, double innerRadius,
+				  double outerRadius, int slices, int loops,
+				  double startAngle, double sweepAngle);
 
-  public void gluPartialDisk(double innerRadius, double outerRadius,
-			     int slices, int loops,
-			     double startAngle, double sweepAngle) {
-    gluPartialDisk(heapPointer(), innerRadius, outerRadius,
-		   slices, loops, startAngle, sweepAngle);
+  public void partialDisk(double innerRadius, double outerRadius,
+			  int slices, int loops,
+			  double startAngle, double sweepAngle) {
+    setActiveCallbackObject();
+    try {
+      partialDisk(heapPointer(), innerRadius, outerRadius,
+		  slices, loops, startAngle, sweepAngle);
+    } finally {
+      unsetActiveCallbackObject();
+    }
   }
-    
 
+  /** This method should be overridden in place of the GLU_QUADRIC_ERROR callback. */
+  public void error(int errorNumber) {
+    ;
+  }
 }
+
