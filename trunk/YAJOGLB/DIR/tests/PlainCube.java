@@ -1,7 +1,7 @@
 /*
  * Plain cube
  *
- * $Id: PlainCube.java,v 1.6 2001/06/10 20:52:56 razeh Exp $
+ * $Id: PlainCube.java,v 1.7 2001/07/04 02:19:28 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -51,7 +51,6 @@ public class PlainCube implements GeometryObject, GLConstants {
   public void glInit(GeometryViewer viewer, GL gl, GLU glu) {
     gl.enable(LIGHT0);
     gl.enable(LIGHTING);
-
   }
   
 

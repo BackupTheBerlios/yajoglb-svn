@@ -1,7 +1,7 @@
 /*
  * A set of axis
  *
- * $Id: Axis.java,v 1.6 2001/06/10 20:53:19 razeh Exp $
+ * $Id: Axis.java,v 1.7 2001/07/04 02:17:41 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -18,8 +18,6 @@ public class Axis implements GeometryObject, GLConstants, GLUConstants {
   double axisRange = 100.0;
 
   public void paint(GeometryViewer viewer, GL gl, GLU glu) {
-    //gl.disalu) {
-    //gl.disable(LIGHTING);
     gl.enable(LINE_SMOOTH);
     
     gl.color(0.0, 1.0, 0.0);
@@ -75,7 +73,8 @@ public class Axis implements GeometryObject, GLConstants, GLUConstants {
     zIncrement = 2.0 * -zIncrement / (float) boxCount;
 
     for(int i = 0; i  < boxCount; i++) {
-      solidCube(gl, boxSize);
+	//solidCube(gl, boxSize);
+	GLUTShapes.solidTorus(gl, .75*boxSize, boxSize, 10, 10);
       gl.translate(xIncrement, yIncrement, zIncrement);
     }
     

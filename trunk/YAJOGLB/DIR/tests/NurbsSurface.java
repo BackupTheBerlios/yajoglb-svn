@@ -1,7 +1,7 @@
 /*
  * NurbsSurface class
  *
- * $Id: NurbsSurface.java,v 1.9 2001/06/10 20:53:07 razeh Exp $
+ * $Id: NurbsSurface.java,v 1.10 2001/07/04 02:18:54 razeh Exp $
  *
  * Copyright 1998
  *
@@ -33,9 +33,9 @@ public class NurbsSurface extends Object implements GeometryObject, GLConstants,
     frame.add(viewer);
     frame.setTitle("A Nurbs Surface");
     frame.pack();
-    frame.setVisible(true);
     frame.setBackground(java.awt.Color.black);
     frame.setSize(new Dimension(400,400));
+    frame.setVisible(true);
   }
 
   private boolean showPoints;

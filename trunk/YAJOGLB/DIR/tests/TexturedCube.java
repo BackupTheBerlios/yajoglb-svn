@@ -1,7 +1,7 @@
 /*
  * Textured cube
  *
- * $Id: TexturedCube.java,v 1.1 1998/11/01 02:22:06 razeh Exp $
+ * $Id: TexturedCube.java,v 1.2 2001/07/04 02:20:08 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)

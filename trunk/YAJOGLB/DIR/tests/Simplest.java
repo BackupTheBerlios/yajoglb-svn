@@ -1,7 +1,7 @@
 /*
  * Simplest possible OpenGL demo
  *
- * $Id: Simplest.java,v 1.3 2001/06/10 20:52:42 razeh Exp $
+ * $Id: Simplest.java,v 1.4 2001/07/04 02:20:30 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -10,16 +10,16 @@
 import java.awt.*;
 import OpenGL.*;
 
-class Simplest extends OpenGLCanvas implements GLConstants {
+class Simplest extends OpenGL.Canvas implements GLConstants {
 
-  private OpenGLContext context;
+  private Context context;
   private GL            gl = new GL();
   private GLU           glu = new GLU();
 
-  /** glInit is called to create our OpenGLContext and setup our model
+  /** glInit is called to create our Context and setup our model
       view and projection matricies. */
   public void glInit() {
-    context = new OpenGLContext(this);
+    context = new Context(this);
     context.makeCurrent(this);
     
     /* Make sure that we use our depth buffer. */

@@ -1,7 +1,7 @@
 /*
  * Concurrence
  *
- * $Id: Concurrence.java,v 1.3 2001/06/10 19:13:13 razeh Exp $
+ * $Id: Concurrence.java,v 1.4 2001/07/04 02:17:50 razeh Exp $
  *
  * Copyright 1998
  *
@@ -53,12 +53,6 @@ public class Concurrence {
 
     int sphereCycle = 0;
     while(true) {
-      try {
-	Thread.sleep(100);
-      } catch (InterruptedException e) {
-	;
-      }
-
       sphereCycle++;
       double sphereRadius 
 	= 2.5 * Math.abs(Math.sin((double) sphereCycle / (50.0 * Math.PI)));

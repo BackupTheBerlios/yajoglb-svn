@@ -1,7 +1,7 @@
 /*
  * A set of axis
  *
- * $Id: TurningAxis.java,v 1.1 1999/05/02 23:31:00 razeh Exp $
+ * $Id: TurningAxis.java,v 1.2 2001/07/04 02:20:00 razeh Exp $
  * 
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -94,7 +94,8 @@ public class TurningAxis implements GeometryObject, GLConstants, GLUConstants {
     zIncrement = 2.0 * -zIncrement / (float) boxCount;
 
     for(int i = 0; i  < boxCount; i++) {
-      solidCube(gl, boxSize);
+	//solidCube(gl, boxSize);
+	GLUTShapes.solidTorus(gl, .75*boxSize, boxSize, 10, 10);
       gl.translate(xIncrement, yIncrement, zIncrement);
     }
     
