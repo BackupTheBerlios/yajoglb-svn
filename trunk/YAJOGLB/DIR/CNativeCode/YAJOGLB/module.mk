@@ -18,6 +18,7 @@ DISTRIBUTED_FILES += CNativeCode/YAJOGLB/cygnusFixes.h \
                      CNativeCode/YAJOGLB/CallbackObject.h \
                      CNativeCode/YAJOGLB/SystemError.h \
                      CNativeCode/YAJOGLB/Memory.h \
+		     CNativeCode/YAJOGLB/linuxDPYDictionary.h \
                      CNativeCode/YAJOGLB/YAJOGLB.DSP \
                      CNativeCode/YAJOGLB/YAJOGLB.DSW 
 
