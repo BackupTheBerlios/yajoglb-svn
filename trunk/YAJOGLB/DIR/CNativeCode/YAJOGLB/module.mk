@@ -20,7 +20,8 @@ DISTRIBUTED_FILES += CNativeCode/YAJOGLB/cygnusFixes.h \
                      CNativeCode/YAJOGLB/Memory.h \
 		     CNativeCode/YAJOGLB/linuxDPYDictionary.h \
                      CNativeCode/YAJOGLB/YAJOGLB.DSP \
-                     CNativeCode/YAJOGLB/YAJOGLB.DSW 
+                     CNativeCode/YAJOGLB/YAJOGLB.DSW \
+                     CNativeCode/YAJOGLB/Debug/YAJOGLB.dll
 
 CFLAGS += $(JNI_GENERIC_HEADERS) $(JNI_SPECIFIC_HEADERS) $(GL_INCLUDES) -DUSE_JAWT
 CSRCS += CNativeCode/YAJOGLB/CallbackObject.c			\
