@@ -182,17 +182,13 @@ JNIEXPORT jobject JNICALL Java_OpenGL_Canvas_lockedMethod
 						 argsAsValues);
 	if (argsAsValues) privateFree(argsAsValues);
       } else {
-	// I am not sure why this works, since we aren't supplying all
-	// of the arguments that our Java function requires, but I haven't
-	// found any problems with the JDK 1.3.
-	returnObject = (*env)->CallObjectMethod(env, object, methodID);
+	returnObject = (*env)->CallObjectMethod(env, object, methodID, NULL);
       }
 
     } else {
       handleError(env, OPENGL_CANVAS_EXCEPTION, "Unable to get methodID.");
       return returnObject;
     }
-    
   }
 
   // Free the drawing surface info
