@@ -1,7 +1,7 @@
 /*
  * OpenGL_GLU.c
  *
- * $Id: OpenGL_GLU.c,v 1.1 1998/11/01 21:42:58 razeh Exp $
+ * $Id: OpenGL_GLU.c,v 1.2 1998/12/23 00:42:07 razeh Exp $
  *
  * This implements the generic GLU methods.
  *
@@ -91,56 +91,15 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluPickMatrix
 {
   jint *viewportInts;
   viewportInts = (*env)->GetIntArrayElements(env, viewport, 0);
-  if (viewportInts == NULL)
-    return;
+  if (viewportInts == NULL) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the pick matrix.");
+	  return;
+  }
+
   gluPickMatrix(x, y, width, height, viewportInts);
   (*env)->ReleaseIntArrayElements(env, viewport, viewportInts, 0);
 }
-
-
-
-
-
-
-
-/*
- * Class:     OpenGL_GLU
- * Method:    gluBeginPolygon
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GLU_gluBeginPolygon
-  (JNIEnv *env, jobject obj, jint tess)
-{
-  gluBeginPolygon((void*) tess);
-}
-
-
-
-/*
- * Class:     OpenGL_GLU
- * Method:    gluEndPolygon
- * Signature: (I)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GLU_gluEndPolygon
-  (JNIEnv *env, jobject obj, jint tess)
-{
-  gluEndPolygon((void*) tess);
-}
-
-
-
-/*
- * Class:     OpenGL_GLU
- * Method:    gluNextContour
- * Signature: (II)V
- */
-JNIEXPORT void JNICALL Java_OpenGL_GLU_gluNextContour
-  (JNIEnv *env, jobject obj, jint tobj, jint type)
-{
-  gluNextContour((void*) tobj, type);
-}
-
-
 
 JNIEXPORT jstring JNICALL Java_OpenGL_GLU_gluGetString
   (JNIEnv *env, jobject obj, jint name)
@@ -152,8 +111,6 @@ JNIEXPORT jstring JNICALL Java_OpenGL_GLU_gluGetString
   else 
     return NULL;
 }
-
-
 
 /*
  * Class:     OpenGL_GLU
@@ -171,27 +128,36 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluProject
   GLint    *view  = NULL, returnCode;
 
   model = (*env)->GetDoubleArrayElements(env, jmodel, 0);
-  if (model == NULL)
-    return;
-
-  proj = (*env)->GetDoubleArrayElements(env, jproj, 0);
-  if (proj == NULL) {
-    (*env)->ReleaseDoubleArrayElements(env, jmodel, model, 0);
+  if (NULL == model) {
+	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the model.");
     return;
   }
 
+  proj = (*env)->GetDoubleArrayElements(env, jproj, 0);
+  if (NULL == proj) {
+    (*env)->ReleaseDoubleArrayElements(env, jmodel, model, 0);
+ 	handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the projection.");
+   return;
+  }
+
   view = (*env)->GetIntArrayElements(env, jview, 0);
-  if (view == NULL) {
+  if (NULL == view) {
     (*env)->ReleaseDoubleArrayElements(env, jmodel, model, 0);
     (*env)->ReleaseDoubleArrayElements(env, jproj,  proj, 0);
+ 	handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the view.");
     return;
   }
 
   winCoordinates = (*env)->GetDoubleArrayElements(env, jwinCoordinates, 0);
-  if (winCoordinates == NULL) {
+  if (NULL == winCoordinates) {
     (*env)->ReleaseDoubleArrayElements(env, jmodel, model, 0);
     (*env)->ReleaseDoubleArrayElements(env, jproj,  proj, 0);
     (*env)->ReleaseIntArrayElements(env, jview, view, 0);
+ 	handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the window coordinates.");
     return;
   }
 
@@ -227,12 +193,17 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluUnProject
   GLint    *view  = NULL, returnCode;
 
   model = (*env)->GetDoubleArrayElements(env, jmodel, 0);
-  if (model == NULL)
+  if (model == NULL) {
+  	handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the model.");
     return;
+  }
 
   proj = (*env)->GetDoubleArrayElements(env, jproj, 0);
   if (proj == NULL) {
     (*env)->ReleaseDoubleArrayElements(env, jmodel, model, 0);
+  	handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the projection.");
     return;
   }
 
@@ -240,6 +211,8 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluUnProject
   if (view == NULL) {
     (*env)->ReleaseDoubleArrayElements(env, jmodel, model, 0);
     (*env)->ReleaseDoubleArrayElements(env, jproj,  proj, 0);
+  	handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the view.");
     return;
   }
 
@@ -248,6 +221,8 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluUnProject
     (*env)->ReleaseDoubleArrayElements(env, jmodel, model, 0);
     (*env)->ReleaseDoubleArrayElements(env, jproj,  proj, 0);
     (*env)->ReleaseIntArrayElements(env, jview, view, 0);
+  	handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		  "Unable to map the coordinates.");
     return;
   }
 
