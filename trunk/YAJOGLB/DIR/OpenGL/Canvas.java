@@ -1,7 +1,7 @@
 /*
  * OpenGLCanvas class
  *
- * $Id: Canvas.java,v 1.4 1999/01/27 00:00:11 razeh Exp $
+ * $Id: Canvas.java,v 1.5 1999/02/13 19:30:08 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -10,6 +10,7 @@
 package OpenGL;
 
 import java.awt.*;
+import java.lang.Class;
 
 /** This provides an embedded object that OpenGL can render into.  It
  * is similar to a normal Canvas object, but it can be setup with
@@ -32,10 +33,25 @@ public class OpenGLCanvas extends Canvas {
 
   public OpenGLCanvas() {
     super();
+
+    try {
+      Class dataAccessClass = Class.forName(dataAccessClass());
+      dataAccess = (OpenGLpDataAccess)dataAccessClass.newInstance();
+    } catch (java.lang.InstantiationException exception) {
+      throw new OpenGLNativeException("Unable to create a data access instance: " +
+				      exception);
+    } catch (java.lang.ClassNotFoundException exception) {
+      throw new OpenGLNativeException("Unable to create a data access instance: " +
+				      exception);
+    } catch (java.lang.IllegalAccessException exception) {
+      throw new OpenGLNativeException("Unable to create a data access instance: " +
+				      exception);
+    }
+
     setCapabilities(defaultCapabilities());
   }
 
-  private native boolean setupOpenGLCanvas(int HDC, int HWnd);
+  private native boolean setupOpenGLCanvas();
 
   /** The default OpenGLCapabilities object that we return at startup
       for our display. */
@@ -56,39 +72,10 @@ public class OpenGLCanvas extends Canvas {
     return capabilities;
   }
 
-  /** Returns the handle to the device context for this canvas.  Windows
-      specific. */
-  int getHDC() {
-    OpenGLpDataAccess dataAccess;
-
-    dataAccess = 
-      (OpenGLpDataAccess) new sun.awt.windows.WindowspDataAccess();
-    return dataAccess.getHDC(this);
-  }    
-
-
-
-  /** Returns the handle to the window for this canvas.  Windows
-      specific. */
-  int getHWnd() {
-    OpenGLpDataAccess dataAccess;
-
-    dataAccess = 
-      (OpenGLpDataAccess) new sun.awt.windows.WindowspDataAccess();
-    return dataAccess.getHWnd(this);
-  }
-
-
   /** This handles the actual setup for our OpenGL canvas. */
   private void init() {
-    OpenGLpDataAccess dataAccess;
-
-    dataAccess = 
-      (OpenGLpDataAccess) new sun.awt.windows.WindowspDataAccess();
-
-    if (false == setupOpenGLCanvas(dataAccess.getHDC(this),
-				   dataAccess.getHWnd(this))) {
-      throw new OpenGLCanvasSetupFailedException("Unable to setup the canvas");
+    if (false == setupOpenGLCanvas()) {
+      throw new OpenGLCanvasSetupFailedException("Unable to setup the canvas.");
     }
   }
 
@@ -117,13 +104,38 @@ public class OpenGLCanvas extends Canvas {
 
   /** This contains the native call needed to actually swap our display
       buffer. */
-  private native void nativeSwapBuffers(int HDC);
+  private native void nativeSwapBuffers();
 
   /** This swaps in the double buffer that we've been using.  If
       double buffering is enabled and you don't call this after you
       draw, nothing will be displayed on the screen. */
   public void swapBuffers() {
-    nativeSwapBuffers(getHDC());
+    nativeSwapBuffers();
   }
   
+  /** Returns the class to use for data access. */
+  static private native String dataAccessClass();
+
+  private OpenGLpDataAccess dataAccess;
+
+  /** Returns the X11 display pointer. */
+  int getDisplay() {
+    return dataAccess.getDisplay(this);
+  }
+  
+  /** Returns the X11 drawable pointer. */
+  int getDrawable() {
+    return dataAccess.getDrawable(this);
+  }
+
+  /** Returns the Win32 hDC. */
+  int getHDC() {
+    return dataAccess.getHDC(this);
+  }
+
 }
+
+
+
+
+

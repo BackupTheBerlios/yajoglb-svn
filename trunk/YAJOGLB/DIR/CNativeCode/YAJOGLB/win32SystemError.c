@@ -1,7 +1,7 @@
 /*
- * SystemError.c
+ * win32SystemError.c
  * 
- * $Id: win32SystemError.c,v 1.1 1998/11/01 21:42:58 razeh Exp $
+ * $Id: win32SystemError.c,v 1.2 1999/02/13 19:27:40 razeh Exp $
  * 
  * This implements our interface to our operating system's error 
  * reporting routines.  We return a character string that describes

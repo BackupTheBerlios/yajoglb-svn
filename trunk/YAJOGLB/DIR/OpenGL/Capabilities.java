@@ -1,7 +1,7 @@
 /*
  * OpenGLCapabilities
  *
- * $Id: Capabilities.java,v 1.3 1998/10/04 23:41:47 razeh Exp $
+ * $Id: Capabilities.java,v 1.4 1999/02/13 19:30:08 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -78,8 +78,9 @@ public class OpenGLCapabilities {
     return accumulationDepth;
   }
 
-  /** Sets the number of bits per pixel we want for the depth buffer. 
-    * @param newDepthBuffer the number of bits per pixel for the depth buffer. */
+  /** Sets the number of bits per pixel we want for the depth buffer.
+    * @param newDepthBuffer the number of bits per pixel for the depth
+    * buffer. */
   public void setDepthBuffer(int newDepthBuffer) {
     depthBuffer = newDepthBuffer;
   }
@@ -103,8 +104,11 @@ public class OpenGLCapabilities {
   /** Sets the desired color type.  If the newColorType is not
       a valid one (RGBA or ColorIndex) an IllegalArgumentException is
       thrown. 
-    * @param newColorType RGBA if colors are specified as RGBA quadruples and ColorIndex if colors should be looked up in an index table.
-    * @exception IllegalArgumentException thrown when newColorType is not RGBA or ColorIndex.*/
+    @param newColorType RGBA if colors are specified as RGBA
+    quadruples and ColorIndex if colors should be looked up in an
+    index table.
+    @exception IllegalArgumentException thrown when newColorType is
+    not RGBA or ColorIndex. */
   public void setColorType(int newColorType) {
     switch (newColorType) {
     case RGBA:

@@ -1,7 +1,7 @@
 /*
  * OpenGL_GLUQuadric.c
  *
- * $Id: OpenGL_GLUQuadric.c,v 1.4 1999/01/26 23:55:44 razeh Exp $
+ * $Id: OpenGL_GLUQuadric.c,v 1.5 1999/02/13 19:27:40 razeh Exp $
  *
  * Copyright 1997
  * Robert Allan Zeh (razeh@balr.com)
@@ -11,7 +11,7 @@
  */
 
 
-#include <windows.h>
+#include "SystemIncludes.h"
 #include <GL/glu.h>
 
 #include "cygnusFixes.h"

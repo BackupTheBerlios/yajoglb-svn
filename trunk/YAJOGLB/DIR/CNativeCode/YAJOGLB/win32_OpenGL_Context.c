@@ -1,7 +1,7 @@
 /*
- * OpenGL_OpenGLContext.c
+ * win32OpenGL_OpenGLContext.c
  *
- * $Id: win32_OpenGL_Context.c,v 1.2 1998/11/04 00:34:13 razeh Exp $
+ * $Id: win32_OpenGL_Context.c,v 1.3 1999/02/13 19:27:40 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -28,7 +28,7 @@ static void throwContextException(JNIEnv *env)
 {
 	char *errorMessage = systemErrorMessage();
 	handleError(env, OPENGL_CONTEXT_EXCEPTION, errorMessage);
-    privateFree((void*)errorMessage);
+        privateFree((void*)errorMessage);
 }
 
 

@@ -1,21 +1,23 @@
 /*
  * OpenGL_OpenGLTesselator.c
  *
- * $Id: OpenGL_GLUTesselator.c,v 1.4 1999/01/26 23:55:44 razeh Exp $
+ * $Id: OpenGL_GLUTesselator.c,v 1.5 1999/02/13 19:27:40 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
  *
- * This implements some of the native methods that are needed to support tesselators.
- * The primary problem with tesselators is the callbacks, which should call our
- * own Java methods.  So, we setup some functions to get the tesselator that the
- * current thread is using.
+ * This implements some of the native methods that are needed to
+ * support tesselators.  The primary problem with tesselators is the
+ * callbacks, which should call our own Java methods.  So, we setup
+ * some functions to get the tesselator that the current thread is
+ * using.
  *
- * Future work includes reusing polygon containers.  Right now they can be allocated,
- * deallocated and then allocated and deallocated all over again.
+ * Future work includes reusing polygon containers.  Right now they
+ * can be allocated, deallocated and then allocated and deallocated
+ * all over again.  
  */
 
-#include <windows.h>
+#include "SystemIncludes.h"
 #include <GL/glu.h>
 
 #include "cygnusFixes.h"
@@ -91,7 +93,7 @@ static tesselatorContainer *newTesselatorContainer(JNIEnv *env)
 {
 	tesselatorContainer *newContainer = NULL;
 
-	newContainer = privateMalloc(sizeof(*newContainer));
+	newContainer = (tesselatorContainer*) privateMalloc(sizeof(*newContainer));
 	if (NULL != newContainer) {
 		newContainer->vertexDataList = NULL;
 		newContainer->polygonDataContainer = NULL;
@@ -116,7 +118,7 @@ static polygonDataContainer *newPolygonDataContainer(JNIEnv *env,
 
 	// Make sure there is no container already present.
 	if (NULL == tessContainer->polygonDataContainer) {
-		newContainer = privateMalloc(sizeof(*newContainer));
+		newContainer = (polygonDataContainer*) privateMalloc(sizeof(*newContainer));
 		if (NULL != newContainer) {
 			newContainer->polygonData = (*env)->NewGlobalRef(env, polygonData);
 		tessContainer->polygonDataContainer = newContainer;
@@ -413,17 +415,19 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLUTesselator_gluNewTess
 
 	newTesselator = gluNewTess();
 	if (NULL != newTesselator) {
+#ifdef GLU_TESS_VERSION_1_3
 	    gluTessCallback(newTesselator, GLU_TESS_ERROR_DATA, errorData);
-		gluTessCallback(newTesselator, GLU_TESS_BEGIN_DATA, beginData);
-		gluTessCallback(newTesselator, GLU_TESS_END_DATA, endData);
-		gluTessCallback(newTesselator, GLU_TESS_VERTEX_DATA, vertexData);
-		gluTessCallback(newTesselator, GLU_TESS_COMBINE_DATA, combineData);
-		// We do not add in the edge flag callback, because it modifies the 
-		// behaviour of the tesselator and we allow the user to control that.
-		newTessContainer = newTesselatorContainer(env);
-		if (NULL != newTessContainer) {
-			newTessContainer->tesselator = newTesselator;
-		}
+	    gluTessCallback(newTesselator, GLU_TESS_BEGIN_DATA, beginData);
+	    gluTessCallback(newTesselator, GLU_TESS_END_DATA, endData);
+	    gluTessCallback(newTesselator, GLU_TESS_VERTEX_DATA, vertexData);
+	    gluTessCallback(newTesselator, GLU_TESS_COMBINE_DATA, combineData);
+	    /* We do not add in the edge flag callback, because it
+	        modifies the behaviour of the tesselator and we allow
+	        the user to control that. */
+#endif
+	    newTessContainer = newTesselatorContainer(env);
+	    if (NULL != newTessContainer) {
+	      newTessContainer->tesselator = newTesselator; }
 	}
 
 	return (int) newTessContainer;
@@ -570,7 +574,9 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_enableEdgeFlag
 {
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
+#ifdef GLU_TESS_VERSION_1_3
 	gluTessCallback(container->tesselator, GLU_TESS_EDGE_FLAG_DATA, edgeFlagData);
+#endif
 }
 
 
@@ -581,7 +587,9 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUTesselator_disableEdgeFlag
 {
 	tesselatorContainer *container = (tesselatorContainer*)tess;
 
+#ifdef GLU_VERSION_1_3
 	gluTessCallback(container->tesselator, GLU_TESS_EDGE_FLAG_DATA, NULL);
+#endif
 }
 
 

@@ -1,7 +1,7 @@
 /*
  * OpenGL_GL.c
  *
- * $Id: OpenGL_GL.c,v 1.4 1999/01/26 23:55:44 razeh Exp $
+ * $Id: OpenGL_GL.c,v 1.5 1999/02/13 19:27:40 razeh Exp $
  *
  * This implements the generic GL methods.
  *
@@ -11,13 +11,13 @@
 
 
 /* With the Cygnus tools you need to include the GL stuff first. */
-#include <windows.h>
+#include "SystemIncludes.h"
 #include <GL/gl.h>
 
 #include "cygnusFixes.h"
 #include "ErrorHandling.h"
 #include "OpenGL_GL.h"
-#include "memory.h"
+#include "Memory.h"
 #include "JNIInterface.h"
 
 /* This file contains the actual native methods for OpenGL.  It really
@@ -1779,7 +1779,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
     }
     
   bufferElementCount = width * height * pixelCountMultiplier;
-  buffer = privateMalloc(bufferElementCount * pixelStorageSizeMultiplier);
+  buffer = (void*) privateMalloc(bufferElementCount * pixelStorageSizeMultiplier);
   if (buffer == NULL) {
     handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
 		"Unable to allocate temporary buffer in readPixels");
@@ -2658,14 +2658,14 @@ JNIEXPORT jboolean JNICALL Java_OpenGL_GL_areTexturesResident
   if (textures == NULL) {
 	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
 		  "Unable to map the textures.");
-    return FALSE;
+    return JNI_FALSE;
   }
   residences = (*env)->GetBooleanArrayElements(env, jresidences, 0);
   if (residences == NULL) {
     (*env)->ReleaseIntArrayElements(env, jtextures, textures, 0);
     handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
 		"Unable to map the residences.");
-	return FALSE;
+	return JNI_FALSE;
   }
 
   result = glAreTexturesResident(texturesLength, textures, residences);

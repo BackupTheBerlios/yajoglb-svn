@@ -1,7 +1,7 @@
 /*
  * OpenGLContext
  *
- * $Id: Context.java,v 1.2 1998/11/01 02:17:45 razeh Exp $
+ * $Id: Context.java,v 1.3 1999/02/13 19:30:08 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -34,9 +34,9 @@ public class OpenGLContext extends CHeapItem
 {
   /* These strings are used as keys inside of the hash table we pass
      around our constructors. */
-  static final String WIDGET  = "OpenGLWidget";
-  static final String CONTEXT = "OpenGLContext";
-  static final String CANVAS  = "OpenGLCanvas";
+  private static final String WIDGET  = "OpenGLWidget";
+  private static final String CONTEXT = "OpenGLContext";
+  private static final String CANVAS  = "OpenGLCanvas";
 
   /** This private routine is used to pass a constructed hash table 
       to our super construction method. */
@@ -160,12 +160,12 @@ public class OpenGLContext extends CHeapItem
 
     if (contextLockCount == 0) {
       throw new 
-	IllegalStateException("Attempting to unlock an unlocked OpenGLContext");
+	IllegalStateException("Attempting to unlock an unlocked OpenGLContext.");
     }
 
     if (contextLocker != java.lang.Thread.currentThread()) {
       throw new 
-	IllegalThreadStateException("Attempting to unlock an OpenGLContext locked by another thread");
+	IllegalThreadStateException("Attempting to unlock an OpenGLContext locked by another thread.");
     }
 
     contextLockCount--;

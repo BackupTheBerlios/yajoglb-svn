@@ -1,7 +1,7 @@
 /*
  * OpenGL_OpenGLVertexPointer.c
  * 
- * $Id: OpenGL_GLVertexPointer.c,v 1.1 1998/11/04 00:32:18 razeh Exp $
+ * $Id: OpenGL_GLVertexPointer.c,v 1.2 1999/02/13 19:27:40 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -14,7 +14,7 @@
  */
 
 /* With the Cygnus tools you need to include the GL stuff first. */
-#include <windows.h>
+#include "SystemIncludes.h"
 #include <GL/gl.h>
 
 #include "cygnusFixes.h"
@@ -52,30 +52,34 @@ static GLenum _glTypeForJavaType(const char *javaArrayType)
 
 /* This calls the appropriate vertex pointer based on the given capability. */
 static void _setVertexPointer(GLint size,
-							  GLenum type,
-			                  GLsizei stride,
-			                  const GLvoid *pointer,
-							  GLenum capability)
+			      GLenum type,
+			      GLsizei stride,
+			      const GLvoid *pointer,
+			      GLenum capability)
 {
-	switch(capability) {
-	case GL_VERTEX_ARRAY:
-		glVertexPointer(size, type, stride, pointer);
-		break;
-	case GL_NORMAL_ARRAY:
-		glNormalPointer(type, stride, pointer);
-		break;
-	case GL_COLOR_ARRAY:
-		glColorPointer(size, type, stride, pointer);
-		break;
-	case GL_INDEX_ARRAY:
-		glIndexPointer(type, stride, pointer);
-		break;
-	case GL_TEXTURE_COORD_ARRAY:
-		glTexCoordPointer(size, type, stride, pointer);
-		break;
-	case GL_EDGE_FLAG_ARRAY:
-		glEdgeFlagPointer(stride, pointer);
-	}
+  switch(capability) {
+  case GL_VERTEX_ARRAY:
+    glVertexPointer(size, type, stride, pointer);
+    break;
+  case GL_NORMAL_ARRAY:
+    glNormalPointer(type, stride, pointer);
+    break;
+  case GL_COLOR_ARRAY:
+    glColorPointer(size, type, stride, pointer);
+    break;
+  case GL_INDEX_ARRAY:
+    glIndexPointer(type, stride, pointer);
+    break;
+  case GL_TEXTURE_COORD_ARRAY:
+    glTexCoordPointer(size, type, stride, pointer);
+    break;
+  case GL_EDGE_FLAG_ARRAY:
+    glEdgeFlagPointer(stride, pointer);
+    break;
+  default:
+    fatalUnreportableError("Unexpected capabilitity passed to _setVertexPointer");
+    break;
+  }
 }
 
 

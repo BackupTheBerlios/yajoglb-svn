@@ -1,7 +1,7 @@
 /*
  * OpenGL_GLSelectionBuffer.c
  *
- * $Id: OpenGL_GLSelectionBuffer.c,v 1.1 1999/01/26 23:55:44 razeh Exp $
+ * $Id: OpenGL_GLSelectionBuffer.c,v 1.2 1999/02/13 19:27:40 razeh Exp $
  *
  * This implements the selection buffer portion of the OpenGL Java binding.
  *
@@ -9,7 +9,7 @@
  * Robert Allan Zeh (razeh@balr.com)
  */
 
-#include <windows.h>
+#include "SystemIncludes.h"
 #include <GL/gl.h>
 
 #include "cygnusFixes.h"

@@ -1,7 +1,7 @@
 /*
  * OpenGL_OpenGLCanvas.c
  *
- * $Id: win32_OpenGL_Canvas.c,v 1.3 1998/12/23 00:42:24 razeh Exp $
+ * $Id: win32_OpenGL_Canvas.c,v 1.4 1999/02/13 19:27:40 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -11,96 +11,119 @@
  * from the canvas.
  */
 
-#include <windows.h>
+#include "SystemIncludes.h"
 #include "cygnusFixes.h"
 #include "OpenGL_OpenGLCanvas.h"
 #include "SystemError.h"
 #include "memory.h"
 #include "ErrorHandling.h"
 #include "JNIInterface.h"
+#include "win32DCDictionary.h"
+#include "OpenGLCapabilitiesAccessors.h"
 
 #define OPENGL_CANVAS_EXCEPTION "OpenGL/OpenGLCanvasSetupFailedException"
 
-/* This throws an OpenGLContextException Java exception that uses the current
+
+
+////////////////////////////////////////////////////////////////////////
+// Functions for our private use.
+////////////////////////////////////////////////////////////////////////
+
+
+
+/* This throws an OpenGLCanvasException Java exception that uses the current
    system error as the error message. */
 static void throwCanvasException(JNIEnv *env)
 {
-	char *errorMessage = systemErrorMessage();
-	handleError(env, OPENGL_CANVAS_EXCEPTION, errorMessage);
-    privateFree((void*)errorMessage);
+  char *errorMessage = systemErrorMessage();
+  handleError(env, OPENGL_CANVAS_EXCEPTION, errorMessage);
+  privateFree((void*)errorMessage);
 }
+
+
+
+/* Throw an OpenGLCanvasException with the supplied message. */
+static void throwCanvasExceptionWithMessage(JNIEnv *env, const char *errorMessage)
+{
+  handleError(env, OPENGL_CANVAS_EXCEPTION, errorMessage);
+}
+
+
 
 static void
 setupPixelFormat(JNIEnv *env, jobject capabilities, HDC hDC)
 {
-  jint colorDepth = 0, alphaDepth = 0, depthBuffer = 0, stencilBuffer = 0;
+  BYTE colorTypeChoice = 0, colorDepthSize = 0, alphaDepthSize = 0,
+       depthBufferSize = 0, stencilBufferSize = 0;
+  jint doubleBufferChoice;
 
-  {
-	jclass    capabilitiesClass = NULL;
-	jmethodID methodID          = NULL;
-
-	capabilitiesClass = (*env)->GetObjectClass(env, capabilities);
-	/* The color depth. */
-	methodID = getMethodID(env, capabilitiesClass, "colorDepth", "()I",
-		"Unable to get colorDepth method.");
-	if (methodID) {
-		colorDepth = (*env)->CallIntMethod(env, capabilities, methodID);
-	} else {
-		return;
-	}
-
-	/* The alpha depth. */
-	methodID = getMethodID(env, capabilitiesClass, "alphaDepth", "()I",
-		"Unable to get the alphaDepth method.");
-	if (methodID) {
-		alphaDepth = (*env)->CallIntMethod(env, capabilities, methodID);
-	} else {
-		return;
-	}
-
-	/* The depth buffer depth. */
-	methodID = getMethodID(env, capabilitiesClass, "depthBuffer", "()I",
-		"Unable to get the depthBuffer method.");
-	if (methodID) {
-		depthBuffer = (*env)->CallIntMethod(env, capabilities, methodID);
-	} else {
-		return;
-	}
-
-	/* The stencil buffer. */
-	methodID = getMethodID(env, capabilitiesClass, "stencilBuffer", "()I",
-		"Unable to get the stencilBuffer method.");
-	if (methodID) {
-		stencilBuffer = (*env)->CallIntMethod(env, capabilities, methodID);
-	} else {
-		return;
-	}
+  int error = 0;
+  
+  /* Get the capabilities values. */
+  if (!error) {
+    alphaDepthSize = (BYTE)alphaDepth(env, capabilities);
+    error = (alphaDepthSize < 0);
   }
 
-  {
-	PIXELFORMATDESCRIPTOR pfd = {
-        sizeof(PIXELFORMATDESCRIPTOR),  /* size */
-        1,                              /* version */
+  if (!error) {
+    colorDepthSize = (BYTE)colorDepth(env, capabilities);
+    error = (colorDepthSize < 0);
+  }
+
+  if (!error) {
+    depthBufferSize = (BYTE)depthBuffer(env, capabilities);
+    error = (depthBufferSize < 0);
+  }
+  
+  if (!error) {
+    stencilBufferSize = (BYTE)stencilBuffer(env, capabilities);
+    error = (stencilBufferSize < 0);
+  }
+
+  if (!error) {
+	jint newColorTypeChoice = colorType(env, capabilities);
+				
+	if (0 == newColorTypeChoice) {
+		colorTypeChoice = PFD_TYPE_RGBA;
+	} 
+
+	if (1 == newColorTypeChoice) {
+		colorTypeChoice = PFD_TYPE_COLORINDEX;
+	}
+
+    error = (newColorTypeChoice  < 0);
+  }
+
+  if (!error) {
+    doubleBufferChoice = isDoubleBufferEnabled(env, capabilities);
+    error = (doubleBufferChoice < 0);
+  }
+
+
+  if (!error) {
+        PIXELFORMATDESCRIPTOR pfd = {
+        sizeof(PIXELFORMATDESCRIPTOR),         /* size */
+        1,                                     /* version */
         PFD_SUPPORT_OPENGL |
         PFD_DRAW_TO_WINDOW |
-        PFD_DOUBLEBUFFER,               /* support double-buffering */
-        PFD_TYPE_RGBA,                  /* color type */
-        (unsigned char)colorDepth,      /* prefered color depth */
-        0, 0, 0, 0, 0, 0,               /* color bits (ignored) */
-        alphaDepth != 0,                /* alpha buffer */
-        (unsigned char)alphaDepth,      /* alpha bits (ignored) */
-        0,                              /* no accumulation buffer */
-        0, 0, 0, 0,                     /* accum bits (ignored) */
-        (unsigned char)depthBuffer,     /* bits per pixel --- depth buffer */
-        (unsigned char)stencilBuffer,   /* bits per pixel --- stencil buffer */
-        0,                              /* no auxiliary buffers */
-        PFD_MAIN_PLANE,                 /* main layer */
-        0,                              /* reserved */
-        0, 0, 0,                        /* no layer, visible, damage masks */
+        PFD_DOUBLEBUFFER & doubleBufferChoice, /* support double-buffering */
+        colorTypeChoice,                       /* color type */
+        colorDepthSize,                        /* prefered color depth */
+        0, 0, 0, 0, 0, 0,                      /* color bits (ignored) */
+        alphaDepthSize != 0,                   /* alpha buffer */
+        alphaDepthSize,                        /* alpha bits (ignored) */
+        0,                                     /* no accumulation buffer */
+        0, 0, 0, 0,                            /* accum bits (ignored) */
+        depthBufferSize,                       /* bits per pixel --- depth buffer */
+        stencilBufferSize,                     /* bits per pixel --- stencil buffer */
+        0,                                     /* no auxiliary buffers */
+        PFD_MAIN_PLANE,                        /* main layer */
+        0,                                     /* reserved */
+        0, 0, 0,                               /* no layer, visible, damage masks */
     };
 
     int pixelFormat = 0;
-	int setPixelFormatResult = 0; 
+    int setPixelFormatResult = 0; 
 
     pixelFormat = ChoosePixelFormat(hDC, &pfd);
     if (pixelFormat == 0) {
@@ -182,18 +205,21 @@ setupPalette(JNIEnv *env, HDC hDC)
 
 
 
-/*
- * Class:     OpenGL_OpenGLCanvas
- * Method:    setupOpenGLCanvas
- * Signature: (II)Z
- */
-JNIEXPORT jboolean JNICALL Java_OpenGL_OpenGLCanvas_setupOpenGLCanvas
-  (JNIEnv *env, jobject canvas, jint hDC, jint HWnd)
-{
-  jobject capabilities             = NULL;
+////////////////////////////////////////////////////////////////////////
+// Implementation of our native methods.
+////////////////////////////////////////////////////////////////////////
 
-  /* Get the capabilities object out of our widget. */
-  {
+
+
+JNIEXPORT jboolean JNICALL Java_OpenGL_OpenGLCanvas_setupOpenGLCanvas
+  (JNIEnv *env, jobject canvas)
+{
+  jobject  capabilities  = NULL;
+  HDC      hDC           = getDCForCanvas(env, canvas);
+  jboolean returnCode    = JNI_TRUE;
+
+  if (NULL != hDC) {
+		/* Get the capabilities object out of our widget. */
     jclass canvasClass             = NULL;
     jmethodID capabilitiesMethodID = NULL;
     canvasClass = (*env)->GetObjectClass(env, canvas);
@@ -205,22 +231,31 @@ JNIEXPORT jboolean JNICALL Java_OpenGL_OpenGLCanvas_setupOpenGLCanvas
     if (capabilitiesMethodID) {
       capabilities = (*env)->CallObjectMethod(env, canvas, capabilitiesMethodID);
     }
+	setupPixelFormat(env, capabilities, hDC);
+	setupPalette(env, hDC);
+  } else {
+	throwCanvasExceptionWithMessage(env, "Unable to obtain hDC for canvas.");
+	returnCode = JNI_FALSE;
   }
 
-  setupPixelFormat(env, capabilities, (HDC) hDC);
-  setupPalette(env, (HDC) hDC);
-
-  return JNI_TRUE;
+  return returnCode;
 }
 
-/*
- * Class:     OpenGL_OpenGLCanvas
- * Method:    nativeSwapBuffers
- * Signature: (I)V
- */
+
+
 JNIEXPORT void JNICALL Java_OpenGL_OpenGLCanvas_nativeSwapBuffers
-  (JNIEnv *env, jobject canvas, jint hDC)
+  (JNIEnv *env, jobject canvas)
 {
-	SwapBuffers((HDC) hDC);
+  HDC hDC = getDCForCanvas(env, canvas);
+  SwapBuffers(hDC);
+}
+
+
+
+/* Returns the string for our data access class. */
+JNIEXPORT jstring JNICALL Java_OpenGL_OpenGLCanvas_dataAccessClass
+  (JNIEnv *env, jclass clasz)
+{
+  return (*env)->NewStringUTF(env, "sun.awt.windows.WindowspDataAccess");
 }
 

@@ -1,7 +1,7 @@
 /*
  * OpenGL_GLNativeFloatArray.c
  *
- * $Id: OpenGL_GLNativeFloatArray.c,v 1.1 1999/01/26 23:55:44 razeh Exp $
+ * $Id: OpenGL_GLNativeFloatArray.c,v 1.2 1999/02/13 19:27:40 razeh Exp $
  *
  * This implements the native methods for the native float array class.
  *
@@ -9,7 +9,7 @@
  * Robert Allan Zeh (razeh@balr.com)
  */
 
-#include <windows.h>
+#include "SystemIncludes.h"
 #include <GL/gl.h>
 
 #include "cygnusFixes.h"

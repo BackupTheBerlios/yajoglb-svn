@@ -9,9 +9,11 @@
  * for nurbs.
  */
 
-#include "cygnusFixes.h"
-#include <windows.h>
+
+#include "SystemIncludes.h"
 #include <GL/glu.h>
+#include "cygnusFixes.h"
+#include "OpenGL_GLUNurbs.h"
 #include "JNIInterface.h"
 #include "ErrorHandling.h"
 #include "OpenGL_GLUNurbs.h"
@@ -219,35 +221,28 @@ static void CALLBACK error(GLenum errorNumber)
 // Creation and destruction functions.
 ////////////////////////////////////////////////////////////////////////
 
-
-
-/*
- * Class:     OpenGL_GLUNurbs
- * Method:    newNurbsRenderer
- * Signature: ()I
- */
 JNIEXPORT jint JNICALL Java_OpenGL_GLUNurbs_newNurbsRenderer
   (JNIEnv *env, jobject obj)
 {
   GLUnurbs *newNurbs = gluNewNurbsRenderer();
 
   if (NULL != newNurbs) {
+    /* Assume that if GLU_NURBS_BEGIN_EXT is defined the rest are too. */
+#ifdef GLU_NURBS_BEGIN_EXT
 	  gluNurbsCallback(newNurbs, GLU_NURBS_BEGIN_EXT, begin);
 	  gluNurbsCallback(newNurbs, GLU_NURBS_VERTEX_EXT, vertex);
 	  gluNurbsCallback(newNurbs, GLU_NURBS_NORMAL_EXT, normal);
 	  gluNurbsCallback(newNurbs, GLU_NURBS_COLOR_EXT, color);
 	  gluNurbsCallback(newNurbs, GLU_NURBS_TEX_COORD_EXT, texCoord);
 	  gluNurbsCallback(newNurbs, GLU_NURBS_END_EXT, end);
+#endif
 	  gluNurbsCallback(newNurbs, GLU_ERROR, error);
   }
   return (int)newNurbs;
 }
 
-/*
- * Class:     OpenGL_GLUNurbs
- * Method:    deleteNurbsRenderer
- * Signature: (I)V
- */
+
+
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_deleteNurbsRenderer
   (JNIEnv *env, jobject obj, jint nurbs)
 {
@@ -260,6 +255,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_deleteNurbsRenderer
 ////////////////////////////////////////////////////////////////////////
 // Drawing functions.
 ////////////////////////////////////////////////////////////////////////
+
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_loadSamplingMatrices
@@ -294,11 +290,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_loadSamplingMatrices
 
 
 
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    gluNurbsProperty
- * Signature: (IIF)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsProperty
   (JNIEnv *env, jobject obj, jint nurbs, jint property, jfloat value)
 {
@@ -323,11 +314,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endCurve
 
 
 
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    gluNurbsCurve
- * Signature: (I[FI[FII)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsCurve
   (JNIEnv *env, jobject obj, jint nurb, 
    jfloatArray jknot, jint stride, 
@@ -357,11 +343,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsCurve
 
 
 
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    gluBeginSurface
- * Signature: (I)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_beginSurface
   (JNIEnv *env, jobject obj, jint nurb)
 {
@@ -370,11 +351,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_beginSurface
 
 
 
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    gluEndSurface
- * Signature: (I)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endSurface
   (JNIEnv *env, jobject obj, jint nurb)
 {
@@ -383,11 +359,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endSurface
 
 
   
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    gluNurbsSurface
- * Signature: (I[F[FII[FIII)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsSurface
   (JNIEnv *env, jobject obj, 
    jint nurb, jfloatArray jsKnots, jfloatArray jtKnots, 
@@ -442,11 +413,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_getNurbsProperty
 
 
 
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    gluBeginTrim
- * Signature: (I)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_beginTrim
   (JNIEnv *env, jobject obj, jint nurb)
 {
@@ -455,11 +421,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_beginTrim
 
 
 
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    gluEndTrim
- * Signature: (I)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endTrim
   (JNIEnv *env, jobject obj, jint nurb)
 {
@@ -468,11 +429,6 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endTrim
 
 
 
-/*
- * Class:     OpenGL_OpenGLWidget
- * Method:    gluPwlCurve
- * Signature: (I[FII)V
- */
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_pwlCurve
   (JNIEnv *env, jobject obj, jint nurb, 
    jfloatArray jdata, jint stride, jint type)

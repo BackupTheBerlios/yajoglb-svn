@@ -2,7 +2,6 @@
    compile with the Java include files that are intended for Microsoft
    tools. */
 
-
 #ifdef __CYGWIN32__
 /* Make sure that we get the JNI headers with JNICALL defined as __stdcall. */
 #include <jni.h>

@@ -1,7 +1,7 @@
 /*
  * win32DCDictionary.c
  *
- * $Id: win32DCDictionary.c,v 1.2 1998/11/04 00:38:51 razeh Exp $
+ * $Id: win32DCDictionary.c,v 1.3 1999/02/13 19:27:40 razeh Exp $
  *
  * Copyright 1998
  * Robert Allan Zeh (razeh@balr.com)
@@ -10,6 +10,8 @@
  *
  */
 
+
+#include "SystemIncludes.h"
 #include "cygnusFixes.h"
 #include "SystemError.h"
 #include "ErrorHandling.h"
@@ -19,15 +21,14 @@
 /* This aquires the DC from an OpenGLCanvas object. */
 HDC getDCForCanvas(JNIEnv *env, jobject canvas)
 {
-	jmethodID getDCMethodID;
+	jmethodID getDCMethodID = NULL;
 	HDC hDC = 0;
-	jclass canvasClass =
-		(*env)->GetObjectClass(env, canvas);
+	jclass canvasClass = (*env)->GetObjectClass(env, canvas);
 	
 	getDCMethodID = getMethodID(env, canvasClass, "getHDC", "()I",
-		"Unable to get getHDC()I method");
+		"Unable to get getHDC() method.");
 	if (getDCMethodID) {
-		hDC = (*env)->CallObjectMethod(env, canvas, getDCMethodID);
+		hDC = (HDC)(*env)->CallIntMethod(env, canvas, getDCMethodID);
 	}
 	return hDC;
 }

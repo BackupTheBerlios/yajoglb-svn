@@ -1,7 +1,7 @@
 /*
  * JNIInterface.c
  *
- * $Id: JNIInterface.c,v 1.4 1999/01/04 02:03:18 razeh Exp $
+ * $Id: JNIInterface.c,v 1.5 1999/02/13 19:27:40 razeh Exp $
  *
  * This module handles convience routines for dealing with the Java
  * Native Interface.
@@ -94,7 +94,7 @@ int lookupIntField(JNIEnv *env, jobject object,
 int staticIntField(JNIEnv *env, jclass class,
 		   const char *fieldName)
 {
-  int fieldValue = -1;
+  jint fieldValue = -1;
 
   lookupStaticIntField(env, class, fieldName, &fieldValue);
 
@@ -270,21 +270,21 @@ arrayElements getArrayElements(JNIEnv *env, jobject jarray, jboolean *isCopy)
 	struct javaArrayAccessDescription arrayTypes[] = 
 	{
 		{"[B", "Unable to find byte array class ([B)",
-			(*env)->GetByteArrayElements},
+		(void*)	(*env)->GetByteArrayElements},
 		{"[C", "Unable to find character array class ([C)",
-		(*env)->GetCharArrayElements},
+		(void *) (*env)->GetCharArrayElements},
 		{"[I", "Unable to find int array class ([I)",
-		(*env)->GetIntArrayElements},
+		(void *) (*env)->GetIntArrayElements},
 		{"[F", "Unable to find float array class ([F)",
-		(*env)->GetFloatArrayElements},
+		(void *) (*env)->GetFloatArrayElements},
 		{"[S", "Unable to find short array class ([S)",
-		(*env)->GetShortArrayElements},
+		(void *) (*env)->GetShortArrayElements},
 		{"[D", "Unable to find double array class ([D)",
-		(*env)->GetDoubleArrayElements},
+		(void *) (*env)->GetDoubleArrayElements},
 		{"[L", "Unable to find long array class ([L)",
-		(*env)->GetLongArrayElements},
+		(void *) (*env)->GetLongArrayElements},
 		{"[Z", "Unable to find boolean array class ([Z)",
-		(*env)->GetBooleanArrayElements},
+		(void *) (*env)->GetBooleanArrayElements},
 	}; 
 	
 	int i;

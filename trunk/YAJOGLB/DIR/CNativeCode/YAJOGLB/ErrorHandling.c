@@ -49,7 +49,7 @@ void handleOutOfMemoryError(JNIEnv *env, const char *errorMessage)
 
 
 
-void log(JNIEnv *env, const char *string)
+void logMessage(JNIEnv *env, const char *string)
 {
   fprintf(stderr, string);
 }
@@ -80,5 +80,5 @@ void logHex(JNIEnv *env, unsigned int h)
       thisDigit = (((0xF << (i*4)) & h) >> (i*4)) + ('a' - ':') + '0';
     outputBuffer[BUFFERLENGTH-1-i] = thisDigit;
   }
-  log(env, outputBuffer);
+  logMessage(env, outputBuffer);
 }
