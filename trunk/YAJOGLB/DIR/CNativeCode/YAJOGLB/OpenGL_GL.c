@@ -1,12 +1,34 @@
 /*
+  Generic OpenGL native methods.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
+
+/*
  * OpenGL_GL.c
  *
- * $Id: OpenGL_GL.c,v 1.6 1999/05/03 00:03:49 razeh Exp $
+ * $Id: OpenGL_GL.c,v 1.7 2001/07/06 23:40:05 razeh Exp $
  *
  * This implements the generic GL methods.
  *
- * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
  */
 
 
@@ -322,14 +344,13 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_get__I_3F
 JNIEXPORT void JNICALL Java_OpenGL_GL_get__I_3I
   (JNIEnv *env, jobject obj, jint pname, jintArray jparams)
 {
-  GLint *params = NULL;
-  params = (*env)->GetIntArrayElements(env, jparams, 0);
+  jint *params = (*env)->GetIntArrayElements(env, jparams, 0);
   if (NULL == params) {
 	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
 		  "Unable to map the integer array.");
     return;
   }
-  glGetIntegerv(pname, params);
+  glGetIntegerv(pname, (GLint*)params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
 }
 
@@ -1359,7 +1380,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_lightiv
     return;
   }
 
-  glLightiv(light, param, params);
+  glLightiv(light, param, (GLint*)params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
@@ -1393,7 +1414,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getLightiv
     return;
   }
 
-  glGetLightiv(light, pname, params);
+  glGetLightiv(light, pname, (GLint*)params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
 }
 
@@ -1441,7 +1462,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_lightModeliv
 		  "Unable to map the light model.");
     return;
   }
-  glLightModeliv(pname, params);
+  glLightModeliv(pname, (GLint*)params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
@@ -1474,7 +1495,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_materialiv
     return;
   }
 
-  glMaterialiv(face, pname, params);
+  glMaterialiv(face, pname, (GLint*)params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
@@ -1526,7 +1547,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getMaterialiv
     return;
   }
 
-  glGetMaterialiv(face, pname, params);
+  glGetMaterialiv(face, pname, (GLint*)params);
 
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
 }
@@ -1607,14 +1628,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_pixelMapfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_pixelMapuiv
   (JNIEnv *env, jobject obj, jint map, jint mapsize, jintArray jvalues)
 {
-  GLint *values = NULL;
+  jint *values = NULL;
   values = (*env)->GetIntArrayElements(env, jvalues, 0);
   if (values == NULL) {
     handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
 		"Unable to map the pixel map array.");
 	return;
   }
-  glPixelMapuiv(map, mapsize, values);
+  glPixelMapuiv(map, mapsize, (GLint*)values);
   (*env)->ReleaseIntArrayElements(env, jvalues, values, JNI_ABORT);
 }
 
@@ -1656,14 +1677,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getPixelMapfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_getPixelMapuiv
   (JNIEnv *env, jobject obj, jint map, jintArray jvalues)
 {
-  GLint *values = NULL;
+  jint *values = NULL;
   values = (*env)->GetIntArrayElements(env, jvalues, 0);
   if (values == NULL) {
     handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
 		"Unable to map the pixel map array.");
 	return;
   }
-  glGetPixelMapuiv(map, values);
+  glGetPixelMapuiv(map, (GLint*)values);
   (*env)->ReleaseIntArrayElements(env, jvalues, values, 0);
 }
 
@@ -1875,7 +1896,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_drawPixels__IIII_3I
    jint format, jint type, 
    jintArray jpixels)
 {
-  GLint *pixels = NULL;
+  jint *pixels = NULL;
   
   pixels = (*env)->GetIntArrayElements(env, jpixels, 0);
   if (NULL == pixels) {
@@ -1884,7 +1905,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_drawPixels__IIII_3I
     return;
   }
 
-  glDrawPixels(width, height, format, type, pixels);
+  glDrawPixels(width, height, format, type, (GLint*)pixels);
 
   (*env)->ReleaseIntArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
@@ -2031,7 +2052,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texGenfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_texGeniv
   (JNIEnv *env, jobject obj, jint coord, jint pname, jintArray jparams)
 {
-  GLint *params = NULL;
+  jint *params = NULL;
 
   params = (*env)->GetIntArrayElements(env, jparams, 0);
   if (NULL == params) {
@@ -2040,7 +2061,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texGeniv
 	  return;
   }
 
-  glTexGeniv(coord, pname, params);
+  glTexGeniv(coord, pname, (GLint*)params);
 
   (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
@@ -2089,7 +2110,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexGenfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_getTexGeniv
   (JNIEnv *env, jobject obj, jint coord, jint pname, jintArray jparams)
 {
-  GLint *params = NULL;
+  jint *params = NULL;
 
   params = (*env)->GetIntArrayElements(env, jparams, 0);
   if (NULL == params) {
@@ -2097,7 +2118,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexGeniv
 		  "Unable to map the texture parameters.");
 	  return;
   }
-  glGetTexGeniv(coord, pname, params);
+  glGetTexGeniv(coord, pname, (GLint*)params);
 
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
 }
@@ -2139,16 +2160,16 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texEnvfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_texEnviv
   (JNIEnv *env, jobject obj, jint target, jint pname, jintArray jparams)
 {
-	jint *params = NULL;
-
-	params = (*env)->GetIntArrayElements(env, jparams, 0);
-    if (NULL == params) {
-	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
-		  "Unable to map the texture parameters.");
-	  return;
-	}
-	glTexEnviv(target, pname, params);
-	(*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
+  jint *params = NULL;
+  
+  params = (*env)->GetIntArrayElements(env, jparams, 0);
+  if (NULL == params) {
+    handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
+		"Unable to map the texture parameters.");
+    return;
+  }
+  glTexEnviv(target, pname, (GLint*)params);
+  (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
 
@@ -2172,14 +2193,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexEnvfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_getTexEnviv
   (JNIEnv *env, jobject obj, jint target, jint pname, jintArray jparams)
 {
-  GLint *params = NULL;
+  jint *params = NULL;
   params = (*env)->GetIntArrayElements(env, jparams, 0);
   if (NULL == params) {
 	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
 		  "Unable to map the texture parameters.");
 	  return;
   }
-  glGetTexEnviv(target, pname, params);
+  glGetTexEnviv(target, pname, (GLint*)params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
 }
 
@@ -2224,17 +2245,14 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texParameterfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_texParameteriv
   (JNIEnv *env, jobject obj, jint target, jint pname, jintArray jparams)
 {
-  GLint *params = NULL;
-  
+  jint *params = NULL;
   params = (*env)->GetIntArrayElements(env, jparams, 0);
-  
   if (NULL == params) {
 	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
 		  "Unable to map the texture parameters.");
 	  return;
   }
-  
-  glTexParameteriv(target, pname, params);
+  glTexParameteriv(target, pname, (GLint*)params);
 
   (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
@@ -2262,7 +2280,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexParameterfv
 JNIEXPORT void JNICALL Java_OpenGL_GL_getTexParameteriv
   (JNIEnv *env, jobject obj, jint target, jint pname, jintArray jparams)
 {
-  GLint *params = NULL;
+  jint *params = NULL;
 
   params = (*env)->GetIntArrayElements(env, jparams, 0);
   if (NULL == params) {
@@ -2271,7 +2289,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexParameteriv
 	  return;
   }
 
-  glGetTexParameteriv(target, pname, params);
+  glGetTexParameteriv(target, pname, (GLint*)params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
 }
 
@@ -2300,7 +2318,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexLevelParameteriv
   (JNIEnv *env, jobject obj, jint target, jint level, jint pname, 
    jintArray jparams)
 {
-  GLint *params = NULL;
+  jint *params = NULL;
 
   params = (*env)->GetIntArrayElements(env, jparams, 0);
   if (NULL == params) {
@@ -2309,7 +2327,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexLevelParameteriv
 	  return;
   }
 
-  glGetTexLevelParameteriv(target, level, pname, params);
+  glGetTexLevelParameteriv(target, level, pname, (GLint*)params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, JNI_ABORT);
 }
 
@@ -2363,7 +2381,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage1D__IIIIIII_3I
    jint width, jint border, jint format, jint type, 
    jintArray jpixels)
 {
-  GLint *pixels = NULL;
+  jint *pixels = NULL;
 
   pixels = (*env)->GetIntArrayElements(env, jpixels, 0);
   if (NULL == pixels) {
@@ -2372,7 +2390,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage1D__IIIIIII_3I
 	  return;
   }
   
-  glTexImage1D(target, level, components, width, border, format, type, pixels);
+  glTexImage1D(target, level, components, width, border, format, type, (GLint*)pixels);
   (*env)->ReleaseIntArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
@@ -2449,7 +2467,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage2D__IIIIIIII_3I
    jint width, jint height, jint border, 
    jint format, jint type, jintArray jpixels)
 {
-  GLint *pixels = NULL;
+  jint *pixels = NULL;
 
   pixels = (*env)->GetIntArrayElements(env, jpixels, 0);
   if (NULL == pixels) {
@@ -2459,7 +2477,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texImage2D__IIIIIIII_3I
   }
   
   glTexImage2D(target, level, components, width, height,
-	       border, format, type, pixels);
+	       border, format, type, (GLint*)pixels);
   (*env)->ReleaseIntArrayElements(env, jpixels, pixels, JNI_ABORT);
 }
 
@@ -2529,7 +2547,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexImage__IIII_3I
   (JNIEnv *env, jobject obj, jint target, jint level, 
    jint format, jint type, jintArray jpixels)
 {
-  GLint *pixels = NULL;
+  jint *pixels = NULL;
 
   pixels = (*env)->GetIntArrayElements(env, jpixels, 0);
   if (NULL == pixels) {
@@ -2538,7 +2556,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexImage__IIII_3I
 	  return;
   }
 
-  glGetTexImage(target, level, format, type, pixels);
+  glGetTexImage(target, level, format, type, (GLint*)pixels);
   (*env)->ReleaseIntArrayElements(env, jpixels, pixels, 0);
 }
 
@@ -2566,7 +2584,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getTexImage__IIII_3F
 JNIEXPORT void JNICALL Java_OpenGL_GL_genTextures
   (JNIEnv *env, jobject obj, jintArray jtextures)
 {
-  int *textures = NULL;
+  jint *textures = NULL;
   int  n = (*env)->GetArrayLength(env, jtextures);
 
   textures = (*env)->GetIntArrayElements(env, jtextures, 0);
@@ -2575,7 +2593,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_genTextures
 		  "Unable to map the textures.");
 	  return;
   }
-  glGenTextures(n, textures);
+  glGenTextures(n, (GLint*)textures);
   (*env)->ReleaseIntArrayElements(env, jtextures, textures, 0);
 }
 
@@ -2584,7 +2602,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_genTextures
 JNIEXPORT void JNICALL Java_OpenGL_GL_deleteTextures
   (JNIEnv *env, jobject obj, jintArray jtextures)
 {
-  int *textures = NULL;
+  jint *textures = NULL;
   int n = (*env)->GetArrayLength(env, jtextures);
   textures = (*env)->GetIntArrayElements(env, jtextures, 0);
   if (NULL == textures) {
@@ -2592,7 +2610,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_deleteTextures
 		  "Unable to map the textures.");
 	  return;
   }
-  glDeleteTextures(n, textures);
+  glDeleteTextures(n, (GLint*)textures);
   (*env)->ReleaseIntArrayElements(env, jtextures, textures, 0);
 }
 
@@ -2628,7 +2646,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_prioritizeTextures
     return;
   }
   texturesLength = (*env)->GetArrayLength(env, textures);
-  glPrioritizeTextures(texturesLength, jtextures, jpriorities);
+  glPrioritizeTextures(texturesLength, (GLint*)jtextures, jpriorities);
   (*env)->ReleaseIntArrayElements(env, textures, jtextures, 0);  
   (*env)->ReleaseFloatArrayElements(env, priorities, jpriorities, 0);
 }
@@ -2638,7 +2656,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_prioritizeTextures
 JNIEXPORT jboolean JNICALL Java_OpenGL_GL_areTexturesResident
   (JNIEnv *env, jobject obj, jintArray jtextures, jbooleanArray jresidences)
 {
-  int *textures = NULL;
+  jint *textures = NULL;
   jboolean *residences = NULL;
   jboolean result;
   int texturesLength = (*env)->GetArrayLength(env, jtextures);
@@ -2656,7 +2674,7 @@ JNIEXPORT jboolean JNICALL Java_OpenGL_GL_areTexturesResident
 	return JNI_FALSE;
   }
 
-  result = glAreTexturesResident(texturesLength, textures, residences);
+  result = glAreTexturesResident(texturesLength, (GLint*)textures, residences);
 
   (*env)->ReleaseIntArrayElements(env, jtextures, textures, 0);
   (*env)->ReleaseBooleanArrayElements(env, jresidences, residences, 0);
@@ -2736,7 +2754,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texSubImage2D__IIIIIIII_3I
    jint format, jint type, 
    jintArray jpixels)
 {
-  GLint *pixels = NULL;
+  jint *pixels = NULL;
 
   pixels = (*env)->GetIntArrayElements(env, jpixels, 0);
   if (NULL == pixels) {
@@ -2746,7 +2764,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_texSubImage2D__IIIIIIII_3I
   }
 
   glTexSubImage2D(target, level, xoffset, yoffset, width, height,
-		  format, type, pixels);
+		  format, type, (GLint*)pixels);
   (*env)->ReleaseIntArrayElements(env, jpixels, pixels, 0);
 }
 
@@ -2952,7 +2970,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getMapiv
   (JNIEnv *env, jobject obj, 
    jint target, jint query, jintArray jv)
 {
-  GLint *v = NULL;
+  jint *v = NULL;
 
   v = (*env)->GetIntArrayElements(env, jv, 0);
   if (NULL == v) {
@@ -2961,7 +2979,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_getMapiv
 	  return;
   }
   
-  glGetMapiv(target, query, v);
+  glGetMapiv(target, query, (GLint*)v);
   (*env)->ReleaseIntArrayElements(env, jv, v, 0);
 }
 
@@ -3121,7 +3139,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_fogiv
 	  return;
   }
 
-  glFogiv(param, params);
+  glFogiv(param, (GLint*)params);
   (*env)->ReleaseIntArrayElements(env, jparams, params, 0);
 }
 
@@ -3155,7 +3173,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GL_selectBuffer
 
   size = (*env)->GetArrayLength(env, buffer);
 
-  glSelectBuffer(size, params);
+  glSelectBuffer(size, (GLint*)params);
   (*env)->ReleaseIntArrayElements(env, buffer, params, 0);
 }
 

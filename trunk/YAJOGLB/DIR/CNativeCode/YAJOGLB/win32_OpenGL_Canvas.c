@@ -1,10 +1,30 @@
 /*
- * OpenGL_OpenGLCanvas.c
+  Canvas methods for win32.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
+/*
+ * OpenGL_Canvas.c
  *
- * $Id: win32_OpenGL_Canvas.c,v 1.4 1999/02/13 19:27:40 razeh Exp $
- *
- * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * $Id: win32_OpenGL_Canvas.c,v 1.5 2001/07/06 23:40:05 razeh Exp $
  *
  * This implements the OpenGL methods needed to setup our canvas for OpenGL
  * rendering.  It assumes that we have some nice way to get the HDC and HWnd
@@ -13,15 +33,13 @@
 
 #include "SystemIncludes.h"
 #include "cygnusFixes.h"
-#include "OpenGL_OpenGLCanvas.h"
+#include "OpenGL_Canvas.h"
 #include "SystemError.h"
 #include "memory.h"
 #include "ErrorHandling.h"
 #include "JNIInterface.h"
 #include "win32DCDictionary.h"
-#include "OpenGLCapabilitiesAccessors.h"
-
-#define OPENGL_CANVAS_EXCEPTION "OpenGL/OpenGLCanvasSetupFailedException"
+#include "CapabilitiesAccessors.h"
 
 
 
@@ -211,14 +229,14 @@ setupPalette(JNIEnv *env, HDC hDC)
 
 
 
-JNIEXPORT jboolean JNICALL Java_OpenGL_OpenGLCanvas_setupOpenGLCanvas
+JNIEXPORT jboolean JNICALL Java_OpenGL_Canvas_setupCanvas
   (JNIEnv *env, jobject canvas)
 {
   jobject  capabilities  = NULL;
-  HDC      hDC           = getDCForCanvas(env, canvas);
+  CanvasInfo info        = getCanvasInfo(env, canvas);
   jboolean returnCode    = JNI_TRUE;
 
-  if (NULL != hDC) {
+  if (NULL != info.hDC) {
 		/* Get the capabilities object out of our widget. */
     jclass canvasClass             = NULL;
     jmethodID capabilitiesMethodID = NULL;
@@ -226,34 +244,36 @@ JNIEXPORT jboolean JNICALL Java_OpenGL_OpenGLCanvas_setupOpenGLCanvas
 
     capabilitiesMethodID = 
       getMethodID(env, canvasClass,
-		"capabilities", "()LOpenGL/OpenGLCapabilities;",
+		"capabilities", "()LOpenGL/Capabilities;",
 		"Unable to get capabilities() method");
     if (capabilitiesMethodID) {
       capabilities = (*env)->CallObjectMethod(env, canvas, capabilitiesMethodID);
     }
-	setupPixelFormat(env, capabilities, hDC);
-	setupPalette(env, hDC);
+	setupPixelFormat(env, capabilities, info.hDC);
+	setupPalette(env, info.hDC);
   } else {
 	throwCanvasExceptionWithMessage(env, "Unable to obtain hDC for canvas.");
 	returnCode = JNI_FALSE;
   }
 
+  freeCanvasInfo(env, info);
   return returnCode;
 }
 
 
 
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLCanvas_nativeSwapBuffers
+JNIEXPORT void JNICALL Java_OpenGL_Canvas_nativeSwapBuffers
   (JNIEnv *env, jobject canvas)
 {
-  HDC hDC = getDCForCanvas(env, canvas);
-  SwapBuffers(hDC);
+  CanvasInfo info = getCanvasInfo(env, canvas);
+  SwapBuffers(info.hDC);
+  freeCanvasInfo(env, info);
 }
 
 
 
 /* Returns the string for our data access class. */
-JNIEXPORT jstring JNICALL Java_OpenGL_OpenGLCanvas_dataAccessClass
+JNIEXPORT jstring JNICALL Java_OpenGL_Canvas_dataAccessClass
   (JNIEnv *env, jclass clasz)
 {
   return (*env)->NewStringUTF(env, "sun.awt.windows.WindowspDataAccess");

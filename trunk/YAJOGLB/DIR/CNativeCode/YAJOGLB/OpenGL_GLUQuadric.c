@@ -1,10 +1,31 @@
 /*
+  Support for GLU quadrics.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
+
+/*
  * OpenGL_GLUQuadric.c
  *
- * $Id: OpenGL_GLUQuadric.c,v 1.5 1999/02/13 19:27:40 razeh Exp $
- *
- * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * $Id: OpenGL_GLUQuadric.c,v 1.6 2001/07/06 23:40:05 razeh Exp $
  *
  * This implements the native methods that allocate and free gluQuadrics
  * for the OpenGL.GLUQuadric class, along with the drawing functions for quadrics.
@@ -30,71 +51,71 @@
 
 /* Set the drawing style for the quadric. */
 JNIEXPORT void JNICALL Java_OpenGL_GLUQuadric_quadricDrawStyle
-  (JNIEnv *env, jobject obj, jint quadric, jint drawStyle)
+  (JNIEnv *env, jobject obj, jlong quadric, jint drawStyle)
 {
-  gluQuadricDrawStyle((void*)quadric, drawStyle);
+  gluQuadricDrawStyle(TO_POINTER(quadric), drawStyle);
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUQuadric_quadricOrientation
-  (JNIEnv *env, jobject obj, jint quadric, jint orientation)
+  (JNIEnv *env, jobject obj, jlong quadric, jint orientation)
 {
-  gluQuadricOrientation((void*) quadric, orientation);
+  gluQuadricOrientation(TO_POINTER(quadric), orientation);
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUQuadric_quadricNormals
-  (JNIEnv *env, jobject obj, jint quadric, jint normals)
+  (JNIEnv *env, jobject obj, jlong quadric, jint normals)
 {
-  gluQuadricNormals((void*)quadric, normals);
+  gluQuadricNormals(TO_POINTER(quadric), normals);
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUQuadric_quadricTexture
-  (JNIEnv *env, jobject obj, jint quadric, jboolean texture)
+  (JNIEnv *env, jobject obj, jlong quadric, jboolean texture)
 {
-  gluQuadricTexture((void*) quadric, texture);
+  gluQuadricTexture(TO_POINTER(quadric), texture);
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUQuadric_cylinder
-  (JNIEnv *env, jobject obj, jint quadric, 
+  (JNIEnv *env, jobject obj, jlong quadric, 
    jdouble baseRadius, jdouble topRadius, jdouble height, 
    jint slices, jint stacks)
 {
-  gluCylinder((void*)quadric, baseRadius, topRadius, height, slices, stacks);
+  gluCylinder(TO_POINTER(quadric), baseRadius, topRadius, height, slices, stacks);
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUQuadric_sphere
-  (JNIEnv *env, jobject obj, jint quadric, jdouble radius, 
+  (JNIEnv *env, jobject obj, jlong quadric, jdouble radius, 
    jint slices, jint stacks)
 {
-  gluSphere((void*)quadric, radius, slices, stacks);
+  gluSphere(TO_POINTER(quadric), radius, slices, stacks);
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUQuadric_disk
-  (JNIEnv *env, jobject obj, jint quadric, jdouble innerRadius, 
+  (JNIEnv *env, jobject obj, jlong quadric, jdouble innerRadius, 
    jdouble outerRadius, jint slices, jint loops)
 {
-  gluDisk((void*) quadric, innerRadius, outerRadius, slices, loops);
+  gluDisk(TO_POINTER(quadric), innerRadius, outerRadius, slices, loops);
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUQuadric_partialDisk
-  (JNIEnv *env, jobject obj, jint quadric, 
+  (JNIEnv *env, jobject obj, jlong quadric, 
    jdouble innerRadius, jdouble outerRadius, 
    jint slices, jint loops, jdouble startAngle, jdouble sweepAngle)
 {
-  gluPartialDisk((void*)quadric, innerRadius, outerRadius, slices, loops, 
+  gluPartialDisk(TO_POINTER(quadric), innerRadius, outerRadius, slices, loops, 
 		 startAngle, sweepAngle);
 }
 
@@ -156,7 +177,7 @@ static void CALLBACK error(GLenum errorNumber)
 
 
 /* Creates a new quadric. */
-JNIEXPORT jint JNICALL Java_OpenGL_GLUQuadric_newQuadric
+JNIEXPORT jlong JNICALL Java_OpenGL_GLUQuadric_newQuadric
   (JNIEnv *env, jobject obj)
 {
 	GLUquadric *newQuadric = gluNewQuadric();
@@ -164,14 +185,14 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLUQuadric_newQuadric
 	if (NULL != newQuadric) {
 		gluQuadricCallback(newQuadric, GLU_ERROR, error);
 	}
-	return (int)newQuadric;
+	return FROM_POINTER(newQuadric);
 }
 
 
 
 /* Deletes a quadric. */
 JNIEXPORT void JNICALL Java_OpenGL_GLUQuadric_deleteQuadric
-  (JNIEnv *env, jobject obj, jint quadric)
+  (JNIEnv *env, jobject obj, jlong quadric)
 {
-  gluDeleteQuadric((GLUquadric*) quadric);
+  gluDeleteQuadric((GLUquadric*)(TO_POINTER(quadric)));
 }

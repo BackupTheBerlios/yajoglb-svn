@@ -1,10 +1,10 @@
 /*
  * OpenGL_OpenGLContext.c
  *
- * $Id: linux_OpenGL_Context.c,v 1.1 1999/02/13 19:27:40 razeh Exp $
+ * $Id: linux_OpenGL_Context.c,v 1.2 2001/07/06 23:40:05 razeh Exp $
  *
  * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * Robert Allan Zeh (razeh@yahoo.com)
  *
  * This implements the native methods for OpenGLContext --- methods that 
  * create, manipulate, and destroy the current OpenGL context.
@@ -15,16 +15,16 @@
 #include <X11/X.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
-#include "OpenGL_OpenGLContext.h"
+#include "OpenGL_Context.h"
 #include "SystemError.h"
 #include "JNIInterface.h"
 #include "Memory.h"
 #include "ErrorHandling.h"
 #include "linuxDPYDictionary.h"
-#include "OpenGLCapabilitiesAccessors.h"
+#include "CapabilitiesAccessors.h"
 
 /* Our context exception class. */
-#define OPENGL_CONTEXT_EXCEPTION "OpenGL/OpenGLContextException"
+#define OPENGL_CONTEXT_EXCEPTION "OpenGL/ContextException"
 
 
 
@@ -40,7 +40,7 @@ static void throwContextException(JNIEnv *env, const char *errorMessage)
 }
 
 
-/* Get the OpenGLCapabilities object for the supplied canvas.  We
+/* Get the Capabilities object for the supplied canvas.  We
    return 0 if everything worked out and non-zero otherwise. */
 static int getCapabilities(JNIEnv *env, jobject canvas, jobject *capabilities)
 {
@@ -50,7 +50,7 @@ static int getCapabilities(JNIEnv *env, jobject canvas, jobject *capabilities)
 
   canvasClass = (*env)->GetObjectClass(env, canvas);
   methodID = getMethodID(env, canvasClass, 
-			 "capabilities", "()LOpenGL/OpenGLCapabilities;",
+			 "capabilities", "()LOpenGL/Capabilities;",
 			 "Unable to get the capabilities method.");
   if (methodID && (NULL != capabilities)) {
     *capabilities = (*env)->CallObjectMethod(env, canvas, methodID);
@@ -145,51 +145,76 @@ static XVisualInfo *findVisual(Display *display,
 
 
 /* Let the current context go. */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLContext_nativeReleaseCurrentContext
+JNIEXPORT void JNICALL Java_OpenGL_Context_nativeReleaseCurrentContext
   (JNIEnv *env, jclass class)
 {
-  if (GL_FALSE == glXMakeCurrent(NULL, None, NULL)) {
-    /* Something really bad must have happened. */
-    throwContextException(env, "Unable to release the current context.");
-  }
+    int        error = 0;
+    Display   *display = 0;
+
+    if (!error) {
+      GLXContext context;
+      context = glXGetCurrentContext();
+      if (NULL == context) {
+	return; // There is no current context.
+      }
+    }
+
+    if (!error) {
+      display = glXGetCurrentDisplay();
+      if (NULL == display) {
+	error = 1;
+	throwContextException(env, 
+			      "Unable to get current display.");
+      }
+    }
+    
+    if (!error) {
+      if (GL_FALSE == glXMakeCurrent(display, None, NULL)) {
+	/* Something really bad must have happened. */
+	throwContextException(env, 
+			      "Unable to release the current context.");
+      }
+    }
 }
 
 
 
 /* Make the given context and canvas current. */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLContext_makeCanvasCurrent
-  (JNIEnv *env, jobject contextObject, jint jcontext, jobject canvas)
+JNIEXPORT void JNICALL Java_OpenGL_Context_makeCanvasCurrent
+  (JNIEnv *env, jobject contextObject, jlong jcontext, jobject canvas)
 {
-  Display    *display  = NULL;
-  GLXDrawable drawable = 0;
-  GLXContext  context  = (GLXContext)jcontext;
+  CanvasInfo  info;
+  GLXContext  context  = (GLXContext)(TO_POINTER(jcontext));
   int         error    = 0;
 
   if (!error && (context != 0)) {
-    display = getDisplayForCanvas(env, canvas);
-    drawable = getDrawableForCanvas(env, canvas);
-    error = (NULL == display) || (None == drawable);
+    info = getCanvasInfo(env, canvas);
+    error = (NULL == info.display) || (None == info.drawable);
   }
   
   if (!error) {
-    if (GL_FALSE == glXMakeCurrent(display, drawable, context)) {
+    fflush(stdout);
+    if (GL_FALSE == glXMakeCurrent(info.display, info.drawable, context)) {
       error = 1;
     }
+    fflush(stdout);
   }
 
   if (error) {
     /* Something went wrong, and we need to throw an exception. */
     throwContextException(env, "Unable to make the context current.");
   }
+
+  freeCanvasInfo(env, info);
 }
 
 
 
 /* Create the context for a supplied canvas. */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLContext_createCanvasContext
-  (JNIEnv *env, jobject contextObject, jobject canvas, jint otherContext)
+JNIEXPORT jlong JNICALL Java_OpenGL_Context_createCanvasContext
+  (JNIEnv *env, jobject contextObject, jobject canvas, jlong otherContext)
 {
-  Display     *display      = NULL;
+  CanvasInfo   info;
   GLXContext   context      = NULL;
   XVisualInfo *visualInfo   = NULL;
   int          error        = 0;
@@ -204,8 +229,8 @@ JNIEXPORT jint JNICALL Java_OpenGL_OpenGLContext_createCanvasContext
 
   /* Get the display variable. */
   if (!error) {
-    display = getDisplayForCanvas(env, canvas);
-    if (NULL == display) {
+    info = getCanvasInfo(env, canvas);
+    if ((NULL == info.display) || (None == info.drawable)) {
       error = 1;
       errorMessage = "Unable to get the X11 display for the canvas.";
     }
@@ -213,7 +238,7 @@ JNIEXPORT jint JNICALL Java_OpenGL_OpenGLContext_createCanvasContext
 
   /* Find the right visual. */
   if (!error) {
-    visualInfo = findVisual(display, env, capabilities);
+    visualInfo = findVisual(info.display, env, capabilities);
     if (NULL == visualInfo) {
       error = 1;
       errorMessage = "Unable to get a matching visual for the canvas's capabilities.";
@@ -223,12 +248,14 @@ JNIEXPORT jint JNICALL Java_OpenGL_OpenGLContext_createCanvasContext
   /* Actually create the context, using our display, visualInfo, and possibly
      the shared context. */
   if (!error) {
-    context = glXCreateContext(display, visualInfo, 
-			       (GLXContext)otherContext, GL_TRUE);
+    fflush(stdout);
+    context = glXCreateContext(info.display, visualInfo, 
+			       (GLXContext)(TO_POINTER(otherContext)), GL_TRUE);
     if (NULL == context) {
       error = 1;
       errorMessage = "Unable to create a context.";
     }
+    fflush(stdout);
   }
 
   if (error) {
@@ -236,16 +263,16 @@ JNIEXPORT jint JNICALL Java_OpenGL_OpenGLContext_createCanvasContext
     throwContextException(env, errorMessage);
   }
   
-  return (int) context;
+  freeCanvasInfo(env, info);
+  return FROM_POINTER(context);
 }
 
 
 
 /* Free the OpenGL context. */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLContext_deleteContext
-  (JNIEnv *env, jobject contextObject, jint context)
+JNIEXPORT void JNICALL Java_OpenGL_Context_deleteContext
+  (JNIEnv *env, jobject contextObject, jlong context)
 {
-  printf("delete context\n");
-  glXDestroyContext(NULL, (GLXContext)context);
+  glXDestroyContext(NULL, (GLXContext)(TO_POINTER(context)));
 }
 

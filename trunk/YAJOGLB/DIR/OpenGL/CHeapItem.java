@@ -1,11 +1,33 @@
+/*
+  Provides references to items on the C memory heap.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
+
 /* 
  *
  * CHeapItem
  *
- * $Id: CHeapItem.java,v 1.7 1999/04/29 01:16:58 razeh Exp $
+ * $Id: CHeapItem.java,v 1.8 2001/07/06 23:42:40 razeh Exp $
  *
- * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
  */
 
 package OpenGL;
@@ -20,21 +42,22 @@ import java.util.Hashtable;
  * item (<code>freeCHeapItem</code>).  We call the allocation method
  * in our base constructor and call the free method in our finalizer.
  *
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
- * @version 0.3
+ * @version 0.4
  *
  */
 
 abstract class CHeapItem {
   /** This is the integer representation of our pointer. */
-  private int cHeapPointer;
+  private long cHeapPointer;
 
   /** This returns the integer representation of our pointer.  
     @return the integer representation of our pointer
     @exception IllegalStateException If our pointer has not
     been set yet*/
-  int heapPointer() throws IllegalStateException {
+  /* Public is temporary #warning */
+  public long getHeapPointer() throws IllegalStateException {
     if (cHeapPointer == 0) {
       /* Uh-oh.  Our heap pointer was never set, which is bad. */
       throw new IllegalStateException("Asking for an unset heap pointer.");
@@ -72,19 +95,17 @@ abstract class CHeapItem {
       an item from the C heap.  They should return 0 if they are
       unable to obtain the item. 
       @return the integer representation of our C heap pointer. */
-  abstract int obtainCHeapItem(Hashtable optionalArguments);
+  abstract long obtainCHeapItem(Hashtable optionalArguments);
 
   /** This is the method subclasses should use to implement freeing
       the item from the C heap.  It will be called from our finalize
       method. 
       @param heapItem the C heap item to free.
   */
-  abstract void freeCHeapItem(int heapItem);
+  abstract void freeCHeapItem(long heapItem);
 
-  /** Invokes freeCheapItem to release our underlying
-    C heap item. <P>
-    @exception Throwable Thrown by our superclass. 
-    */
+  /** Invokes freeCheapItem to release our underlying C heap item.
+    @exception Throwable Thrown by our superclass.  */
   public void finalize() throws Throwable {
     if (cHeapPointer != 0) 
       freeCHeapItem(cHeapPointer);

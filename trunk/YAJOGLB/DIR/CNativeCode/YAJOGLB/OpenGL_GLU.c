@@ -1,12 +1,34 @@
 /*
+  Implements the GLU basic functions.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
+
+/*
  * OpenGL_GLU.c
  *
- * $Id: OpenGL_GLU.c,v 1.4 1999/02/13 19:27:40 razeh Exp $
+ * $Id: OpenGL_GLU.c,v 1.5 2001/07/06 23:40:05 razeh Exp $
  *
  * This implements the generic GLU methods.
  *
- * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
  */
 
 
@@ -78,7 +100,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluPickMatrix
 	  return;
   }
 
-  gluPickMatrix(x, y, width, height, viewportInts);
+  gluPickMatrix(x, y, width, height, (GLint*)viewportInts);
   (*env)->ReleaseIntArrayElements(env, viewport, viewportInts, 0);
 }
 
@@ -105,8 +127,8 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluProject
 {
   GLdouble winX,    winY,  winZ;
   GLdouble *model = NULL, *proj = NULL, *winCoordinates = NULL;
-  GLint    *view  = NULL, returnCode;
-
+  GLint    returnCode;
+  jint     *view  = NULL;
   model = (*env)->GetDoubleArrayElements(env, jmodel, 0);
   if (NULL == model) {
 	  handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
@@ -142,7 +164,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluProject
   }
 
   returnCode = gluProject(objX, objY, objZ,
-			  model, proj, view,
+			  model, proj, (GLint*)view,
 			  &winX, &winY, &winZ);
 
   winCoordinates[0] = winX;
@@ -165,8 +187,8 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluUnProject
 {
   GLdouble objX,    objY,  objZ;
   GLdouble *model = NULL, *proj = NULL, *objCoordinates = NULL;
-  GLint    *view  = NULL, returnCode;
-
+  GLint    returnCode;
+  jint     *view  = NULL;
   model = (*env)->GetDoubleArrayElements(env, jmodel, 0);
   if (model == NULL) {
   	handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
@@ -202,7 +224,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLU_gluUnProject
   }
 
   returnCode = gluUnProject(winX, winY, winZ,
-			    model, proj, view,
+			    model, proj, (GLint*)view,
 			    &objX, &objY, &objZ);
 
   objCoordinates[0] = winX;
@@ -307,14 +329,14 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild1DMipmaps__IIIII_3I
    jint target, jint components, jint width, jint format, jint type, 
    jintArray jdata)
 {
-  GLint *data;
+  jint *data;
   GLint result;
   data = (*env)->GetIntArrayElements(env, jdata, 0);
   if (data == NULL)
     return -1;
 
   result 
-    = gluBuild1DMipmaps(target, components, width, format, type, data);
+    = gluBuild1DMipmaps(target, components, width, format, type, (GLint*)data);
 
   (*env)->ReleaseIntArrayElements(env, jdata, data, 0);
   
@@ -391,14 +413,14 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLU_gluBuild2DMipmaps__IIIIII_3I
    jint target, jint components, 
    jint width, jint height, jint format, jint type, jintArray jdata)
 {
-  GLint *data;
+  jint *data;
   GLint result;
   data = (*env)->GetIntArrayElements(env, jdata, 0);
   if (data == NULL)
     return -1;
 
   result 
-    = gluBuild2DMipmaps(target, components, width, height, format, type, data);
+    = gluBuild2DMipmaps(target, components, width, height, format, type, (GLint*)data);
 
   (*env)->ReleaseIntArrayElements(env, jdata, data, 0);
   

@@ -1,10 +1,32 @@
 /*
+  An interface to the quadric section of the GLU library.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
+
+/*
  * GLUQuadric
  *
- * $Id: GLUQuadric.java,v 1.4 1999/04/29 01:16:58 razeh Exp $
+ * $Id: GLUQuadric.java,v 1.5 2001/07/06 23:43:38 razeh Exp $
  *
- * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
  */
 package OpenGL;
 
@@ -16,9 +38,9 @@ import java.util.Hashtable;
  * callback you extend the class and override the <code>error</code>
  * method.
  *
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
- * @version 0.3
+ * @version 0.4
  */
 
 public class GLUQuadric extends CallbackObject {
@@ -38,66 +60,66 @@ public class GLUQuadric extends CallbackObject {
   
   /** Override to return the result of calling
       <code>NewQudric</code>. */
-  final int obtainCHeapItem(Hashtable optionalArguments) {
+  final long obtainCHeapItem(Hashtable optionalArguments) {
     return newQuadric();
   }
 
   /** Get a new quadric object. */
-  private native int newQuadric();
+  private native long newQuadric();
 
   /** Remove the quadric we are a stand-in for. */
-  private native void deleteQuadric(int quadric);
+  private native void deleteQuadric(long quadric);
 
   /** Overridden to call gluDeleteQuadric(). */
-  final void freeCHeapItem(int heapItem) {
+  final void freeCHeapItem(long heapItem) {
     deleteQuadric(heapItem);
   }
 
-  private native void quadricDrawStyle(int GLUQuadric,
+  private native void quadricDrawStyle(long GLUQuadric,
 				       int drawStyle);
 
   public void quadricDrawStyle(int drawStyle) {
     setActiveCallbackObject();
     try {
-      quadricDrawStyle(heapPointer(), drawStyle);
+      quadricDrawStyle(getHeapPointer(), drawStyle);
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  private native void quadricOrientation(int GLUQuadric,
+  private native void quadricOrientation(long GLUQuadric,
 					 int orientation);
   public void quadricOrientation(int orientation) {
     setActiveCallbackObject();
     try {
-      quadricOrientation(heapPointer(), orientation);
+      quadricOrientation(getHeapPointer(), orientation);
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  private native void quadricNormals(int GLUQuadric, int normals);
+  private native void quadricNormals(long GLUQuadric, int normals);
   public void quadricNormals(int normals) {
     setActiveCallbackObject();
     try {
-      quadricNormals(heapPointer(), normals);
+      quadricNormals(getHeapPointer(), normals);
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  private native void quadricTexture(int quadObject,
+  private native void quadricTexture(long quadObject,
 				     boolean textureCoords);
   public void quadricTexture(boolean textureCoords) {
     setActiveCallbackObject();
     try {
-      quadricTexture(heapPointer(), textureCoords);
+      quadricTexture(getHeapPointer(), textureCoords);
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  public native void cylinder(int GLUQuadric,
+  public native void cylinder(long GLUQuadric,
 			      double baseRadius,
 			      double topRadius,
 			      double height,
@@ -108,26 +130,26 @@ public class GLUQuadric extends CallbackObject {
 		       int slices, int stacks) {
     setActiveCallbackObject();
     try {
-      cylinder(heapPointer(),
+      cylinder(getHeapPointer(),
 	       baseRadius, topRadius, height, slices, stacks);
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  public native void sphere(int GLUQuadric,
+  public native void sphere(long GLUQuadric,
 			    double radius, int slices, int stacks);
   public void sphere(double radius, int slices, int stacks) {
     setActiveCallbackObject();
     try {
-      sphere(heapPointer(), radius, slices, stacks);
+      sphere(getHeapPointer(), radius, slices, stacks);
     } finally {
       unsetActiveCallbackObject();
     }
   }
   
 
-  private native void disk(int GLUQuadric,
+  private native void disk(long GLUQuadric,
 			   double innerRadius, double outerRadius,
 			   int slices, int loops);
 
@@ -136,7 +158,7 @@ public class GLUQuadric extends CallbackObject {
 		   int slices, int loops) {
     setActiveCallbackObject();
     try {
-      disk(heapPointer(), innerRadius, outerRadius, 
+      disk(getHeapPointer(), innerRadius, outerRadius, 
 	   slices, loops);
     } finally {
       unsetActiveCallbackObject();
@@ -144,7 +166,7 @@ public class GLUQuadric extends CallbackObject {
   }
 
 
-  private native void partialDisk(int GLUQuadric, double innerRadius,
+  private native void partialDisk(long GLUQuadric, double innerRadius,
 				  double outerRadius, int slices, int loops,
 				  double startAngle, double sweepAngle);
 
@@ -153,7 +175,7 @@ public class GLUQuadric extends CallbackObject {
 			  double startAngle, double sweepAngle) {
     setActiveCallbackObject();
     try {
-      partialDisk(heapPointer(), innerRadius, outerRadius,
+      partialDisk(getHeapPointer(), innerRadius, outerRadius,
 		  slices, loops, startAngle, sweepAngle);
     } finally {
       unsetActiveCallbackObject();

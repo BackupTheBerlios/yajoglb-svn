@@ -1,8 +1,31 @@
 /*
+  Implements GLU nurbs.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
+
+/*
  * OpenGL_GLUQuadric.c
  *
- * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * $Id: OpenGL_GLUNurbs.c,v 1.5 2001/07/06 23:40:05 razeh Exp $
  *
  * This implements the native methods that allocate and free gluNurbs
  * for the OpenGL.GLUNurbs class, along with the drawing functions
@@ -221,7 +244,7 @@ static void CALLBACK error(GLenum errorNumber)
 // Creation and destruction functions.
 ////////////////////////////////////////////////////////////////////////
 
-JNIEXPORT jint JNICALL Java_OpenGL_GLUNurbs_newNurbsRenderer
+JNIEXPORT jlong JNICALL Java_OpenGL_GLUNurbs_newNurbsRenderer
   (JNIEnv *env, jobject obj)
 {
   GLUnurbs *newNurbs = gluNewNurbsRenderer();
@@ -238,15 +261,15 @@ JNIEXPORT jint JNICALL Java_OpenGL_GLUNurbs_newNurbsRenderer
 #endif
 	  gluNurbsCallback(newNurbs, GLU_ERROR, error);
   }
-  return (int)newNurbs;
+  return FROM_POINTER(newNurbs);
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_deleteNurbsRenderer
-  (JNIEnv *env, jobject obj, jint nurbs)
+  (JNIEnv *env, jobject obj, jlong nurb)
 {
-  gluDeleteNurbsRenderer((void*) nurbs); 
+  gluDeleteNurbsRenderer(TO_POINTER(nurb)); 
 }
 
 
@@ -259,7 +282,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_deleteNurbsRenderer
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_loadSamplingMatrices
-  (JNIEnv *env, jobject obj, jint nurbs, jfloatArray jmodelMatrix, 
+  (JNIEnv *env, jobject obj, jlong nurb, jfloatArray jmodelMatrix, 
    jfloatArray jprojMatrix, jintArray jviewport)
 {
   jfloat *modelMatrix, *projMatrix;
@@ -280,7 +303,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_loadSamplingMatrices
     (*env)->ReleaseFloatArrayElements(env, jprojMatrix, projMatrix, 0);
   }
 
-  gluLoadSamplingMatrices((void*)nurbs, modelMatrix, projMatrix, viewport);
+  gluLoadSamplingMatrices(TO_POINTER(nurb), modelMatrix, projMatrix, (GLint*)viewport);
 
   (*env)->ReleaseIntArrayElements(env, jviewport, viewport, 0);
   (*env)->ReleaseFloatArrayElements(env, jmodelMatrix, modelMatrix, 0);
@@ -291,31 +314,31 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_loadSamplingMatrices
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsProperty
-  (JNIEnv *env, jobject obj, jint nurbs, jint property, jfloat value)
+  (JNIEnv *env, jobject obj, jlong nurb, jint property, jfloat value)
 {
-  gluNurbsProperty((void*)nurbs, property, value);
+  gluNurbsProperty(TO_POINTER(nurb), property, value);
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_beginCurve
-  (JNIEnv *env, jobject obj, jint nurb)
+  (JNIEnv *env, jobject obj, jlong nurb)
 {
-  gluBeginCurve((void*)nurb);
+  gluBeginCurve(TO_POINTER(nurb));
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endCurve
-  (JNIEnv *env, jobject obj, jint nurb)
+  (JNIEnv *env, jobject obj, jlong nurb)
 {
-  gluEndCurve((void*)nurb);
+  gluEndCurve(TO_POINTER(nurb));
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsCurve
-  (JNIEnv *env, jobject obj, jint nurb, 
+  (JNIEnv *env, jobject obj, jlong nurb, 
    jfloatArray jknot, jint stride, 
    jfloatArray jctlarray, jint order, 
    jint type)
@@ -334,7 +357,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsCurve
     return;
   }
 
-  gluNurbsCurve((void*)nurb, knotCount,
+  gluNurbsCurve(TO_POINTER(nurb), knotCount,
 	           knot, stride, ctlarray, order, type);
  
   (*env)->ReleaseFloatArrayElements(env, jknot, knot, 0);
@@ -344,24 +367,24 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsCurve
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_beginSurface
-  (JNIEnv *env, jobject obj, jint nurb)
+  (JNIEnv *env, jobject obj, jlong nurb)
 {
-  gluBeginSurface((void*) nurb);
+  gluBeginSurface(TO_POINTER(nurb));
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endSurface
-  (JNIEnv *env, jobject obj, jint nurb)
+  (JNIEnv *env, jobject obj, jlong nurb)
 {
-  gluEndSurface((void*) nurb);
+  gluEndSurface(TO_POINTER(nurb));
 }
 
 
   
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsSurface
   (JNIEnv *env, jobject obj, 
-   jint nurb, jfloatArray jsKnots, jfloatArray jtKnots, 
+   jlong nurb, jfloatArray jsKnots, jfloatArray jtKnots, 
    jint sStride, jint tStride, jfloatArray jcontrol, 
    jint sOrder, jint tOrder, jint type)
 {
@@ -386,7 +409,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsSurface
     (*env)->ReleaseFloatArrayElements(env, jtKnots, tKnots, 0);
   }
 
-  gluNurbsSurface((void*)nurb, sKnotCount, sKnots, tKnotCount,
+  gluNurbsSurface(TO_POINTER(nurb), sKnotCount, sKnots, tKnotCount,
 		  tKnots, sStride, tStride, control, sOrder, tOrder, type);
 
   
@@ -398,7 +421,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_nurbsSurface
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_getNurbsProperty
-  (JNIEnv *env, jobject obj, jint nurb, jint property, jfloatArray jvalue)
+  (JNIEnv *env, jobject obj, jlong nurb, jint property, jfloatArray jvalue)
 {
   jfloat *value;
 
@@ -406,7 +429,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_getNurbsProperty
   if (value == NULL)
     return;
   
-  gluGetNurbsProperty((void*) nurb, property, value);
+  gluGetNurbsProperty(TO_POINTER(nurb), property, value);
 
   (*env)->ReleaseFloatArrayElements(env, jvalue, value, 0);
 }
@@ -414,23 +437,23 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_getNurbsProperty
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_beginTrim
-  (JNIEnv *env, jobject obj, jint nurb)
+  (JNIEnv *env, jobject obj, jlong nurb)
 {
-  gluBeginTrim((void*) nurb);
+  gluBeginTrim(TO_POINTER(nurb));
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_endTrim
-  (JNIEnv *env, jobject obj, jint nurb)
+  (JNIEnv *env, jobject obj, jlong nurb)
 {
-  gluEndTrim((void*) nurb);
+  gluEndTrim(TO_POINTER(nurb));
 }
 
 
 
 JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_pwlCurve
-  (JNIEnv *env, jobject obj, jint nurb, 
+  (JNIEnv *env, jobject obj, jlong nurb, 
    jfloatArray jdata, jint stride, jint type)
 {
   jfloat *data;
@@ -442,7 +465,7 @@ JNIEXPORT void JNICALL Java_OpenGL_GLUNurbs_pwlCurve
 
   count = (*env)->GetArrayLength(env, jdata);
 
-  gluPwlCurve((void*) nurb, count, data, stride, type);
+  gluPwlCurve(TO_POINTER(nurb), count, data, stride, type);
 
   (*env)->ReleaseFloatArrayElements(env, jdata, data, 0);
 }

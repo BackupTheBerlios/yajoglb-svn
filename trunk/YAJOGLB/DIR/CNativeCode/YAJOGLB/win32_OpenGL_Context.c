@@ -1,24 +1,45 @@
 /*
+  win32 OpenGL context methods.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
+
+/*
  * win32OpenGL_OpenGLContext.c
  *
- * $Id: win32_OpenGL_Context.c,v 1.3 1999/02/13 19:27:40 razeh Exp $
- *
- * Copyright 1998
- * Robert Allan Zeh (razeh@balr.com)
+ * $Id: win32_OpenGL_Context.c,v 1.4 2001/07/06 23:40:05 razeh Exp $
  *
  * This implements the native methods for OpenGLContext --- methods that 
  * create, manipulate, and destroy the current OpenGL context.
  */
 
 #include "cygnusFixes.h"
-#include "OpenGL_OpenGLContext.h"
+#include "OpenGL_Context.h"
 #include "win32DCDictionary.h"
 #include "SystemError.h"
 #include "memory.h"
 #include "ErrorHandling.h"
 
 /* Our context exception class. */
-#define OPENGL_CONTEXT_EXCEPTION "OpenGL/OpenGLContextException"
+#define OPENGL_CONTEXT_EXCEPTION "OpenGL/ContextException"
 
 
 
@@ -38,7 +59,7 @@ static void throwContextException(JNIEnv *env)
  * Method:    nativeReleaseCurrentContext
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLContext_nativeReleaseCurrentContext
+JNIEXPORT void JNICALL Java_OpenGL_Context_nativeReleaseCurrentContext
   (JNIEnv *env, jclass class)
 {
 	if (FALSE == wglMakeCurrent(NULL, NULL)) {
@@ -54,18 +75,17 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLContext_nativeReleaseCurrentContext
  * Method:    makeCanvasCurrent
  * Signature: (ILOpenGL/OpenGLCanvas;)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLContext_makeCanvasCurrent
-  (JNIEnv *env, jobject contextObject, jint context, jobject canvas)
+JNIEXPORT void JNICALL Java_OpenGL_Context_makeCanvasCurrent
+  (JNIEnv *env, jobject contextObject, jlong context, jobject canvas)
 {
-    HDC dc = NULL;
-
 	if (context != 0) {
-		dc = getDCForCanvas(env, canvas);
-	}
-	if (FALSE == wglMakeCurrent(dc, (HGLRC*) context)) {
-		/* Something went wrong, and we need to throw an exception. */
-		throwContextException(env);
-	}
+		CanvasInfo info = getCanvasInfo(env, canvas);
+		if (FALSE == wglMakeCurrent(info.hDC, (HGLRC) context)) {
+			/* Something went wrong, and we need to throw an exception. */
+			throwContextException(env);
+		}
+		freeCanvasInfo(env, info);
+	}	
 }
 
 
@@ -75,11 +95,11 @@ JNIEXPORT void JNICALL Java_OpenGL_OpenGLContext_makeCanvasCurrent
  * Method:    createCanvasContext
  * Signature: (LOpenGL/OpenGLCanvas;I)I
  */
-JNIEXPORT jint JNICALL Java_OpenGL_OpenGLContext_createCanvasContext
-  (JNIEnv *env, jobject contextObject, jobject canvas, jint otherContext)
+JNIEXPORT jlong JNICALL Java_OpenGL_Context_createCanvasContext
+  (JNIEnv *env, jobject contextObject, jobject canvas, jlong otherContext)
 {
-	HDC   dc      = getDCForCanvas(env, canvas);
-	HGLRC context = wglCreateContext(dc);
+	CanvasInfo info = getCanvasInfo(env, canvas);	
+	HGLRC context = wglCreateContext(info.hDC);
 	if (NULL == context) {
 		/* Something went wrong, and we need to throw an exception. */
 		throwContextException(env);
@@ -89,6 +109,7 @@ JNIEXPORT jint JNICALL Java_OpenGL_OpenGLContext_createCanvasContext
 		if (FALSE == wglShareLists((HGLRC) otherContext, context))
 			throwContextException(env);
 	}
+	freeCanvasInfo(env, info);
 	return (int) context;
 }
 
@@ -99,8 +120,8 @@ JNIEXPORT jint JNICALL Java_OpenGL_OpenGLContext_createCanvasContext
  * Method:    deleteContext
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_OpenGL_OpenGLContext_deleteContext
-  (JNIEnv *env, jobject contextObject, jint context)
+JNIEXPORT void JNICALL Java_OpenGL_Context_deleteContext
+  (JNIEnv *env, jobject contextObject, jlong context)
 {
 	if (FALSE == wglDeleteContext((HGLRC)context)) {
 		/* Something went wrong, and we need to throw an exception. */

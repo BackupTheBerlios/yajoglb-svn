@@ -1,10 +1,32 @@
 /*
+  Interface to the NURBS objects.
+ 
+  Copyright 2001, Robert Allan Zeh (razeh@yahoo.com)
+  7346 Lake Street #3W
+  River Forest, IL 60305
+ 
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA
+
+*/
+
+/*
  * GLUNurbs
  *
- * $Id: GLUNurbs.java,v 1.6 1999/05/02 23:24:32 razeh Exp $
+ * $Id: GLUNurbs.java,v 1.7 2001/07/06 23:43:29 razeh Exp $
  *
- * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
  */
 
 package OpenGL;
@@ -26,9 +48,9 @@ import java.util.Hashtable;
  * active, especially while using native threads under Linux with Mesa. 
  * 
  * 
- * @author Robert Allan Zeh (razeh@balr.com)
+ * @author Robert Allan Zeh (razeh@yahoo.com)
  *
- * @version 0.3
+ * @version 0.4
  */
 
 public class GLUNurbs extends CallbackObject {
@@ -56,25 +78,25 @@ public class GLUNurbs extends CallbackObject {
       <code>gluNewNurbsRenderer</code>.  */
   /* Declare the method final to prevent users from shooting
      themselves in the foot by not actually allocating a NURBS object. */
-  final int obtainCHeapItem(Hashtable optionalArguments) {
+  final long obtainCHeapItem(Hashtable optionalArguments) {
     return newNurbsRenderer();
   }
 
   /** Get a new Nurbs Renderer. */
-  private native int newNurbsRenderer();
+  private native long newNurbsRenderer();
 
   /** Release a Nurbs Renderer. */
-  private native void deleteNurbsRenderer(int nobj);
+  private native void deleteNurbsRenderer(long nobj);
 
   /** Overridden to call <code>gluDeleteNurbsRenderer</code>.  */
   /* Declare the method final to prevent users from shooting
      themselves in the foot by not actually freeing our NUBRS
      renderer. */
-  final void freeCHeapItem(int heapItem) {
+  final void freeCHeapItem(long heapItem) {
     deleteNurbsRenderer(heapItem);
   }
 
-  private native void loadSamplingMatrices(int GLUNurbs,
+  private native void loadSamplingMatrices(long GLUNurbs,
 					   float modelMatrix[],
 					   float projMatrix[],
 					   int viewport[]);
@@ -83,7 +105,7 @@ public class GLUNurbs extends CallbackObject {
 				   int viewport[]) {
     setActiveCallbackObject();
     try {
-      loadSamplingMatrices(heapPointer(), modelMatrix, projMatrix,
+      loadSamplingMatrices(getHeapPointer(), modelMatrix, projMatrix,
 			   viewport);
     } finally {
       unsetActiveCallbackObject();
@@ -91,52 +113,52 @@ public class GLUNurbs extends CallbackObject {
   }
 			    
        
-  private native void nurbsProperty(int nobj, int property,
+  private native void nurbsProperty(long nobj, int property,
 				    float value);
   public void nurbsProperty(int property,
 			    float value) {
     setActiveCallbackObject();
     try {
-      nurbsProperty(heapPointer(), property, value);
+      nurbsProperty(getHeapPointer(), property, value);
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  public native void getNurbsProperty(int nobj, int property, 
+  public native void getNurbsProperty(long nobj, int property, 
 				      float value[]);
   public void getNurbsProperty(int property,
 			       float value[]) {
     setActiveCallbackObject();
     try {
-      getNurbsProperty(heapPointer(), property, value);
+      getNurbsProperty(getHeapPointer(), property, value);
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
 
-  private native void beginCurve(int nobj);
+  private native void beginCurve(long nobj);
   public void beginCurve() {
     setActiveCallbackObject();
     try {
-      beginCurve(heapPointer());
+      beginCurve(getHeapPointer());
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  private native void endCurve(int nobj);
+  private native void endCurve(long nobj);
   public void endCurve() {
     setActiveCallbackObject();
     try {
-      endCurve(heapPointer());
+      endCurve(getHeapPointer());
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  private native void nurbsCurve(int nobj,
+  private native void nurbsCurve(long nobj,
 				 float knot[], int stride, 
 				 float ctlarray[], int order,
 				 int type);
@@ -146,33 +168,33 @@ public class GLUNurbs extends CallbackObject {
 			 int type) {
     setActiveCallbackObject();
     try {
-      nurbsCurve(heapPointer(), knot, stride, ctlarray, order, type);
+      nurbsCurve(getHeapPointer(), knot, stride, ctlarray, order, type);
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  private native void beginSurface(int nobj);
+  private native void beginSurface(long nobj);
   public void beginSurface() {
     setActiveCallbackObject();
     try {
-      beginSurface(heapPointer());
+      beginSurface(getHeapPointer());
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  private native void endSurface(int nobj);
+  private native void endSurface(long nobj);
   public void endSurface() {
     setActiveCallbackObject();
     try {
-      endSurface(heapPointer());
+      endSurface(getHeapPointer());
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  private native void nurbsSurface(int nobj,
+  private native void nurbsSurface(long nobj,
 				   float sknot[],
 				   float tknot[],
 				   int s_stride, int t_stride,
@@ -185,7 +207,7 @@ public class GLUNurbs extends CallbackObject {
 			   int sorder, int torder, int type) {
     setActiveCallbackObject();
     try {
-      nurbsSurface(heapPointer(),
+      nurbsSurface(getHeapPointer(),
 		   sknot, tknot, s_stride, t_stride, ctlarray, 
 		   sorder, torder, type);
     } finally {
@@ -193,34 +215,34 @@ public class GLUNurbs extends CallbackObject {
     }
   }
 
-  private native void beginTrim(int nobj);
+  private native void beginTrim(long nobj);
   public void beginTrim() {
     setActiveCallbackObject();
     try {
-      beginTrim(heapPointer());
+      beginTrim(getHeapPointer());
     } finally {
       unsetActiveCallbackObject();
     }
   }
 
-  private native void endTrim(int nobj);
+  private native void endTrim(long nobj);
   public void endTrim() {
     setActiveCallbackObject();
     try {
-      endTrim(heapPointer());
+      endTrim(getHeapPointer());
     } finally {
       unsetActiveCallbackObject();
     }
 
   }
 
-  private native void pwlCurve(int nobj, float array[],
+  private native void pwlCurve(long nobj, float array[],
 			       int stride, int type );
   public void pwlCurve(float array[],
 		       int stride, int type ) {
     setActiveCallbackObject();
     try {
-      pwlCurve(heapPointer(), array, stride, type);
+      pwlCurve(getHeapPointer(), array, stride, type);
     } finally {
       unsetActiveCallbackObject();
     }
