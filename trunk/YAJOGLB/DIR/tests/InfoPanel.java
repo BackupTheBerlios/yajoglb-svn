@@ -1,10 +1,10 @@
 /* 
  * Info panel class
  *
- * $Id: InfoPanel.java,v 1.2 1999/05/08 19:17:53 razeh Exp $
+ * $Id: InfoPanel.java,v 1.3 2001/06/10 19:14:42 razeh Exp $
  *
- * Copyright 1997
- * Robert Allan Zeh (razeh@balr.com)
+ * Copyright 2001
+ * Robert Allan Zeh (razeh@yahoo.com)
  */
 
 import java.util.StringTokenizer;
@@ -27,12 +27,7 @@ class InfoPanel extends Frame implements GLConstants {
   
   public InfoPanel(GL gl) {
     super();
-    Panel panel = new Panel();
-    Panel extensionsPanel = new Panel();
-
     addWindowListener(new WindowListener());
-    add(panel);
-    add(extensionsPanel);
 
     // Get all of our gl information.
     String vendor = gl.getString(VENDOR);
@@ -40,18 +35,20 @@ class InfoPanel extends Frame implements GLConstants {
     String version = gl.getString(VERSION);
     String extensions = gl.getString(EXTENSIONS);
 
-    setLayout(new GridLayout(2,1));
-    panel.setLayout(new GridLayout(4,1));
-    panel.add(new Label("Vendor: " + vendor));
-    panel.add(new Label("Renderer: " + renderer));
-    panel.add(new Label("Version: " + version));
-    panel.add(new Label("Extensions: "));
+    TextArea textArea = new TextArea();
+    textArea.setEditable(false);
+    setLayout(new GridLayout(1,1));
+    add(textArea);
+    
+    textArea.append("Vendor: " + vendor + "\n");
+    textArea.append("Renderer: " + renderer + "\n");
+    textArea.append("Version: " + version + "\n");
+    textArea.append("Extensions:\n");
 
     StringTokenizer st = new StringTokenizer(extensions);
     while (st.hasMoreTokens()) {
-      extensionsPanel.add(new Label(st.nextToken()));
+	textArea.append(st.nextToken() + "\n");
     }
-
     setTitle("OpenGL driver information");
     setSize(new Dimension(400, 300));
     setVisible(true);
