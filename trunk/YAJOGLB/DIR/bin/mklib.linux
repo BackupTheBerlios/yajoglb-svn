@@ -1,12 +1,18 @@
 #!/bin/sh
 
+EXTRALIBS="-lGL -lGLU -lX11 -lXext -L/usr/lib/j2re1.3/lib/i386 -ljawt"
+#EXTRALIBS="-lMesaGL -lMesaGLU"
+
 # Make a Linux ELF shared library
 
 #--identification------------------------------------------------------
 
-# $Id: mklib.linux,v 1.2 1999/05/03 01:01:17 razeh Exp $
+# $Id: mklib.linux,v 1.3 2002/04/14 18:19:43 razeh Exp $
 
 # $Log: mklib.linux,v $
+# Revision 1.3  2002/04/14 18:19:43  razeh
+# Line ending changes
+#
 # Revision 1.2  1999/05/03 01:01:17  razeh
 # Added the thread libraries and Mesa libraries.
 #
@@ -48,7 +54,7 @@ ARNAME=`basename $LIBNAME .so`.a
 DIRNAME=`dirname $LIBRARY`
 
 gcc -shared -Wl,-soname,${LIBNAME}.${MAJOR} -o \
-    ${LIBRARY}.${VERSION} ${OBJECTS} -L/usr/X11R6/lib -lpthread -lMesaGL -lMesaGLU
+    ${LIBRARY}.${VERSION} ${OBJECTS} -L/usr/X11R6/lib -lpthread $EXTRALIBS
 (cd $DIRNAME; ln -s ${LIBNAME}.${VERSION} ${LIBNAME}.${MAJOR})
 
 ln -s ${LIBNAME}.${MAJOR} ${LIBRARY}
