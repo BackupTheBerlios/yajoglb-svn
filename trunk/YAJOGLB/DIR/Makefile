@@ -12,7 +12,7 @@ CHEATINGMOTIFDIR = sun/awt/motif
 TESTDIR          = tests
 SUFFIXES        += .class .java
 COMPILE.java     = $(JAVAC) $(JFLAGS) 
-PACKAGENAME      = YAJOGLB-0.3
+PACKAGENAME      = YAJOGLB-0.3.1
 
 %.class: %.java
 	$(COMPILE.java) $<
@@ -23,12 +23,7 @@ NATIVECODEDIR   = CNativeCode/YAJOGLB
 # Some Cygnus tools stuff
 
 # The header files for our native code
-NATIVEHEADERS = OpenGL_GLUQuadric.h OpenGL_GLUNurbs.h \
-	        OpenGL_OpenGLContext.h OpenGL_GLUTesselator.h \
-                OpenGL_GLU.h OpenGL_GL.h OpenGL_GLVertexPointer.h \
-		OpenGL_OpenGLCanvas.h OpenGL_GLFeedbackBuffer.h \
-		OpenGL_CallbackObject.h OpenGL_GLNativeFloatArray.h \
-		OpenGL_GLNativeIntArray.h OpenGL_GLSelectionBuffer.h
+NATIVEHEADERS = OpenGL_GLUQuadric.h OpenGL_GLUNurbs.h OpenGL_Context.h OpenGL_GLUTesselator.h OpenGL_GLU.h OpenGL_GL.h OpenGL_GLVertexPointer.h OpenGL_Canvas.h OpenGL_GLFeedbackBuffer.h OpenGL_CallbackObject.h OpenGL_GLNativeFloatArray.h OpenGL_GLNativeIntArray.h OpenGL_GLSelectionBuffer.h
 
 default:
 	@echo "Type one of the following:"
@@ -53,7 +48,7 @@ testdir:
 
 dist : 
 	(cd ..; $(RM) -f $(PACKAGENAME).tar.gz)
-	(cd ..; $(TAR) cvf $(PACKAGENAME).tgz --gzip --exclude RCS --exclude "*.obj" --exclude "*~" --exclude "*.idb" --exclude "*.pdb" --exclude "*.ilk" --exclude "*.pch" $(PACKAGENAME))
+	(cd ..; $(TAR) cvf $(PACKAGENAME).tgz --gzip --exclude RCS --exclude "*.obj" --exclude "*~" --exclude "*.idb" --exclude "*.pdb" --exclude "*.ilk" --exclude "*.pch" --exclude "*.class" $(PACKAGENAME))
 
 clean : 
 	$(RM) -f *~ *.class *.jar 
@@ -61,8 +56,9 @@ clean :
 	$(MAKE) -C $(PACKAGEDIR) clean
 	$(MAKE) -C $(CHEATINGWINDIR) clean
 	$(MAKE) -C $(CHEATINGMOTIFDIR) clean
+
 # If we are running under Linux we want to use our own clean.
-ifeq ($(OSTYPE),linux-gnu)
+ifeq ($(OSTYPE),"linux-gnu")
 	$(MAKE) -C $(NATIVECODEDIR) clean
 # Otherwise we assume that we are under Windows.
 else
@@ -80,8 +76,8 @@ OpenGL_GLUQuadric.h: $(PACKAGEDIR)/GLUQuadric.java
 OpenGL_GLUNurbs.h: $(PACKAGEDIR)/GLUNurbs.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLUNurbs
 
-OpenGL_OpenGLContext.h: $(PACKAGEDIR)/OpenGLContext.java
-	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLContext
+OpenGL_Context.h: $(PACKAGEDIR)/Context.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).Context
 
 OpenGL_GLU.h: $(PACKAGEDIR)/GLU.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLU
@@ -89,8 +85,8 @@ OpenGL_GLU.h: $(PACKAGEDIR)/GLU.java
 OpenGL_GL.h: $(PACKAGEDIR)/GL.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GL
 
-OpenGL_OpenGLCanvas.h: $(PACKAGEDIR)/OpenGLCanvas.java
-	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).OpenGLCanvas
+OpenGL_Canvas.h: $(PACKAGEDIR)/Canvas.java
+	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).Canvas
 
 OpenGL_GLUTesselator.h: $(PACKAGEDIR)/GLUTesselator.java
 	$(JAVAH) -jni -d $(NATIVECODEDIR) $(PACKAGEDIR).GLUTesselator
@@ -121,7 +117,10 @@ nativeheaders: $(NATIVEHEADERS)
 
 # Make methods for Microsoft Windows, with the Cygnus environment and
 # Visual C++
-win32 :   packagedir cheatingwindir $(NATIVEHEADERS) win32-nativedir testdir
+win32 :   win32-config packagedir cheatingwindir $(NATIVEHEADERS) win32-nativedir testdir
+
+win32-conifg:
+	$(CP) Makefile.config-win32 Makefile.config
 
 win32-nativedir:
 	(cd $(NATIVECODEDIR); ./YAJOGLB.BAT)
