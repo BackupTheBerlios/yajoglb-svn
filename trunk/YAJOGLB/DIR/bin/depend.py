@@ -8,7 +8,6 @@ import re
 import os
 import sys
 import string
-import xreadlines
 
 
 # Determine what the source file is.
@@ -27,7 +26,7 @@ sourcePath=os.path.dirname(sourceFile)
 # with the filename so that it also includes the .d file, and so that
 # the complete path name is used.
 child = os.popen("gcc -M " + string.join(sys.argv[1:]), "r")
-for line in xreadlines.xreadlines(child):
+for line in child:
     if re.search(':', line):
         (file, remainder) = re.split(':', line)
         print os.path.join(sourcePath, file),
