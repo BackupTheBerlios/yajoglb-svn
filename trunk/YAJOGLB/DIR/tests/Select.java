@@ -1,7 +1,7 @@
 /*
  * Selection test
  *
- * $Id: Select.java,v 1.3 2001/06/10 20:50:43 razeh Exp $
+ * $Id: Select.java,v 1.4 2001/07/04 02:20:43 razeh Exp $
  *
  * Copyright 1999
  * Robert Allan Zeh (razeh@yahoo.com)
@@ -13,11 +13,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 /** A simple test of the selection buffer derived from SGI's example. */
-public class Select extends OpenGLCanvas implements GLConstants, GLUConstants, ComponentListener {
+public class Select extends OpenGL.Canvas implements GLConstants, GLUConstants, ComponentListener {
 
   private GL gl = new GL();
   private GLU glu = new GLU();
-  private OpenGLContext context;
+  private Context context;
 
   public Select() {
     addComponentListener(this);
@@ -27,6 +27,7 @@ public class Select extends OpenGLCanvas implements GLConstants, GLUConstants, C
       out the exception and continue on. */
   protected void aquireContext() {
     try {
+      lockCanvas();
       context.lock();
       context.makeCurrent(this);
     } catch (java.lang.Throwable exception) {
@@ -39,10 +40,11 @@ public class Select extends OpenGLCanvas implements GLConstants, GLUConstants, C
 
   protected void releaseContext() {
     context.unlock();
+    unlockCanvas();
   }
     
   public void glInit() {
-    context = new OpenGLContext(this);
+    context = new Context(this);
     aquireContext();
     gl.enable(DEPTH_TEST);
     gl.shadeModel(FLAT);
