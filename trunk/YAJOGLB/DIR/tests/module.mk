@@ -1,3 +1,4 @@
+DISTRIBUTED_FILES += tests/ogl.tga tests/run.sh tests/Readme.html
 
 JAVA_SRC += tests/VertexPointer.java tests/Stretch.java					\
 	    tests/NurbsSurface.java							\
@@ -14,10 +15,10 @@ JAVA_SRC += tests/VertexPointer.java tests/Stretch.java					\
 	    tests/StretchTexture.java tests/OBJ.java tests/ObjFace.java			\
 	    tests/ObjRender.java tests/ObjVertex.java tests/ObjReader.java		\
 	    tests/ObjMaterialReader.java tests/ObjMaterial.java				\
-	    tests/ObjNormal.java							\
+	    tests/ObjNormal.java tests/MatrixTransform.java				\
 	    tests/ObjFormatException.java tests/ObjDrawable.java			\
 	    tests/FrameRatePanel.java							\
-	    tests/VertexInfo.java tests/GLUTShapes.java tests/TexturedSphere.java
+	    tests/GLUTShapes.java tests/TexturedSphere.java
 
 
 
