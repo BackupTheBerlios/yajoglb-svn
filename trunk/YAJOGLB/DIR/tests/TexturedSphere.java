@@ -1,7 +1,7 @@
 /*
- * A Sphere with texture mapping.
+ * A rotating texture mapped sphere.
  *
- * $Id: TexturedSphere.java,v 1.1 2002/09/07 12:03:38 razeh Exp $
+ * $Id: TexturedSphere.java,v 1.2 2002/09/29 14:41:49 razeh Exp $
  *
  * Copyright 2002
  * Robert Allan Zeh (razeh@yahoo.com)
