@@ -25,7 +25,7 @@
 /*
  * OpenGL_GL.c
  *
- * $Id: OpenGL_GL.c,v 1.7 2001/07/06 23:40:05 razeh Exp $
+ * $Id: OpenGL_GL.c,v 1.8 2002/11/23 14:30:22 razeh Exp $
  *
  * This implements the generic GL methods.
  *
@@ -1788,7 +1788,7 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
     }
     
   bufferElementCount = width * height * pixelCountMultiplier;
-  buffer = (void*) privateMalloc(bufferElementCount * pixelStorageSizeMultiplier);
+  buffer = (void*) alloca(bufferElementCount * pixelStorageSizeMultiplier);
   if (buffer == NULL) {
     handleError(env, OPENGL_NATIVE_MEMORY_EXHAUSTED_EXCEPTION,
 		"Unable to allocate temporary buffer in readPixels");
@@ -1839,8 +1839,6 @@ JNIEXPORT jobject JNICALL Java_OpenGL_GL_readPixels
 		(*env)->SetFloatArrayRegion(env, result, 0, bufferElementCount, buffer);
      break;
     }
-  privateFree(buffer);
-  
   return result;
 }
 
