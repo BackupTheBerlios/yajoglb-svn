@@ -21,6 +21,8 @@ package OpenGL;
  *
  * @author Robert Allan Zeh (razeh@balr.com)
  *
+ * @version 0.1
+ *
 */
 public class CHeapItem {
   /** This is the integer representation of our pointer. */
