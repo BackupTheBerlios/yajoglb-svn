@@ -11,10 +11,8 @@ JFLAGS        = $(CLASSPATH) $(OPTIMIZATIONFLAG)
 JAVA_SRC        = WindowspDataAccess.java
 
 JAVA_CLASSES    = WindowspDataAccess.class
-		  
-		  
-		  
-		  
+
+
 
 all : $(JAVA_CLASSES)
 
