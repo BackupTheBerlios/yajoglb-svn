@@ -156,9 +156,14 @@ Canvas's native code can get to native window details.</TD> </TR>
 that you have GNU gcc (for the native library), a Java software
 development kit (for the Java side) and python (for C dependency
 generation) installed.  In the top level directory type
-<code>make</code>.  You should see all of the Java code compiler, and
-then you should the native headers and finally you should see the
-native code compile.
+<code>make</code>.  You should see the python depend script run for
+all of the C files first.  The C files that depend on the Java native
+headers will not be able to find the native headers; you can safely
+ignore the warnings.  Next the Java code will be compiled and the
+native headers will be generated.  The last thing that will happen is
+that the C code will be compiled and the YAJOGLB native library will
+be built in the distribution's top level directory.
+
 </p>
 <p>
 Under windows things are a bit harder.  You need to make sure that
@@ -171,7 +176,9 @@ you can safely ignore, because you are only using the make to generate
 the native header files.  Once the native header files have been
 generated you can build the native library with Visual C++ (the
 project files are included, but you will probably need to change some
-of the include directories).
+of the include directories).  The library will be placed in the
+Release or Debug directory, depending on what you ask Visual C++ to
+compile.
 
 <H2>Getting Started</H2>
 <P>This section describes how to write the simplest possible OpenGL
